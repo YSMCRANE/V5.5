@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(주)영선기계 통합 관리 시스템 v5.5</title>
+  <title>(주)영선기계 통합 관리 시스템 V5.6 (Fix)</title>
   
   <meta name="theme-color" content="#1e1e1e">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2920/2920323.png">
@@ -194,15 +194,57 @@
       .top-bar { padding: 0 15px; }
       .content-area { padding: 15px; }
     }
+
+    /* --- [보안] 로그인 및 권한 관리 스타일 --- */
+    #loginOverlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: #121212; z-index: 9999; /* 최상위 */
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .login-box {
+      background: var(--card-bg); padding: 40px; border-radius: 12px;
+      border: 1px solid var(--primary-color); text-align: center;
+      box-shadow: 0 0 20px rgba(74, 144, 226, 0.3); width: 300px;
+    }
+    .login-box h2 { color: #fff; margin-bottom: 20px; }
+    .login-input { 
+      width: 100%; padding: 12px; margin-bottom: 15px; 
+      background: #333; border: 1px solid #555; color: #fff; font-size: 16px; border-radius: 4px;
+      box-sizing: border-box;
+    }
+    .login-btn {
+      width: 100%; padding: 12px; font-size: 16px; font-weight: bold;
+      background: var(--primary-color); color: #fff; border: none; border-radius: 4px; cursor: pointer;
+    }
+    .login-btn:hover { background: var(--primary-hover); }
+
+    /* [핵심] 권한 제어 클래스: 기본 숨김 */
+    .admin-only { display: none !important; }
+    /* 관리자 모드일 때만 보이기 */
+    body.is-admin .admin-only { display: inline-block !important; }
+    body.is-admin div.admin-only { display: block !important; }
   </style>
 </head>
 <body>
+
+<div id="loginOverlay">
+  <div class="login-box">
+    <h2>🔒 시스템 접속</h2>
+    <p style="color:#aaa; margin-bottom:20px;">(주)영선기계 통합 관리 시스템</p>
+    <input type="password" id="loginPw" class="login-input" placeholder="비밀번호 입력" onkeyup="if(window.event.keyCode==13){tryLogin()}">
+    <button onclick="tryLogin()" class="login-btn">로그인</button>
+    <p id="loginMsg" style="color: #ff6b6b; margin-top: 15px; font-size: 0.9em;"></p>
+    <div style="margin-top:20px; font-size:0.8em; color:#666;">
+        문의처 : 김광민 차장(010-8947-4818)
+    </div>
+  </div>
+</div>
 
 <div class="app-container">
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>(주)영선기계</h2>
-      <span class="sub-text">통합 관리 시스템 v5.5</span>
+      <span class="sub-text">통합 관리 시스템 v6.1</span>
     </div>
     <nav class="nav-menu">
       <div class="nav-group-label">메인 업무</div>
@@ -235,7 +277,7 @@
 
     <div class="content-area">
       <div id="schedule" class="tab-content active">
-        <div class="card" id="scheduleInlineFormCard">
+        <div class="card admin-only" id="scheduleInlineFormCard">
           <h3>일정 등록</h3>
           <form id="scheduleForm" class="flex-row">
             <input type="date" name="날짜" id="inputDate" required />
@@ -297,7 +339,7 @@
                 <div class="detail-panel">
                     <div class="detail-header">
                         <h3 style="margin:0" id="detailTitle">날짜를 선택하세요</h3>
-                        <button class="btn-primary" onclick="clickAddOnSelectedDate()" style="font-size:0.8em;">+ 이 날짜에 추가</button>
+                        <button class="btn-primary admin-only" onclick="clickAddOnSelectedDate()" style="font-size:0.8em;">+ 이 날짜에 추가</button>
                     </div>
                     <div class="detail-list" id="detailListContainer">
                         <div class="empty-state">👈 달력에서 날짜를 클릭하여<br>일정을 확인하세요.</div>
@@ -309,7 +351,7 @@
       </div>
 
       <div id="prework" class="tab-content">
-        <div class="card">
+        <div class="card admin-only">
             <h3>📝 선작업 등록</h3>
             <div class="flex-row">
                 <input type="date" id="pwDate" required>
@@ -342,7 +384,7 @@
       </div>
 
       <div id="order" class="tab-content">
-        <div class="card">
+        <div class="card admin-only">
           <h3>발주 정보 등록</h3>
           <div class="flex-row">
             <input type="text" id="odBid" placeholder="입찰번호">
@@ -369,7 +411,7 @@
       </div>
 
       <div id="equipment" class="tab-content">
-        <div class="card">
+        <div class="card admin-only">
           <h3>설비 스펙 등록</h3>
           <div class="flex-row">
             <input type="text" id="esTeam" placeholder="팀 (예: OF1팀)">
@@ -396,7 +438,7 @@
       </div>
 
       <div id="bucket" class="tab-content">
-        <div class="card">
+        <div class="card admin-only">
           <h3>버켓 교체 기록</h3>
           <div class="flex-row">
             <input type="text" id="bkDept" placeholder="부서/호기">
@@ -422,7 +464,7 @@
       </div>
 
       <div id="phonebook" class="tab-content">
-        <div class="card">
+        <div class="card admin-only">
           <h3>연락처 등록</h3>
           <div class="flex-row">
             <input type="text" id="pbDept" placeholder="부서">
@@ -462,7 +504,7 @@
         <div class="form-group"><label>비고</label><input type="text" id="n_schNote"></div>
       </div>
     </div>
-    <div class="modal-footer"><button onclick="closeModal('addScheduleModal')">취소</button><button onclick="saveNewScheduleFromModal()" class="btn-primary">등록 완료</button></div>
+    <div class="modal-footer"><button onclick="closeModal('addScheduleModal')">취소</button><button onclick="saveNewScheduleFromModal()" class="btn-primary admin-only">등록 완료</button></div>
   </div>
 </div>
 
@@ -481,22 +523,43 @@
         <div class="form-group"><label>비고</label><input type="text" id="m_schNote"></div>
       </div>
     </div>
-    <div class="modal-footer"><button onclick="closeModal('scheduleModal')">취소</button><button onclick="saveScheduleFromModal()" class="btn-primary">수정 저장</button></div>
+    <div class="modal-footer"><button onclick="closeModal('scheduleModal')">취소</button><button onclick="saveScheduleFromModal()" class="btn-primary admin-only">수정 저장</button></div>
   </div>
 </div>
 
-<div id="preworkModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📝 선작업 수정</h3><span class="close-modal" onclick="closeModal('preworkModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>날짜</label><input type="date" id="m_pwDate"></div><div class="form-group"><label>생산팀</label><input type="text" id="m_pwTeam"></div><div class="form-group"><label>담당자</label><input type="text" id="m_pwManager"></div><div class="form-group"><label>공사명</label><input type="text" id="m_pwProject"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_pwWork"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">상태 체크</label><div class="checkbox-group" style="flex-wrap:wrap"><label><input type="checkbox" id="m_pwChk1"> 작업완료</label><label><input type="checkbox" id="m_pwChk2"> 내용전달</label><label><input type="checkbox" id="m_pwChk3"> 입찰완료</label><label><input type="checkbox" id="m_pwChk4"> 발주완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('preworkModal')">취소</button><button onclick="savePreworkFromModal()" class="btn-primary">수정 저장</button></div></div></div>
+<div id="preworkModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📝 선작업 수정</h3><span class="close-modal" onclick="closeModal('preworkModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>날짜</label><input type="date" id="m_pwDate"></div><div class="form-group"><label>생산팀</label><input type="text" id="m_pwTeam"></div><div class="form-group"><label>담당자</label><input type="text" id="m_pwManager"></div><div class="form-group"><label>공사명</label><input type="text" id="m_pwProject"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_pwWork"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">상태 체크</label><div class="checkbox-group" style="flex-wrap:wrap"><label><input type="checkbox" id="m_pwChk1"> 작업완료</label><label><input type="checkbox" id="m_pwChk2"> 내용전달</label><label><input type="checkbox" id="m_pwChk3"> 입찰완료</label><label><input type="checkbox" id="m_pwChk4"> 발주완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('preworkModal')">취소</button><button onclick="savePreworkFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
 
-<div id="orderModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📦 발주 정보 수정</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>입찰번호</label><input type="text" id="m_odBid"></div><div class="form-group"><label>의뢰번호</label><input type="text" id="m_odReq"></div><div class="form-group"><label>구매PO번호</label><input type="text" id="m_odPo"></div><div class="form-group"><label>의뢰자</label><input type="text" id="m_odRequester"></div><div class="form-group"><label>구매담당자</label><input type="text" id="m_odBuyer"></div><div class="form-group"><label>공사명</label><input type="text" id="m_odProject"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_odPermit"></div><div class="form-group"><label>필수자재</label><input type="text" id="m_odMat"></div><div class="form-group"><label>허가번호</label><input type="text" id="m_odPermitNo"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크</label><div class="checkbox-group"><label><input type="checkbox" id="m_odPermitCheck"> 허가발행</label><label><input type="checkbox" id="m_odDoneCheck"> 작업완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('orderModal')">취소</button><button onclick="saveOrderFromModal()" class="btn-primary">수정 저장</button></div></div></div>
+<div id="orderModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📦 발주 정보 수정</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>입찰번호</label><input type="text" id="m_odBid"></div><div class="form-group"><label>의뢰번호</label><input type="text" id="m_odReq"></div><div class="form-group"><label>구매PO번호</label><input type="text" id="m_odPo"></div><div class="form-group"><label>의뢰자</label><input type="text" id="m_odRequester"></div><div class="form-group"><label>구매담당자</label><input type="text" id="m_odBuyer"></div><div class="form-group"><label>공사명</label><input type="text" id="m_odProject"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_odPermit"></div><div class="form-group"><label>필수자재</label><input type="text" id="m_odMat"></div><div class="form-group"><label>허가번호</label><input type="text" id="m_odPermitNo"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크</label><div class="checkbox-group"><label><input type="checkbox" id="m_odPermitCheck"> 허가발행</label><label><input type="checkbox" id="m_odDoneCheck"> 작업완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('orderModal')">취소</button><button onclick="saveOrderFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
 
-<div id="phoneModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>📞 연락처 수정</h3><span class="close-modal" onclick="closeModal('phoneModal')">&times;</span></div><div class="modal-body"><div class="form-grid" style="grid-template-columns: 1fr;"><div class="form-group"><label>부서</label><input type="text" id="m_pbDept"></div><div class="form-group"><label>직책</label><input type="text" id="m_pbPos"></div><div class="form-group"><label>이름</label><input type="text" id="m_pbName"></div><div class="form-group"><label>전화번호</label><input type="text" id="m_pbPhone"></div></div></div><div class="modal-footer"><button onclick="closeModal('phoneModal')">취소</button><button onclick="savePhoneFromModal()" class="btn-primary">수정 저장</button></div></div></div>
-<div id="bucketModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>🪣 버켓 기록 수정</h3><span class="close-modal" onclick="closeModal('bucketModal')">&times;</span></div><div class="modal-body"><div class="form-grid" style="grid-template-columns: 1fr;"><div class="form-group"><label>부서/호기</label><input type="text" id="m_bkDept"></div><div class="form-group"><label>날짜</label><input type="date" id="m_bkDate"></div><div class="form-group"><label>비고</label><input type="text" id="m_bkNote"></div></div></div><div class="modal-footer"><button onclick="closeModal('bucketModal')">취소</button><button onclick="saveBucketFromModal()" class="btn-primary">수정 저장</button></div></div></div>
-<div id="specModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>🔧 설비 상세 스펙 편집</h3><span class="close-modal" onclick="closeModal('specModal')">&times;</span></div><div class="modal-body"><div id="modalMetaInfo" style="margin-bottom:15px; color:var(--primary-color); font-weight:bold;"></div><table class="spec-table" id="modalSpecTable" style="width:100%; margin-bottom:15px; border-collapse:collapse;"><thead><tr><th style="width:40%">항목명 (Key)</th><th style="width:40%">값 (Value)</th><th style="width:20%">삭제</th></tr></thead><tbody></tbody></table><button onclick="addModalRow()" style="width:100%; border:1px dashed #555;">+ 항목 추가</button></div><div class="modal-footer"><button onclick="closeModal('specModal')">취소</button><button onclick="saveSpecFromModal()" class="btn-primary">수정 저장</button></div></div></div>
+<div id="phoneModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>📞 연락처 수정</h3><span class="close-modal" onclick="closeModal('phoneModal')">&times;</span></div><div class="modal-body"><div class="form-grid" style="grid-template-columns: 1fr;"><div class="form-group"><label>부서</label><input type="text" id="m_pbDept"></div><div class="form-group"><label>직책</label><input type="text" id="m_pbPos"></div><div class="form-group"><label>이름</label><input type="text" id="m_pbName"></div><div class="form-group"><label>전화번호</label><input type="text" id="m_pbPhone"></div></div></div><div class="modal-footer"><button onclick="closeModal('phoneModal')">취소</button><button onclick="savePhoneFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
+<div id="bucketModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>🪣 버켓 기록 수정</h3><span class="close-modal" onclick="closeModal('bucketModal')">&times;</span></div><div class="modal-body"><div class="form-grid" style="grid-template-columns: 1fr;"><div class="form-group"><label>부서/호기</label><input type="text" id="m_bkDept"></div><div class="form-group"><label>날짜</label><input type="date" id="m_bkDate"></div><div class="form-group"><label>비고</label><input type="text" id="m_bkNote"></div></div></div><div class="modal-footer"><button onclick="closeModal('bucketModal')">취소</button><button onclick="saveBucketFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
+<div id="specModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>🔧 설비 상세 스펙 편집</h3><span class="close-modal" onclick="closeModal('specModal')">&times;</span></div><div class="modal-body"><div id="modalMetaInfo" style="margin-bottom:15px; color:var(--primary-color); font-weight:bold;"></div><table class="spec-table" id="modalSpecTable" style="width:100%; margin-bottom:15px; border-collapse:collapse;"><thead><tr><th style="width:40%">항목명 (Key)</th><th style="width:40%">값 (Value)</th><th style="width:20%">삭제</th></tr></thead><tbody></tbody></table><button onclick="addModalRow()" style="width:100%; border:1px dashed #555;" class="admin-only">+ 항목 추가</button></div><div class="modal-footer"><button onclick="closeModal('specModal')">취소</button><button onclick="saveSpecFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
 
 <script>
   // [중요] 반드시 본인의 최신 Web App URL로 교체하세요!
   const API_URL = "https://script.google.com/macros/s/AKfycbzqNF0h7XHiZjRItXiehqLKTAnwMo22AMD3HqYqxd5Gz90GrJ-FWx_umB_CXh2C60L1/exec";
   
+  /* --- [보안] 로그인 설정 --- */
+  const PW_ADMIN = "1984"; // 관리자용 (수정/삭제 가능)
+  const PW_VIEWER = "0000"; // 직원용 (조회만 가능)
+
+  function tryLogin() {
+    const input = document.getElementById('loginPw').value;
+    const msg = document.getElementById('loginMsg');
+    
+    if (input === PW_ADMIN) {
+      document.body.classList.add('is-admin'); // 관리자 모드 활성화
+      document.getElementById('loginOverlay').style.display = 'none';
+    } else if (input === PW_VIEWER) {
+      document.body.classList.remove('is-admin'); // 관리자 모드 해제
+      document.getElementById('loginOverlay').style.display = 'none';
+    } else {
+      msg.textContent = "비밀번호가 올바르지 않습니다.";
+      document.getElementById('loginPw').value = "";
+      document.getElementById('loginPw').focus();
+    }
+  }
+
   const getTodayStr = () => { const d = new Date(); const pad = n => n<10 ? '0'+n : n; return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
   const TODAY_DATE_STR = getTodayStr(); document.getElementById('currentDateDisplay').textContent = TODAY_DATE_STR;
 
@@ -529,7 +592,7 @@
 
   /* ================= 1. 일정관리 ================= */
   const schedulePageSize=10; const FIELDS=["날짜","생산팀","작업내용","담당자","발주번호","필수자재","허가번호","비고"];
-  let schedulePage=1, records=[], searchQuery="", sortKey="날짜", sortAsc=true, dateFilter={start:null, end:null}; // [수정완료] 초기화: null (전체보기 유지)
+  let schedulePage=1, records=[], searchQuery="", sortKey="날짜", sortAsc=true, dateFilter={start:null, end:null}; 
   let scheduleChartInstance = null; let currentView = 'list'; let currentCalendarDate = new Date(); let selectedDate = TODAY_DATE_STR; 
 
   function toggleScheduleView(view) {
@@ -586,7 +649,8 @@
           html += `<div class="sch-meta"><span>👤 ${r['담당자']}</span><span class="sch-divider">|</span><span>📦 ${poHtml}</span>`;
           if(r['허가번호']) { html += `<span class="sch-divider">|</span><span style="color:#81D4FA">🛡️ ${r['허가번호']}</span>`; } html += `</div>`;
           if(r['필수자재']) { html += `<div class="sch-mat">🛠️ ${r['필수자재']}</div>`; }
-          html += `<div class="sch-actions"><button onclick="openScheduleModal(${r.row})" style="padding:4px 8px; margin-right:4px;">✏️</button><button onclick="deleteRecord(${r.row})" class="btn-danger" style="padding:4px 8px;">🗑️</button></div>`;
+          // [권한] 버튼에 admin-only 추가
+          html += `<div class="sch-actions"><button onclick="openScheduleModal(${r.row})" style="padding:4px 8px; margin-right:4px;" class="admin-only">✏️</button><button onclick="deleteRecord(${r.row})" class="btn-danger admin-only" style="padding:4px 8px;">🗑️</button></div>`;
           div.innerHTML = html; container.appendChild(div);
       });
   }
@@ -595,22 +659,12 @@
         const res = await fetch(API_URL+"?action=schedule_get"); const raw = await res.json();
         records = raw.slice(1).map((row,i) => { const o = {row: i+2}; FIELDS.forEach((k,idx) => o[k] = row[idx]??""); return o; });
         
-        // [수정완료] 자동 페이지 계산 로직
-        // 전체 리스트(정렬된)에서 오늘 날짜의 인덱스를 찾아 해당 페이지로 설정
         if (autoJumpToToday) { 
             selectedDate = TODAY_DATE_STR;
-            const view = getScheduleView(); // 현재 정렬 기준(기본값)으로 전체 리스트 가져오기
+            const view = getScheduleView(); 
             const todayIdx = view.findIndex(r => formatDate(r["날짜"]) === TODAY_DATE_STR);
-            
-            if (todayIdx !== -1) {
-                // 오늘 날짜가 있다면 해당 페이지 계산 (1-based page)
-                schedulePage = Math.ceil((todayIdx + 1) / schedulePageSize);
-            } else {
-                // 오늘 날짜가 없으면 1페이지
-                schedulePage = 1; 
-            }
+            if (todayIdx !== -1) { schedulePage = Math.ceil((todayIdx + 1) / schedulePageSize); } else { schedulePage = 1; }
         }
-        
         if(currentView === 'calendar') { renderCalendar(); updateDetailPanel(selectedDate); } else { renderSchedule(); }
     } catch(e) { console.error(e); }
   }
@@ -639,7 +693,8 @@
         else { td.textContent = val; }
         tr.appendChild(td);
       });
-      tr.innerHTML += `<td><button onclick="openScheduleModal(${r.row})">✏️</button> <button onclick="deleteRecord(${r.row})" class="btn-danger">🗑️</button></td>`;
+      // [권한] admin-only 추가
+      tr.innerHTML += `<td><button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button></td>`;
       tb.appendChild(tr);
     });
     renderPaginator("pagination", totalPages, (p)=>{schedulePage=p;renderSchedule();}, schedulePage);
@@ -692,22 +747,15 @@
   }
   function renderPreworkTable(){
       const kw = (document.getElementById('pwSearch').value||"").toLowerCase();
-      const sortKey = document.getElementById('pwSortSel').value; // [수정완료] 정렬 키 가져오기
+      const sortKey = document.getElementById('pwSortSel').value; 
       const all = Array.from(pwRowMap.entries()).map(([k,v]) => ({row:k, cells:v}));
       const filtered = all.filter(it => (it.cells[3]||"").toLowerCase().includes(kw) || (it.cells[4]||"").toLowerCase().includes(kw));
       
-      // [수정완료] 드롭다운 선택에 따른 정렬 로직
       filtered.sort((a,b) => {
           let va, vb;
-          if (sortKey === "날짜") { // 날짜는 최신순(내림차순)
-              return new Date(b.cells[0]) - new Date(a.cells[0]); 
-          } else if (sortKey === "생산팀") { // 텍스트 오름차순
-              va = a.cells[1] || ""; vb = b.cells[1] || "";
-              return va.localeCompare(vb);
-          } else if (sortKey === "작업내용") { // 텍스트 오름차순
-              va = a.cells[4] || ""; vb = b.cells[4] || "";
-              return va.localeCompare(vb);
-          }
+          if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); 
+          } else if (sortKey === "생산팀") { va = a.cells[1] || ""; vb = b.cells[1] || ""; return va.localeCompare(vb);
+          } else if (sortKey === "작업내용") { va = a.cells[4] || ""; vb = b.cells[4] || ""; return va.localeCompare(vb); }
           return 0;
       });
 
@@ -717,10 +765,17 @@
       filtered.slice(start,end).forEach(it => {
           const r = it.cells;
           const isChk1 = normalizeBool(r[5]), isChk2 = normalizeBool(r[6]), isChk3 = normalizeBool(r[7]), isChk4 = normalizeBool(r[8]);
+          
           const tr = document.createElement("tr");
+          // [수정됨] 중복된 배지 코드 삭제하고 깔끔하게 정리함
           tr.innerHTML = `<td>${formatDate(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td>
-              <td style="text-align:center;"><span class="status-badge ${isChk1?'active-1':''}" onclick="togglePreworkStatus(${it.row}, 'chk1', ${!isChk1})">작업완료</span> <span class="status-badge ${isChk2?'active-2':''}" onclick="togglePreworkStatus(${it.row}, 'chk2', ${!isChk2})">내용전달</span> <span class="status-badge ${isChk3?'active-3':''}" onclick="togglePreworkStatus(${it.row}, 'chk3', ${!isChk3})">입찰완료</span> <span class="status-badge ${isChk4?'active-4':''}" onclick="togglePreworkStatus(${it.row}, 'chk4', ${!isChk4})">발주완료</span></td>
-              <td><button onclick='openPreworkModal(${it.row})'>✏️</button> <button onclick='deletePrework(${it.row})' class="btn-danger">🗑️</button></td>`;
+              <td style="text-align:center;">
+                <span class="status-badge ${isChk1?'active-1':''}" onclick="togglePreworkStatus(${it.row}, 'chk1', ${!isChk1})">작업완료</span>
+                <span class="status-badge ${isChk2?'active-2':''}" onclick="togglePreworkStatus(${it.row}, 'chk2', ${!isChk2})">내용전달</span>
+                <span class="status-badge ${isChk3?'active-3':''}" onclick="togglePreworkStatus(${it.row}, 'chk3', ${!isChk3})">입찰완료</span>
+                <span class="status-badge ${isChk4?'active-4':''}" onclick="togglePreworkStatus(${it.row}, 'chk4', ${!isChk4})">발주완료</span>
+              </td>
+              <td><button onclick='openPreworkModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePrework(${it.row})' class="btn-danger admin-only">🗑️</button></td>`;
           tb.appendChild(tr);
       }); renderPaginator("pwPagination", totalPages, (p)=>{pwPage=p; renderPreworkTable();}, pwPage);
   }
@@ -740,7 +795,6 @@
   function openPreworkModal(row){ currentPwRow = row; const old = pwRowMap.get(row); document.getElementById('m_pwDate').value = formatDate(old[0]); document.getElementById('m_pwTeam').value = old[1]; document.getElementById('m_pwManager').value = old[2]; document.getElementById('m_pwProject').value = old[3]; document.getElementById('m_pwWork').value = old[4]; document.getElementById('m_pwChk1').checked = normalizeBool(old[5]); document.getElementById('m_pwChk2').checked = normalizeBool(old[6]); document.getElementById('m_pwChk3').checked = normalizeBool(old[7]); document.getElementById('m_pwChk4').checked = normalizeBool(old[8]); openModal('preworkModal'); }
   async function savePreworkFromModal(){ const date=document.getElementById('m_pwDate').value, team=document.getElementById('m_pwTeam').value; const manager=document.getElementById('m_pwManager').value, project=document.getElementById('m_pwProject').value, work=document.getElementById('m_pwWork').value; const chk1=document.getElementById('m_pwChk1').checked?"TRUE":"FALSE", chk2=document.getElementById('m_pwChk2').checked?"TRUE":"FALSE"; const chk3=document.getElementById('m_pwChk3').checked?"TRUE":"FALSE", chk4=document.getElementById('m_pwChk4').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_update", row: currentPwRow, date, team, manager, project, work, chk1, chk2, chk3, chk4})}); closeModal('preworkModal'); loadPrework(); }
   document.getElementById("pwSearch").addEventListener("input", ()=>{pwPage=1; renderPreworkTable();});
-  // [수정완료] 드롭다운 변경 시 정렬 재수행
   document.getElementById("pwSortSel").addEventListener("change", ()=>{ pwPage=1; renderPreworkTable(); });
 
   /* ================= 3. 발주정보 ================= */
@@ -754,7 +808,8 @@
           const r = it.cells; let isPermit = normalizeBool(r[19]), isDone = normalizeBool(r[20]); let permitClass = isPermit ? "status-badge permit-active" : "status-badge"; let doneClass = isDone ? "status-badge done-active" : "status-badge";
           const permitHtml = r[21] ? `<span class="od-link" onclick='transferToSchedule(${it.row})'>${r[21]}</span>` : '<span style="color:#777">없음</span>';
           const card = document.createElement("div"); card.className = "od-item-card";
-          card.innerHTML = `<div class="od-header"><span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div><div class="od-body"><div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div><div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div><div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div></div><div class="od-footer"><div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div><div class="od-actions"><span class="${permitClass}" onclick="toggleStatus(${it.row}, 'permit', ${!isPermit})">허가발행</span><span class="${doneClass}" onclick="toggleStatus(${it.row}, 'done', ${!isDone})">작업완료</span><button onclick='openOrderModal(${it.row})'>✏️</button><button onclick='deleteOrder(${it.row})' class="btn-danger">🗑️</button></div></div>`;
+          // [권한] 허가발행/작업완료/수정/삭제 버튼에 admin-only 추가 (허가발행 등 상태변경도 관리자 기능으로 간주)
+          card.innerHTML = `<div class="od-header"><span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div><div class="od-body"><div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div><div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div><div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div></div><div class="od-footer"><div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div><div class="od-actions"><span class="${permitClass} admin-only" onclick="toggleStatus(${it.row}, 'permit', ${!isPermit})">허가발행</span><span class="${doneClass} admin-only" onclick="toggleStatus(${it.row}, 'done', ${!isDone})">작업완료</span><button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button><button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button></div></div>`;
           container.appendChild(card);
       }); renderPaginator("odPagination", totalPages, (p)=>{odPage=p; loadOrder();}, odPage); 
   }
@@ -763,16 +818,11 @@
       if(!data) return; 
       
       switchTab('schedule'); 
-      
-      // [수정완료] 먼저 모든 입력창을 깨끗이 비웁니다. (이전 정보 삭제)
       ['n_schTeam','n_schWork','n_schManager','n_schOrderNo','n_schMat','n_schPermit','n_schNote'].forEach(id => document.getElementById(id).value = "");
-      
-      // [수정완료] 요청하신 딱 3가지 정보(발주, 자재, 허가) + 날짜만 입력합니다.
       document.getElementById('n_schDate').value = TODAY_DATE_STR; 
-      document.getElementById('n_schOrderNo').value = data[2];  // PO 번호
-      document.getElementById('n_schMat').value = data[7];      // 필수자재
-      document.getElementById('n_schPermit').value = data[21];  // 허가번호
-      
+      document.getElementById('n_schOrderNo').value = data[2]; 
+      document.getElementById('n_schMat').value = data[7];  
+      document.getElementById('n_schPermit').value = data[21]; 
       openModal('addScheduleModal'); 
   }
   async function toggleStatus(row, type, newValue) { const old = odRowMap.get(row); if(old) { const strVal = newValue ? "TRUE" : "FALSE"; if(type === 'permit') old[19] = strVal; else old[20] = strVal; loadOrder(); try { await fetch(API_URL, {method: "POST", body: JSON.stringify({action: "order_toggle", row: row, type: type, value: strVal})}); } catch (e) { console.error("저장 실패", e); } } }
@@ -785,7 +835,9 @@
   /* ================= 전화번호부 & 버켓 & 설비 ================= */
   let pbPage=1, pageSizePhone=10, pbRowMap=new Map(), pbAllData=[];
   async function loadPhonebook(){ try{ const res=await fetch(API_URL+"?action=phone_get"); const rows=await res.json(); if(!Array.isArray(rows)) return; pbRowMap.clear(); pbAllData=rows.slice(1).map((r,i)=>({row:i+2,cells:r})); pbAllData.forEach(it=>pbRowMap.set(it.row,it.cells)); renderPhonebookTable(); }catch(e){console.error(e);} }
-  function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/pageSizePhone)||1; if(pbPage>totalPages) pbPage=1; const start=(pbPage-1)*pageSizePhone, end=start+pageSizePhone; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r=it.cells; const tr=document.createElement("tr"); tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})'>✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
+  function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/pageSizePhone)||1; if(pbPage>totalPages) pbPage=1; const start=(pbPage-1)*pageSizePhone, end=start+pageSizePhone; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r=it.cells; const tr=document.createElement("tr"); 
+  // [권한] admin-only 추가
+  tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
   function openPhoneModal(row){ currentPbRow=row; const old=pbRowMap.get(row)||["","","",""]; document.getElementById('m_pbDept').value=old[0]; document.getElementById('m_pbPos').value=old[1]; document.getElementById('m_pbName').value=old[2]; document.getElementById('m_pbPhone').value=old[3]; openModal('phoneModal'); }
   async function savePhoneFromModal(){ const dept=document.getElementById('m_pbDept').value, pos=document.getElementById('m_pbPos').value; const name=document.getElementById('m_pbName').value, phone=document.getElementById('m_pbPhone').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_update",row:currentPbRow, dept,position:pos,name,phone})}); closeModal('phoneModal'); loadPhonebook(); }
   async function savePhonebook(){ const dept=document.getElementById('pbDept').value, pos=document.getElementById('pbPosition').value; const name=document.getElementById('pbName').value, phone=document.getElementById('pbPhone').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_add",dept,position:pos,name,phone})}); ['pbDept','pbPosition','pbName','pbPhone'].forEach(id=>document.getElementById(id).value=""); loadPhonebook(); }
@@ -794,7 +846,9 @@
 
   let bkPage=1, pageSizeBucket=10, bkRowMap=new Map(), bkSortAsc=false;
   function getElapsedTime(dateStr) { const target = new Date(dateStr); const now = new Date(); if(isNaN(target)) return "-"; const diffDays = Math.ceil(Math.abs(now - target) / (1000 * 60 * 60 * 24)); return diffDays < 30 ? `${diffDays}일 전` : `${Math.floor(diffDays/30)}개월 전`; }
-  async function loadBucket(){ const res = await fetch(API_URL+"?action=bucket_get"); const rows = await res.json(); bkRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>bkRowMap.set(it.row,it.cells)); const kw = (document.getElementById('bkSearch').value||"").toLowerCase(); let filtered = all.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); filtered.sort((a,b)=>{ const da=new Date(a.cells[1]), db=new Date(b.cells[1]); return !isNaN(da)&&!isNaN(db) ? (bkSortAsc?da-db:db-da) : 0; }); const totalPages = Math.ceil(filtered.length/pageSizeBucket)||1; if(bkPage>totalPages) bkPage=1; const start=(bkPage-1)*pageSizeBucket, end=start+pageSizeBucket; const tb = document.querySelector("#bkTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r = it.cells, tr = document.createElement("tr"); tr.innerHTML=`<td>${r[0]}</td><td>${formatDate(r[1])}</td><td style="color:var(--accent-color)">${getElapsedTime(r[1])}</td><td>${r[2]}</td><td><button onclick='openBucketModal(${it.row})'>✏️</button> <button onclick='deleteBucket(${it.row})' class="btn-danger">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("bkPagination",totalPages,(p)=>{bkPage=p;loadBucket();},bkPage); }
+  async function loadBucket(){ const res = await fetch(API_URL+"?action=bucket_get"); const rows = await res.json(); bkRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>bkRowMap.set(it.row,it.cells)); const kw = (document.getElementById('bkSearch').value||"").toLowerCase(); let filtered = all.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); filtered.sort((a,b)=>{ const da=new Date(a.cells[1]), db=new Date(b.cells[1]); return !isNaN(da)&&!isNaN(db) ? (bkSortAsc?da-db:db-da) : 0; }); const totalPages = Math.ceil(filtered.length/pageSizeBucket)||1; if(bkPage>totalPages) bkPage=1; const start=(bkPage-1)*pageSizeBucket, end=start+pageSizeBucket; const tb = document.querySelector("#bkTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r = it.cells, tr = document.createElement("tr"); 
+  // [권한] admin-only 추가
+  tr.innerHTML=`<td>${r[0]}</td><td>${formatDate(r[1])}</td><td style="color:var(--accent-color)">${getElapsedTime(r[1])}</td><td>${r[2]}</td><td><button onclick='openBucketModal(${it.row})' class="admin-only">✏️</button> <button onclick='deleteBucket(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("bkPagination",totalPages,(p)=>{bkPage=p;loadBucket();},bkPage); }
   function openBucketModal(row){ currentBkRow = row; const old = bkRowMap.get(row)||["","","",""]; document.getElementById('m_bkDept').value = old[0]; document.getElementById('m_bkDate').value = formatDate(old[1]); document.getElementById('m_bkNote').value = old[2]; openModal('bucketModal'); }
   async function saveBucketFromModal(){ const dept=document.getElementById('m_bkDept').value, date=document.getElementById('m_bkDate').value, note=document.getElementById('m_bkNote').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_update",row:currentBkRow, dept,date,note})}); closeModal('bucketModal'); loadBucket(); }
   async function saveBucket(){ const dept=document.getElementById('bkDept').value, date=document.getElementById('bkDate').value, note=document.getElementById('bkNote').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_add",dept,date,note})}); document.getElementById('bkDept').value=""; document.getElementById('bkDate').value=""; document.getElementById('bkNote').value=""; loadBucket(); }
@@ -805,11 +859,15 @@
   async function loadEquipmentSpec(){ const res = await fetch(API_URL+"?action=spec_get"); const rows = await res.json(); esRowMap.clear(); esAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); esAllData.forEach(it=>esRowMap.set(it.row,it.cells)); initTeamFilter(); renderEquipmentTable(); }
   function initTeamFilter() { const teams = new Set(); esAllData.forEach(it => { if(it.cells[0]) teams.add(it.cells[0]); }); const teamSel = document.getElementById('filterTeam'); while(teamSel.options.length > 1) teamSel.remove(1); Array.from(teams).sort().forEach(t => { const opt = document.createElement('option'); opt.value = t; opt.textContent = t; teamSel.appendChild(opt); }); }
   function updateLocationOptions() { const selectedTeam = document.getElementById('filterTeam').value, locSel = document.getElementById('filterLoc'); let sourceData = esAllData; if (selectedTeam) sourceData = esAllData.filter(it => it.cells[0] === selectedTeam); const locs = new Set(); sourceData.forEach(it => { if(it.cells[2]) locs.add(it.cells[2]); }); locSel.innerHTML = '<option value="">📍 모든 위치 보기</option>'; Array.from(locs).sort().forEach(l => { const opt = document.createElement('option'); opt.value = l; opt.textContent = l; locSel.appendChild(opt); }); }
-  function renderEquipmentTable() { const teamFilter = document.getElementById('filterTeam').value, locFilter = document.getElementById('filterLoc').value, keyword = (document.getElementById('esSearch').value || "").toLowerCase(); let filtered = esAllData.filter(it => { const r = it.cells; if (teamFilter && r[0] !== teamFilter) return false; if (locFilter && r[2] !== locFilter) return false; if (keyword) { const hay = r.join(" ").toLowerCase(); if (!hay.includes(keyword)) return false; } return true; }); const totalPages = Math.ceil(filtered.length/pageSizeSpec)||1; if(esPage > totalPages) esPage=1; const start=(esPage-1)*pageSizeSpec, end=start+pageSizeSpec; const tb = document.querySelector("#esTable tbody"); tb.innerHTML=""; if(filtered.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; document.getElementById("esPagination").innerHTML=""; return; } filtered.slice(start,end).forEach(it=>{ const r=it.cells, tr=document.createElement("tr"); let specDisplay = "없음"; try { const parsed = JSON.parse(r[3]); if(Object.keys(parsed).length > 0) specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); } catch {} tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})'>📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); }
+  function renderEquipmentTable() { const teamFilter = document.getElementById('filterTeam').value, locFilter = document.getElementById('filterLoc').value, keyword = (document.getElementById('esSearch').value || "").toLowerCase(); let filtered = esAllData.filter(it => { const r = it.cells; if (teamFilter && r[0] !== teamFilter) return false; if (locFilter && r[2] !== locFilter) return false; if (keyword) { const hay = r.join(" ").toLowerCase(); if (!hay.includes(keyword)) return false; } return true; }); const totalPages = Math.ceil(filtered.length/pageSizeSpec)||1; if(esPage > totalPages) esPage=1; const start=(esPage-1)*pageSizeSpec, end=start+pageSizeSpec; const tb = document.querySelector("#esTable tbody"); tb.innerHTML=""; if(filtered.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; document.getElementById("esPagination").innerHTML=""; return; } filtered.slice(start,end).forEach(it=>{ const r=it.cells, tr=document.createElement("tr"); let specDisplay = "없음"; try { const parsed = JSON.parse(r[3]); if(Object.keys(parsed).length > 0) specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); } catch {} 
+  // [권한] admin-only 추가
+  tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})' class="admin-only">📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); }
   function resetEquipmentFilter() { document.getElementById('filterTeam').value = ""; document.getElementById('filterLoc').value = ""; updateLocationOptions(); document.getElementById('esSearch').value = ""; esPage = 1; renderEquipmentTable(); }
   document.getElementById('filterTeam').addEventListener('change', () => { updateLocationOptions(); esPage=1; renderEquipmentTable(); }); document.getElementById('filterLoc').addEventListener('change', () => { esPage=1; renderEquipmentTable(); }); document.getElementById("esSearch").addEventListener("input", () => { esPage=1; renderEquipmentTable(); });
   function openSpecModal(mode, row = null) { const tbody = document.querySelector("#modalSpecTable tbody"); tbody.innerHTML = ""; const metaInfo = document.getElementById("modalMetaInfo"); if (mode === 'new') { const team=document.getElementById('esTeam').value, id=document.getElementById('esEqId').value; if(!team || !id) { alert("필수"); return; } currentSpecRow=null; metaInfo.textContent=`신규: [${team}] ${id}`; defaultSpecs.forEach(k => addModalRow(k, "")); } else { currentSpecRow = row; const data = esRowMap.get(row); metaInfo.textContent = `수정: [${data[0]}] ${data[1]}`; try { const json = JSON.parse(data[3]); Object.entries(json).forEach(([k,v])=>addModalRow(k,v)); } catch { defaultSpecs.forEach(k => addModalRow(k, "")); } } openModal('specModal'); }
-  function addModalRow(key="", value="") { const tbody = document.querySelector("#modalSpecTable tbody"); const tr = document.createElement("tr"); tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; tbody.appendChild(tr); }
+  function addModalRow(key="", value="") { const tbody = document.querySelector("#modalSpecTable tbody"); const tr = document.createElement("tr"); 
+  // [권한] admin-only 추가 (삭제버튼은 관리자만)
+  tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; tbody.appendChild(tr); }
   async function saveSpecFromModal() { const rows = document.querySelectorAll("#modalSpecTable tbody tr"); const newSpec = {}; rows.forEach(tr => { const inputs = tr.querySelectorAll("input"); if(inputs[0].value) newSpec[inputs[0].value] = inputs[1].value; }); const specStr = JSON.stringify(newSpec); if (currentSpecRow === null) { const team=document.getElementById('esTeam').value, eqId=document.getElementById('esEqId').value, location=document.getElementById('esLocation').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_add", team, eqId, location, spec: specStr})}); document.getElementById('esTeam').value=""; document.getElementById('esEqId').value=""; document.getElementById('esLocation').value=""; } else { const old = esRowMap.get(currentSpecRow); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_update", row: currentSpecRow, team: old[0], eqId: old[1], location: old[2], spec: specStr})}); } closeModal('specModal'); alert("저장됨"); loadEquipmentSpec(); }
   async function deleteEquipmentSpec(row){ if(confirm("삭제?")) { await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_delete",row})}); loadEquipmentSpec(); } }
 
@@ -817,5 +875,4 @@
   toggleScheduleView('calendar'); loadSchedule(true); loadPhonebook(); loadBucket(); fetchOrderData(); loadEquipmentSpec(); loadPrework();
 </script>
 </body>
-
 </html>
