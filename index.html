@@ -495,7 +495,7 @@
 
 <script>
   // [중요] 반드시 본인의 최신 Web App URL로 교체하세요!
-  const API_URL = "https://script.google.com/macros/s/AKfycbxK0YaPwdmxj3rlIdK09475SklkfOirOkDPyrS1DbqEx2g6c-tKanzOzGgDtoWQb4vk/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbzqNF0h7XHiZjRItXiehqLKTAnwMo22AMD3HqYqxd5Gz90GrJ-FWx_umB_CXh2C60L1/exec";
   
   const getTodayStr = () => { const d = new Date(); const pad = n => n<10 ? '0'+n : n; return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
   const TODAY_DATE_STR = getTodayStr(); document.getElementById('currentDateDisplay').textContent = TODAY_DATE_STR;
@@ -817,4 +817,5 @@
   toggleScheduleView('calendar'); loadSchedule(true); loadPhonebook(); loadBucket(); fetchOrderData(); loadEquipmentSpec(); loadPrework();
 </script>
 </body>
+
 </html>
