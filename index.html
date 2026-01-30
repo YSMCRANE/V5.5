@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(주)영선기계 통합 관리 시스템 V6.0 (Delivery)</title>
+  <title>(주)영선기계 통합 관리 시스템 V6.8 (Fast Sync)</title>
   
   <meta name="theme-color" content="#1e1e1e">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2920/2920323.png">
@@ -79,11 +79,12 @@
     }
     h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px; }
     
-    input[type="text"], input[type="date"], select {
+    input[type="text"], input[type="date"], select, textarea {
       background: #333; border: 1px solid #555; color: #fff;
       padding: 8px 12px; margin: 4px; border-radius: 4px; font-size: 14px;
     }
-    input:focus, select:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
+    textarea { resize: vertical; line-height: 1.5; font-family: inherit; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
 
     button {
       background: #444; color: #fff; border: 1px solid #555;
@@ -93,6 +94,10 @@
     .btn-primary { background: var(--primary-color); border-color: var(--primary-color); }
     .btn-primary:hover { background: var(--primary-hover); }
     .btn-danger { background: var(--danger-color); border-color: var(--danger-color); color: #000; }
+    
+    /* 선작업 버튼 스타일: 등록 전(기본), 등록 후(형광) */
+    .btn-prework { background: #444; color: #fff; border: 1px solid #555; } /* 등록 전: 수정 버튼과 동일 */
+    .btn-prework.registered { background: var(--accent-color); color: #000; font-weight: bold; border-color: var(--accent-color); } /* 등록 후 */
     
     .table-container { overflow-x: auto; margin-top: 15px; }
     table { width: 100%; border-collapse: collapse; min-width: 800px; }
@@ -113,6 +118,8 @@
     .status-badge.active-4 { background-color: #9C27B0 !important; color: #fff !important; } 
     .status-badge.permit-active { background-color: var(--primary-color) !important; color: #fff !important; } 
     .status-badge.done-active { background-color: var(--success-color) !important; color: #000 !important; } 
+    .status-badge.order-active { background-color: var(--warning-color) !important; color: #000 !important; } 
+    .status-badge.stock-active { background-color: var(--success-color) !important; color: #000 !important; } 
 
     .flex-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
     .paginator { margin-top: 15px; display: flex; justify-content: center; gap: 4px; }
@@ -143,7 +150,7 @@
     .checkbox-group label { display: flex; align-items: center; cursor: pointer; color: #fff; margin:0; }
     .checkbox-group input { width: 18px; height: 18px; margin-right: 8px; accent-color: var(--primary-color); }
 
-    /* 달력 & 발주 카드 스타일 */
+    /* 달력 & 발주 & 점검일지 카드 스타일 */
     .split-view-container { display: flex; flex-wrap: wrap; gap: 20px; }
     .calendar-panel { flex: 1; min-width: 350px; background: #252525; padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); }
     .detail-panel { flex: 1; min-width: 350px; background: var(--card-bg); padding: 0; border-radius: 12px; }
@@ -166,7 +173,8 @@
     .sch-team { font-size: 0.9em; color: var(--primary-color); font-weight: bold; }
     .sch-work { font-size: 1.1em; font-weight: bold; color: #fff; line-height: 1.3; }
     .sch-meta { font-size: 0.85em; color: #ccc; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .sch-actions { position: absolute; top: 15px; right: 15px; }
+    .sch-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 4px; }
+    .sch-note { font-size: 0.85em; color: #aaa; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #555; }
 
     /* 발주정보 카드 */
     .od-item-card { background: #252525; border: 1px solid #444; border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; }
@@ -180,6 +188,28 @@
     .od-link { color: var(--success-color); font-weight: bold; text-decoration: underline; cursor: pointer; }
     .od-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 10px; border-top: 1px dashed #444; }
     .od-actions { display: flex; gap: 8px; align-items: center; }
+
+    /* 점검일지 카드 스타일 */
+    .cl-item-card { 
+        background: #252525; border: 1px solid #444; border-radius: 12px; padding: 20px; 
+        margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; 
+    }
+    .cl-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .cl-header-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+    .cl-team { color: var(--primary-color); font-weight: bold; font-size: 1.1em; }
+    .cl-date { color: #aaa; font-size: 0.9em; }
+    .cl-content-box { 
+        background: #2f2f2f; padding: 15px; border-radius: 4px; color: #fff; 
+        white-space: pre-wrap; line-height: 1.6; font-size: 1.05em; 
+        border: 1px solid #444; border-left: 5px solid var(--accent-color);
+        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+    }
+    .cl-footer { 
+        display: flex; flex-direction: column; gap: 8px; margin-top: 5px; 
+        padding-top: 10px; border-top: 1px dashed #444; font-size: 0.9em; 
+    }
+    .cl-mat-row { display: flex; align-items: flex-start; gap: 8px; }
+    .cl-mat-label { font-weight: bold; min-width: 80px; text-align: right; }
 
     /* 모바일 반응형 */
     .mobile-overlay {
@@ -244,11 +274,12 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>(주)영선기계</h2>
-      <span class="sub-text">통합 관리 시스템 v6.1</span>
+      <span class="sub-text">통합 관리 시스템 v6.8</span>
     </div>
     <nav class="nav-menu">
       <div class="nav-group-label">메인 업무</div>
       <a class="nav-item active" onclick="switchTab('schedule')"><span class="nav-icon">📅</span> 일정관리</a>
+      <a class="nav-item" onclick="switchTab('checklist')"><span class="nav-icon">📋</span> 점검일지</a> 
       <a class="nav-item" onclick="switchTab('prework')"><span class="nav-icon">📝</span> 선작업 관리</a>
       <a class="nav-item" onclick="switchTab('delivery')"><span class="nav-icon">🚚</span> 납품관리</a>
       <a class="nav-item" onclick="switchTab('order')"><span class="nav-icon">📦</span> 발주정보</a>
@@ -352,6 +383,38 @@
         </div>
       </div>
 
+      <div id="checklist" class="tab-content">
+        <div class="card admin-only">
+          <h3>📋 점검일지 등록</h3>
+          <div class="flex-row">
+            <input type="date" id="clDate" required>
+            <input type="text" id="clTeam" placeholder="생산팀">
+            <input type="text" id="clEqId" placeholder="설비ID">
+            <input type="text" id="clManager" placeholder="담당자">
+          </div>
+          <div class="flex-row">
+             <input type="text" id="clMatOrder" placeholder="🛒 주문 필요 자재" style="border:1px solid var(--warning-color);">
+             <input type="text" id="clMatStock" placeholder="📦 보유 중 자재" style="border:1px solid var(--success-color);">
+          </div>
+          <div class="flex-row" style="margin-top:10px;">
+             <input type="text" id="clContent" placeholder="점검내용 (간략히 입력 후 수정 추천)" style="flex-grow:1; width:100%;">
+             <button onclick="saveChecklist()" class="btn-primary" style="white-space:nowrap;">등록</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="flex-row" style="justify-content: flex-start;">
+            <input type="text" id="clSearch" placeholder="🔍 검색 (설비ID, 점검내용, 자재)" style="width: 250px;">
+            <select id="clSortSel">
+              <option value="날짜">날짜순</option>
+              <option value="생산팀">생산팀순</option>
+              <option value="설비ID">설비ID순</option>
+            </select>
+          </div>
+          <div id="checklistContainer" style="margin-top:15px;"></div>
+          <div id="clPagination" class="paginator"></div>
+        </div>
+      </div>
+
       <div id="prework" class="tab-content">
         <div class="card admin-only">
             <h3>📝 선작업 등록</h3>
@@ -359,14 +422,13 @@
                 <input type="date" id="pwDate" required>
                 <input type="text" id="pwTeam" placeholder="생산팀">
                 <input type="text" id="pwManager" placeholder="담당자">
-                <input type="text" id="pwProject" placeholder="공사명">
                 <input type="text" id="pwWork" placeholder="작업내용">
                 <button onclick="savePrework()" class="btn-primary">등록</button>
             </div>
         </div>
         <div class="card">
             <div class="flex-row" style="justify-content: flex-start;">
-                <input type="text" id="pwSearch" placeholder="🔍 검색 (공사명, 작업내용)" style="width: 250px;">
+                <input type="text" id="pwSearch" placeholder="🔍 검색 (작업내용)" style="width: 250px;">
                 <select id="pwSortSel">
                     <option value="날짜">날짜순</option>
                     <option value="생산팀">생산팀순</option>
@@ -376,7 +438,7 @@
             <div class="table-container">
                 <table id="pwTable">
                     <thead>
-                        <tr><th>날짜</th><th>생산팀</th><th>담당자</th><th>공사명</th><th>작업내용</th><th style="text-align:center;">진행상태</th><th>관리</th></tr>
+                        <tr><th>날짜</th><th>생산팀</th><th>담당자</th><th>작업내용</th><th style="text-align:center;">진행상태</th><th>관리</th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -390,6 +452,7 @@
             <h3>🚚 납품 정보 등록</h3>
             <div class="flex-row">
                 <input type="date" id="dlDate" required>
+                <input type="text" id="dlOrderNo" placeholder="발주번호">
                 <input type="text" id="dlTeam" placeholder="생산팀">
                 <input type="text" id="dlManager" placeholder="담당자">
                 <input type="text" id="dlProject" placeholder="공사명">
@@ -409,7 +472,7 @@
             <div class="table-container">
                 <table id="dlTable">
                     <thead>
-                        <tr><th>발주날짜</th><th>생산팀</th><th>담당자</th><th>공사명</th><th>납품내용</th><th style="text-align:center;">진행상태</th><th>관리</th></tr>
+                        <tr><th>발주날짜</th><th>발주번호</th><th>생산팀</th><th>담당자</th><th>공사명</th><th>납품내용</th><th style="text-align:center;">진행상태</th><th>관리</th></tr>
                     </thead>
                     <tbody></tbody>
                 </table>
@@ -564,7 +627,35 @@
   </div>
 </div>
 
-<div id="preworkModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📝 선작업 수정</h3><span class="close-modal" onclick="closeModal('preworkModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>날짜</label><input type="date" id="m_pwDate"></div><div class="form-group"><label>생산팀</label><input type="text" id="m_pwTeam"></div><div class="form-group"><label>담당자</label><input type="text" id="m_pwManager"></div><div class="form-group"><label>공사명</label><input type="text" id="m_pwProject"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_pwWork"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">상태 체크</label><div class="checkbox-group" style="flex-wrap:wrap"><label><input type="checkbox" id="m_pwChk1"> 작업완료</label><label><input type="checkbox" id="m_pwChk2"> 내용전달</label><label><input type="checkbox" id="m_pwChk3"> 입찰완료</label><label><input type="checkbox" id="m_pwChk4"> 발주완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('preworkModal')">취소</button><button onclick="savePreworkFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
+<div id="checklistModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header"><h3>📋 점검일지 수정</h3><span class="close-modal" onclick="closeModal('checklistModal')">&times;</span></div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group"><label>날짜</label><input type="date" id="m_clDate"></div>
+        <div class="form-group"><label>생산팀</label><input type="text" id="m_clTeam"></div>
+        <div class="form-group"><label>설비ID</label><input type="text" id="m_clEqId"></div>
+        <div class="form-group"><label>담당자</label><input type="text" id="m_clManager"></div>
+        <div class="form-group"><label style="color:var(--warning-color)">🛒 주문 필요 자재</label><input type="text" id="m_clMatOrder"></div>
+        <div class="form-group"><label style="color:var(--success-color)">📦 보유 중 자재</label><input type="text" id="m_clMatStock"></div>
+      </div>
+      <div class="form-group" style="margin-top:15px;">
+        <label>점검내용 (상세)</label>
+        <textarea id="m_clContent" rows="8" style="width:100%;"></textarea>
+      </div>
+      <div class="form-group" style="margin-top:15px;">
+          <label style="color:var(--primary-color); font-weight:bold;">상태 확인</label>
+          <div class="checkbox-group">
+             <label><input type="checkbox" id="m_clChkOrder"> 자재 주문 요청 완료</label>
+             <label><input type="checkbox" id="m_clChkStock"> 보유 자재 준비 완료</label>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer"><button onclick="closeModal('checklistModal')">취소</button><button onclick="saveChecklistFromModal()" class="btn-primary admin-only">수정 저장</button></div>
+  </div>
+</div>
+
+<div id="preworkModal" class="modal"><div class="modal-content"><div class="modal-header"><h3>📝 선작업 수정</h3><span class="close-modal" onclick="closeModal('preworkModal')">&times;</span></div><div class="modal-body"><div class="form-grid"><div class="form-group"><label>날짜</label><input type="date" id="m_pwDate"></div><div class="form-group"><label>생산팀</label><input type="text" id="m_pwTeam"></div><div class="form-group"><label>담당자</label><input type="text" id="m_pwManager"></div><div class="form-group"><label>작업내용</label><input type="text" id="m_pwWork"></div><div class="form-group"><label style="color:var(--primary-color); font-weight:bold;">상태 체크</label><div class="checkbox-group" style="flex-wrap:wrap"><label><input type="checkbox" id="m_pwChk1"> 작업완료</label><label><input type="checkbox" id="m_pwChk2"> 내용전달</label><label><input type="checkbox" id="m_pwChk3"> 입찰완료</label><label><input type="checkbox" id="m_pwChk4"> 발주완료</label></div></div></div></div><div class="modal-footer"><button onclick="closeModal('preworkModal')">취소</button><button onclick="savePreworkFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
 
 <div id="deliveryModal" class="modal">
   <div class="modal-content">
@@ -572,6 +663,7 @@
     <div class="modal-body">
       <div class="form-grid">
         <div class="form-group"><label>발주날짜</label><input type="date" id="m_dlDate"></div>
+        <div class="form-group"><label>발주번호</label><input type="text" id="m_dlOrderNo"></div>
         <div class="form-group"><label>생산팀</label><input type="text" id="m_dlTeam"></div>
         <div class="form-group"><label>담당자</label><input type="text" id="m_dlManager"></div>
         <div class="form-group"><label>공사명</label><input type="text" id="m_dlProject"></div>
@@ -599,11 +691,11 @@
 
 <script>
   // [중요] 반드시 본인의 최신 Web App URL로 교체하세요!
-  const API_URL = "https://script.google.com/macros/s/AKfycbzmfoImopW4qx0Pdi2sz5-Jj-TN5BK0y4o1tI2JpNlTwOvd7ZIbxDR1fik022sTlS1SVg/exec";
+  const API_URL = "https://script.google.com/macros/s/AKfycbw9nume9V5CeL95TH7UsCYZMyPPMVU_EWut8rbD7ZS-67LNekcvxLrVONE0U40jAqhjAQ/exec";
   
   /* --- [보안] 로그인 설정 --- */
-  const PW_ADMIN = "1984"; // 관리자용 (수정/삭제 가능)
-  const PW_VIEWER = "0000"; // 직원용 (조회만 가능)
+  const PW_ADMIN = "1984"; 
+  const PW_VIEWER = "0000"; 
 
   function tryLogin() {
     const input = document.getElementById('loginPw').value;
@@ -637,11 +729,11 @@
       document.querySelectorAll('.tab-content').forEach(div => div.classList.remove('active')); 
       document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active')); 
       document.getElementById(tabId).classList.add('active'); 
-      const idx = ['schedule','prework','delivery','order','equipment','bucket','phonebook'].indexOf(tabId); 
+      const idx = ['schedule','checklist','prework','delivery','order','equipment','bucket','phonebook'].indexOf(tabId); 
       const navItems = document.querySelectorAll('.nav-item');
       if(idx>=0 && navItems[idx]) navItems[idx].classList.add('active'); 
       if(window.innerWidth <= 768) { toggleSidebar(); }
-      const titles = {'schedule':'📅 일정관리', 'prework':'📝 선작업 관리', 'delivery':'🚚 납품관리', 'order':'📦 발주정보', 'equipment':'📄 설비관리', 'bucket':'🪣 버켓주기', 'phonebook':'📞 전화번호부'};
+      const titles = {'schedule':'📅 일정관리', 'checklist':'📋 점검일지', 'prework':'📝 선작업 관리', 'delivery':'🚚 납품관리', 'order':'📦 발주정보', 'equipment':'📄 설비관리', 'bucket':'🪣 버켓주기', 'phonebook':'📞 전화번호부'};
       document.getElementById('pageTitle').textContent = titles[tabId];
   }
 
@@ -649,10 +741,10 @@
   function renderPaginator(divId, totalPages, callback, currentPage){ const div = document.getElementById(divId); div.innerHTML = ""; if(totalPages < 2) return; let startP = Math.max(1, currentPage - 2); let endP = Math.min(totalPages, startP + 4); for(let i=startP; i<=endP; i++){ const b = document.createElement("button"); b.textContent = i; if(i === currentPage) b.classList.add("active"); b.onclick = () => callback(i); div.appendChild(b); } }
   function openModal(id) { document.getElementById(id).classList.add('show'); }
   function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-  let currentSchRow=null, currentPbRow=null, currentBkRow=null, currentOdRow=null, currentPwRow=null, currentDlRow=null;
+  let currentSchRow=null, currentPbRow=null, currentBkRow=null, currentOdRow=null, currentPwRow=null, currentDlRow=null, currentClRow=null; 
   function normalizeBool(val) { if (val === true || val === false) return val; if (!val) return false; const str = String(val).trim().toUpperCase(); return str === 'TRUE' || str === '허가' || str === '완료'; }
 
-  /* ================= 1. 일정관리 ================= */
+  /* ================= 1. 일정관리 (Smart Sync 적용) ================= */
   const schedulePageSize=10; 
   const FIELDS=["날짜","생산팀","작업내용","담당자","발주번호","필수자재","허가번호","비고","설비ID"];
   let schedulePage=1, records=[], searchQuery="", sortKey="날짜", sortAsc=true, dateFilter={start:null, end:null}; 
@@ -716,6 +808,26 @@
       }
   }
 
+  // [수정] 선작업 등록 여부 확인용 헬퍼 함수
+  function isPreworkRegistered(schRow) {
+      if (!pwRowMap || pwRowMap.size === 0) return false;
+      const schDate = formatDate(schRow["날짜"]);
+      const schTeam = schRow["생산팀"];
+      const schWork = schRow["작업내용"];
+      
+      for (let [row, cells] of pwRowMap) {
+          // Prework data structure: 0:Date, 1:Team, 2:Manager, 3:Work
+          const pwDate = formatDate(cells[0]);
+          const pwTeam = cells[1];
+          const pwWork = cells[3];
+          
+          if (schDate === pwDate && schTeam === pwTeam && schWork === pwWork) {
+              return true;
+          }
+      }
+      return false;
+  }
+
   function updateDetailPanel(dateStr) {
       document.getElementById('detailTitle').textContent = `${dateStr} 일정 목록`;
       const container = document.getElementById('detailListContainer');
@@ -731,7 +843,17 @@
           html += `<div class="sch-meta"><span>👤 ${r['담당자']}</span><span class="sch-divider">|</span><span>📦 ${poHtml}</span>`;
           if(r['허가번호']) { html += `<span class="sch-divider">|</span><span style="color:#81D4FA">🛡️ ${r['허가번호']}</span>`; } html += `</div>`;
           if(r['필수자재']) { html += `<div class="sch-mat">🛠️ ${r['필수자재']}</div>`; }
-          html += `<div class="sch-actions"><button onclick="openScheduleModal(${r.row})" style="padding:4px 8px; margin-right:4px;" class="admin-only">✏️</button><button onclick="deleteRecord(${r.row})" class="btn-danger admin-only" style="padding:4px 8px;">🗑️</button></div>`;
+          if(r['비고']) { html += `<div class="sch-note">🗒️ 비고: ${r['비고']}</div>`; }
+          
+          // [수정] 버튼 스타일 로직 적용
+          const isRegistered = isPreworkRegistered(r);
+          const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
+          
+          html += `<div class="sch-actions">
+                    <button onclick='transferToPrework(${JSON.stringify(r)})' class="${btnClass} admin-only">📝 선작업</button>
+                    <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button>
+                    <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
+                   </div>`;
           div.innerHTML = html; container.appendChild(div);
       });
   }
@@ -777,10 +899,55 @@
         else { td.textContent = val; }
         tr.appendChild(td);
       });
-      tr.innerHTML += `<td><button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button></td>`;
+      
+      // [수정] 버튼 스타일 로직 적용
+      const isRegistered = isPreworkRegistered(r);
+      const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
+
+      tr.innerHTML += `<td>
+          <button onclick='transferToPrework(${JSON.stringify(r)})' class="${btnClass} admin-only" style="padding:4px 8px;">📝 선작업</button>
+          <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> 
+          <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
+        </td>`;
       tb.appendChild(tr);
     });
     renderPaginator("pagination", totalPages, (p)=>{schedulePage=p;renderSchedule();}, schedulePage);
+  }
+
+  /* [수정] 팝업 없이 즉시 등록 & 버튼 상태 갱신 */
+  async function transferToPrework(data) {
+      // 이미 등록된 경우 확인 불필요 (재등록 원할 수 있으므로 막지는 않음, 원하시면 주석 해제)
+      // if(isPreworkRegistered(data)) { alert("이미 등록된 건입니다."); return; }
+
+      try {
+          const payload = {
+              action: "prework_add",
+              date: formatDate(data["날짜"]),
+              team: data["생산팀"],
+              manager: data["담당자"],
+              work: data["작업내용"]
+          };
+          
+          // 전송 (await로 완료 대기)
+          const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
+          const result = await res.json();
+          
+          if(result.status === "success") {
+              // 성공 시: 백그라운드에서 선작업 데이터 리로드 -> 화면 갱신 (버튼 색상 변경)
+              await loadPrework(); 
+              // 현재 뷰에 따라 화면 갱신
+              if(currentView === 'calendar') {
+                  renderCalendar();
+                  updateDetailPanel(selectedDate);
+              } else {
+                  renderSchedule();
+              }
+          } else {
+              alert("오류: " + result.message);
+          }
+      } catch (e) {
+          alert("통신 오류: " + e.toString());
+      }
   }
 
   function searchOrderByPO(po){ if(!po) return; switchTab('order'); document.getElementById('odSearch').value = po; document.getElementById('odSearch').dispatchEvent(new Event('input')); }
@@ -822,129 +989,75 @@
     scheduleChartInstance = new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ label: '작업 건수', data, backgroundColor: 'rgba(74, 144, 226, 0.6)' }] }, options: { maintainAspectRatio:false, scales:{y:{beginAtZero:true}} } });
   });
 
-  /* ================= 2. 선작업 관리 ================= */
-  let pwPage=1, pageSizePw=10, pwRowMap=new Map();
-  async function loadPrework(){ 
-    try { 
-        const res = await fetch(API_URL+"?action=prework_get"); 
-        const rows = await res.json(); 
-        if(!rows || rows.length === 0) return;
-        pwRowMap.clear(); 
-        const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); 
-        all.forEach(it=>pwRowMap.set(it.row, it.cells)); 
-        renderPreworkTable(); 
-    } catch(e) { console.error(e); } 
-  }
-  function renderPreworkTable(){
-      const kw = (document.getElementById('pwSearch').value||"").toLowerCase();
-      const sortKey = document.getElementById('pwSortSel').value; 
-      const all = Array.from(pwRowMap.entries()).map(([k,v]) => ({row:k, cells:v}));
-      const filtered = all.filter(it => (it.cells[3]||"").toLowerCase().includes(kw) || (it.cells[4]||"").toLowerCase().includes(kw));
-      filtered.sort((a,b) => {
-          let va, vb;
-          if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); 
-          } else if (sortKey === "생산팀") { va = a.cells[1] || ""; vb = b.cells[1] || ""; return va.localeCompare(vb);
-          } else if (sortKey === "작업내용") { va = a.cells[4] || ""; vb = b.cells[4] || ""; return va.localeCompare(vb); }
-          return 0;
-      });
-      const totalPages = Math.ceil(filtered.length/pageSizePw)||1; if(pwPage > totalPages) pwPage = 1;
-      const start = (pwPage-1)*pageSizePw, end = start+pageSizePw;
-      const tb = document.querySelector("#pwTable tbody"); tb.innerHTML = "";
+  /* ================= 2. 점검일지 (Checklist - Card View) ================= */
+  let clPage=1, pageSizeCl=10, clRowMap=new Map();
+  async function loadChecklist(){ try { const res = await fetch(API_URL+"?action=checklist_get"); const rows = await res.json(); if(!rows || rows.length === 0) return; clRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>clRowMap.set(it.row, it.cells)); renderChecklistCards(); } catch(e) { console.error(e); } }
+  function renderChecklistCards(){
+      const kw = (document.getElementById('clSearch').value||"").toLowerCase();
+      const sortKey = document.getElementById('clSortSel').value; 
+      const all = Array.from(clRowMap.entries()).map(([k,v]) => ({row:k, cells:v}));
+      const filtered = all.filter(it => (it.cells[2]||"").toLowerCase().includes(kw) || (it.cells[4]||"").toLowerCase().includes(kw));
+      filtered.sort((a,b) => { let va, vb; if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); } else if (sortKey === "생산팀") { va = a.cells[1] || ""; vb = b.cells[1] || ""; return va.localeCompare(vb); } else if (sortKey === "설비ID") { va = a.cells[2] || ""; vb = b.cells[2] || ""; return va.localeCompare(vb); } return 0; });
+      const totalPages = Math.ceil(filtered.length/pageSizeCl)||1; if(clPage > totalPages) clPage = 1;
+      const start = (clPage-1)*pageSizeCl, end = start+pageSizeCl;
+      const container = document.getElementById("checklistContainer"); container.innerHTML = "";
+      if(filtered.length === 0) { container.innerHTML = `<div style="text-align:center; padding:30px; color:#aaa;">검색 결과가 없습니다.</div>`; document.getElementById("clPagination").innerHTML = ""; return; }
       filtered.slice(start,end).forEach(it => {
-          const r = it.cells;
-          const isChk1 = normalizeBool(r[5]), isChk2 = normalizeBool(r[6]), isChk3 = normalizeBool(r[7]), isChk4 = normalizeBool(r[8]);
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${formatDate(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td>
-              <td style="text-align:center;">
-                <span class="status-badge ${isChk1?'active-1':''}" onclick="togglePreworkStatus(${it.row}, 'chk1', ${!isChk1})">작업완료</span>
-                <span class="status-badge ${isChk2?'active-2':''}" onclick="togglePreworkStatus(${it.row}, 'chk2', ${!isChk2})">내용전달</span>
-                <span class="status-badge ${isChk3?'active-3':''}" onclick="togglePreworkStatus(${it.row}, 'chk3', ${!isChk3})">입찰완료</span>
-                <span class="status-badge ${isChk4?'active-4':''}" onclick="togglePreworkStatus(${it.row}, 'chk4', ${!isChk4})">발주완료</span>
-              </td>
-              <td><button onclick='openPreworkModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePrework(${it.row})' class="btn-danger admin-only">🗑️</button></td>`;
-          tb.appendChild(tr);
+          const r = it.cells; const isOrderChecked = normalizeBool(r[7]), isStockChecked = normalizeBool(r[8]);
+          let eqHtml = r[2] ? `<span class="link-text" onclick="goToEquipmentSpec('${r[2]}')">🔗 ${r[2]}</span>` : '-';
+          const card = document.createElement("div"); card.className = "cl-item-card";
+          card.innerHTML = `<div class="cl-header"><div class="cl-header-left"><span class="cl-team">${r[1]}</span><span class="cl-date">${formatDate(r[0])}</span></div><div class="cl-header-right" style="color:#aaa; font-size:0.9em;">👤 ${r[3]}</div></div><div style="font-size:0.95em;"><span>설비: ${eqHtml}</span></div><div class="cl-content-box">${r[4]}</div><div class="cl-footer"><div class="cl-mat-row"><span class="cl-mat-label" style="color:var(--warning-color)">🛒 주문필요:</span><span>${r[5] || '-'}</span></div><div class="cl-mat-row"><span class="cl-mat-label" style="color:var(--success-color)">📦 보유중:</span><span>${r[6] || '-'}</span></div><div style="display:flex; align-items:center; gap:8px; margin-top:8px;"><span class="status-badge ${isOrderChecked?'order-active':''}" onclick="toggleChecklistStatus(${it.row}, 'order', ${!isOrderChecked})">자재주문요청</span><span class="status-badge ${isStockChecked?'stock-active':''}" onclick="toggleChecklistStatus(${it.row}, 'stock', ${!isStockChecked})">보유자재확인</span><button onclick='openChecklistModal(${it.row})' class="admin-only" style="padding:4px 8px;">✏️</button><button onclick='deleteChecklist(${it.row})' class="btn-danger admin-only" style="padding:4px 8px;">🗑️</button></div></div>`;
+          container.appendChild(card);
+      }); renderPaginator("clPagination", totalPages, (p)=>{clPage=p; renderChecklistCards();}, clPage);
+  }
+  async function saveChecklist(){ 
+      const date=document.getElementById('clDate').value, team=document.getElementById('clTeam').value; const eqId=document.getElementById('clEqId').value, manager=document.getElementById('clManager').value; const content=document.getElementById('clContent').value; const matOrder=document.getElementById('clMatOrder').value, matStock=document.getElementById('clMatStock').value; if(!date || !content) { alert("필수"); return; } 
+      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"checklist_add", date, team, eqId, manager, content, matOrder, matStock})}); [clEqId,clContent,clMatOrder,clMatStock].forEach(el=>el.value=""); loadChecklist(); 
+  }
+  async function deleteChecklist(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"checklist_delete",row})}); loadChecklist(); } }
+  async function toggleChecklistStatus(row, type, val){ const old = clRowMap.get(row); if(old){ if(type === 'order') old[7] = val ? "TRUE" : "FALSE"; else old[8] = val ? "TRUE" : "FALSE"; renderChecklistCards(); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"checklist_toggle", row, type, value: (val?"TRUE":"FALSE")})}); } }
+  function openChecklistModal(row){ currentClRow = row; const old = clRowMap.get(row); document.getElementById('m_clDate').value = formatDate(old[0]); document.getElementById('m_clTeam').value = old[1]; document.getElementById('m_clEqId').value = old[2]; document.getElementById('m_clManager').value = old[3]; document.getElementById('m_clContent').value = old[4]; document.getElementById('m_clMatOrder').value = old[5]; document.getElementById('m_clMatStock').value = old[6]; document.getElementById('m_clChkOrder').checked = normalizeBool(old[7]); document.getElementById('m_clChkStock').checked = normalizeBool(old[8]); openModal('checklistModal'); }
+  async function saveChecklistFromModal(){ const date=document.getElementById('m_clDate').value, team=document.getElementById('m_clTeam').value; const eqId=document.getElementById('m_clEqId').value, manager=document.getElementById('m_clManager').value; const content=document.getElementById('m_clContent').value, matOrder=document.getElementById('m_clMatOrder').value, matStock=document.getElementById('m_clMatStock').value, chkOrder=document.getElementById('m_clChkOrder').checked?"TRUE":"FALSE", chkStock=document.getElementById('m_clChkStock').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"checklist_update", row: currentClRow, date, team, eqId, manager, content, matOrder, matStock, chkOrder, chkStock})}); closeModal('checklistModal'); loadChecklist(); }
+  document.getElementById("clSearch").addEventListener("input", ()=>{clPage=1; renderChecklistCards();});
+  document.getElementById("clSortSel").addEventListener("change", ()=>{ clPage=1; renderChecklistCards(); });
+
+  /* ================= 3. 선작업 관리 ================= */
+  let pwPage=1, pageSizePw=10, pwRowMap=new Map();
+  async function loadPrework(){ try { const res = await fetch(API_URL+"?action=prework_get"); const rows = await res.json(); if(!rows || rows.length === 0) return; pwRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>pwRowMap.set(it.row, it.cells)); renderPreworkTable(); } catch(e) { console.error(e); } }
+  function renderPreworkTable(){
+      const kw = (document.getElementById('pwSearch').value||"").toLowerCase(); const sortKey = document.getElementById('pwSortSel').value; const all = Array.from(pwRowMap.entries()).map(([k,v]) => ({row:k, cells:v})); const filtered = all.filter(it => (it.cells[3]||"").toLowerCase().includes(kw)); 
+      filtered.sort((a,b) => { let va, vb; if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); } else if (sortKey === "생산팀") { va = a.cells[1] || ""; vb = b.cells[1] || ""; return va.localeCompare(vb); } else if (sortKey === "작업내용") { va = a.cells[3] || ""; vb = b.cells[3] || ""; return va.localeCompare(vb); } return 0; });
+      const totalPages = Math.ceil(filtered.length/pageSizePw)||1; if(pwPage > totalPages) pwPage = 1;
+      const start = (pwPage-1)*pageSizePw, end = start+pageSizePw; const tb = document.querySelector("#pwTable tbody"); tb.innerHTML = "";
+      filtered.slice(start,end).forEach(it => { const r = it.cells; const isChk1 = normalizeBool(r[4]), isChk2 = normalizeBool(r[5]), isChk3 = normalizeBool(r[6]), isChk4 = normalizeBool(r[7]); const tr = document.createElement("tr");
+          tr.innerHTML = `<td>${formatDate(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td style="text-align:center;"><span class="status-badge ${isChk1?'active-1':''}" onclick="togglePreworkStatus(${it.row}, 'chk1', ${!isChk1})">작업완료</span><span class="status-badge ${isChk2?'active-2':''}" onclick="togglePreworkStatus(${it.row}, 'chk2', ${!isChk2})">내용전달</span><span class="status-badge ${isChk3?'active-3':''}" onclick="togglePreworkStatus(${it.row}, 'chk3', ${!isChk3})">입찰완료</span><span class="status-badge ${isChk4?'active-4':''}" onclick="togglePreworkStatus(${it.row}, 'chk4', ${!isChk4})">발주완료</span></td><td><button onclick='openPreworkModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePrework(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr);
       }); renderPaginator("pwPagination", totalPages, (p)=>{pwPage=p; renderPreworkTable();}, pwPage);
   }
-  async function savePrework(){ 
-      const date=document.getElementById('pwDate').value, team=document.getElementById('pwTeam').value; 
-      const manager=document.getElementById('pwManager').value, project=document.getElementById('pwProject').value, work=document.getElementById('pwWork').value; 
-      if(!date || !work) { alert("필수"); return; } 
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_add", date, team, manager, project, work})}); 
-      document.getElementById('pwTeam').value="";
-      document.getElementById('pwManager').value="";
-      document.getElementById('pwProject').value="";
-      document.getElementById('pwWork').value="";
-      loadPrework(); 
-  }
+  async function savePrework(){ const date=document.getElementById('pwDate').value, team=document.getElementById('pwTeam').value; const manager=document.getElementById('pwManager').value, work=document.getElementById('pwWork').value; if(!date || !work) { alert("필수"); return; } await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_add", date, team, manager, work})}); [pwTeam,pwManager,pwWork].forEach(el=>el.value=""); loadPrework(); }
   async function deletePrework(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_delete",row})}); loadPrework(); } }
-  async function togglePreworkStatus(row, type, val){ const old = pwRowMap.get(row); if(old){ const idxMap = {'chk1':5, 'chk2':6, 'chk3':7, 'chk4':8}; old[idxMap[type]] = val ? "TRUE" : "FALSE"; renderPreworkTable(); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_toggle", row, type, value: (val?"TRUE":"FALSE")})}); } }
-  function openPreworkModal(row){ currentPwRow = row; const old = pwRowMap.get(row); document.getElementById('m_pwDate').value = formatDate(old[0]); document.getElementById('m_pwTeam').value = old[1]; document.getElementById('m_pwManager').value = old[2]; document.getElementById('m_pwProject').value = old[3]; document.getElementById('m_pwWork').value = old[4]; document.getElementById('m_pwChk1').checked = normalizeBool(old[5]); document.getElementById('m_pwChk2').checked = normalizeBool(old[6]); document.getElementById('m_pwChk3').checked = normalizeBool(old[7]); document.getElementById('m_pwChk4').checked = normalizeBool(old[8]); openModal('preworkModal'); }
-  async function savePreworkFromModal(){ const date=document.getElementById('m_pwDate').value, team=document.getElementById('m_pwTeam').value; const manager=document.getElementById('m_pwManager').value, project=document.getElementById('m_pwProject').value, work=document.getElementById('m_pwWork').value; const chk1=document.getElementById('m_pwChk1').checked?"TRUE":"FALSE", chk2=document.getElementById('m_pwChk2').checked?"TRUE":"FALSE"; const chk3=document.getElementById('m_pwChk3').checked?"TRUE":"FALSE", chk4=document.getElementById('m_pwChk4').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_update", row: currentPwRow, date, team, manager, project, work, chk1, chk2, chk3, chk4})}); closeModal('preworkModal'); loadPrework(); }
+  async function togglePreworkStatus(row, type, val){ const old = pwRowMap.get(row); if(old){ const idxMap = {'chk1':4, 'chk2':5, 'chk3':6, 'chk4':7}; old[idxMap[type]] = val ? "TRUE" : "FALSE"; renderPreworkTable(); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_toggle", row, type, value: (val?"TRUE":"FALSE")})}); } }
+  function openPreworkModal(row){ currentPwRow = row; const old = pwRowMap.get(row); document.getElementById('m_pwDate').value = formatDate(old[0]); document.getElementById('m_pwTeam').value = old[1]; document.getElementById('m_pwManager').value = old[2]; document.getElementById('m_pwWork').value = old[3]; document.getElementById('m_pwChk1').checked = normalizeBool(old[4]); document.getElementById('m_pwChk2').checked = normalizeBool(old[5]); document.getElementById('m_pwChk3').checked = normalizeBool(old[6]); document.getElementById('m_pwChk4').checked = normalizeBool(old[7]); openModal('preworkModal'); }
+  async function savePreworkFromModal(){ const date=document.getElementById('m_pwDate').value, team=document.getElementById('m_pwTeam').value; const manager=document.getElementById('m_pwManager').value, work=document.getElementById('m_pwWork').value, chk1=document.getElementById('m_pwChk1').checked?"TRUE":"FALSE", chk2=document.getElementById('m_pwChk2').checked?"TRUE":"FALSE", chk3=document.getElementById('m_pwChk3').checked?"TRUE":"FALSE", chk4=document.getElementById('m_pwChk4').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_update", row: currentPwRow, date, team, manager, work, chk1, chk2, chk3, chk4})}); closeModal('preworkModal'); loadPrework(); }
   document.getElementById("pwSearch").addEventListener("input", ()=>{pwPage=1; renderPreworkTable();});
   document.getElementById("pwSortSel").addEventListener("change", ()=>{ pwPage=1; renderPreworkTable(); });
 
-  /* ================= [신규] 3. 납품관리 (Delivery) ================= */
+  /* ================= 4. 납품관리 ================= */
   let dlPage=1, pageSizeDl=10, dlRowMap=new Map();
-  async function loadDelivery(){ 
-    try { 
-        const res = await fetch(API_URL+"?action=delivery_get"); 
-        const rows = await res.json(); 
-        if(!rows || rows.length === 0) return;
-        dlRowMap.clear(); 
-        const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); 
-        all.forEach(it=>dlRowMap.set(it.row, it.cells)); 
-        renderDeliveryTable(); 
-    } catch(e) { console.error(e); } 
-  }
+  async function loadDelivery(){ try { const res = await fetch(API_URL+"?action=delivery_get"); const rows = await res.json(); if(!rows || rows.length === 0) return; dlRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>dlRowMap.set(it.row, it.cells)); renderDeliveryTable(); } catch(e) { console.error(e); } }
   function renderDeliveryTable(){
-      const kw = (document.getElementById('dlSearch').value||"").toLowerCase();
-      const sortKey = document.getElementById('dlSortSel').value; 
-      const all = Array.from(dlRowMap.entries()).map(([k,v]) => ({row:k, cells:v}));
-      const filtered = all.filter(it => (it.cells[3]||"").toLowerCase().includes(kw) || (it.cells[4]||"").toLowerCase().includes(kw));
-      filtered.sort((a,b) => {
-          let va, vb;
-          if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); 
-          } else if (sortKey === "생산팀") { va = a.cells[1] || ""; vb = b.cells[1] || ""; return va.localeCompare(vb);
-          } else if (sortKey === "납품내용") { va = a.cells[4] || ""; vb = b.cells[4] || ""; return va.localeCompare(vb); }
-          return 0;
-      });
+      const kw = (document.getElementById('dlSearch').value||"").toLowerCase(); const sortKey = document.getElementById('dlSortSel').value; const all = Array.from(dlRowMap.entries()).map(([k,v]) => ({row:k, cells:v})); const filtered = all.filter(it => (it.cells[4]||"").toLowerCase().includes(kw) || (it.cells[5]||"").toLowerCase().includes(kw));
+      filtered.sort((a,b) => { let va, vb; if (sortKey === "날짜") { return new Date(b.cells[0]) - new Date(a.cells[0]); } else if (sortKey === "생산팀") { va = a.cells[2] || ""; vb = b.cells[2] || ""; return va.localeCompare(vb); } else if (sortKey === "납품내용") { va = a.cells[5] || ""; vb = b.cells[5] || ""; return va.localeCompare(vb); } return 0; });
       const totalPages = Math.ceil(filtered.length/pageSizeDl)||1; if(dlPage > totalPages) dlPage = 1;
-      const start = (dlPage-1)*pageSizeDl, end = start+pageSizeDl;
-      const tb = document.querySelector("#dlTable tbody"); tb.innerHTML = "";
-      filtered.slice(start,end).forEach(it => {
-          const r = it.cells;
-          const isChk1 = normalizeBool(r[5]), isChk2 = normalizeBool(r[6]), isChk3 = normalizeBool(r[7]), isChk4 = normalizeBool(r[8]);
-          const tr = document.createElement("tr");
-          tr.innerHTML = `<td>${formatDate(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td>
-              <td style="text-align:center;">
-                <span class="status-badge ${isChk1?'active-1':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk1', ${!isChk1})">발주확인</span>
-                <span class="status-badge ${isChk2?'active-2':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk2', ${!isChk2})">주문완료</span>
-                <span class="status-badge ${isChk3?'active-3':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk3', ${!isChk3})">입고완료</span>
-                <span class="status-badge ${isChk4?'active-4':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk4', ${!isChk4})">납품완료</span>
-              </td>
-              <td><button onclick='openDeliveryModal(${it.row})' class="admin-only">✏️</button> <button onclick='deleteDelivery(${it.row})' class="btn-danger admin-only">🗑️</button></td>`;
-          tb.appendChild(tr);
-      }); renderPaginator("dlPagination", totalPages, (p)=>{dlPage=p; renderDeliveryTable();}, dlPage);
+      const start = (dlPage-1)*pageSizeDl, end = start+pageSizeDl; const tb = document.querySelector("#dlTable tbody"); tb.innerHTML = "";
+      filtered.slice(start,end).forEach(it => { const r = it.cells; const isChk1 = normalizeBool(r[6]), isChk2 = normalizeBool(r[7]), isChk3 = normalizeBool(r[8]), isChk4 = normalizeBool(r[9]); const tr = document.createElement("tr"); tr.innerHTML = `<td>${formatDate(r[0])}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td><td style="text-align:center;"><span class="status-badge ${isChk1?'active-1':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk1', ${!isChk1})">발주확인</span><span class="status-badge ${isChk2?'active-2':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk2', ${!isChk2})">주문완료</span><span class="status-badge ${isChk3?'active-3':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk3', ${!isChk3})">입고완료</span><span class="status-badge ${isChk4?'active-4':''}" onclick="toggleDeliveryStatus(${it.row}, 'chk4', ${!isChk4})">납품완료</span></td><td><button onclick='openDeliveryModal(${it.row})' class="admin-only">✏️</button> <button onclick='deleteDelivery(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("dlPagination", totalPages, (p)=>{dlPage=p; renderDeliveryTable();}, dlPage);
   }
-  async function saveDelivery(){ 
-      const date=document.getElementById('dlDate').value, team=document.getElementById('dlTeam').value; 
-      const manager=document.getElementById('dlManager').value, project=document.getElementById('dlProject').value, content=document.getElementById('dlContent').value; 
-      if(!date || !content) { alert("필수"); return; } 
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_add", date, team, manager, project, content})}); 
-      document.getElementById('dlTeam').value="";
-      document.getElementById('dlManager').value="";
-      document.getElementById('dlProject').value="";
-      document.getElementById('dlContent').value="";
-      loadDelivery(); 
-  }
+  async function saveDelivery(){ const date=document.getElementById('dlDate').value, orderNo=document.getElementById('dlOrderNo').value, team=document.getElementById('dlTeam').value, manager=document.getElementById('dlManager').value, project=document.getElementById('dlProject').value, content=document.getElementById('dlContent').value; if(!date || !content) { alert("필수"); return; } await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_add", date, orderNo, team, manager, project, content})}); [dlOrderNo,dlTeam,dlManager,dlProject,dlContent].forEach(el=>el.value=""); loadDelivery(); }
   async function deleteDelivery(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_delete",row})}); loadDelivery(); } }
-  async function toggleDeliveryStatus(row, type, val){ const old = dlRowMap.get(row); if(old){ const idxMap = {'chk1':5, 'chk2':6, 'chk3':7, 'chk4':8}; old[idxMap[type]] = val ? "TRUE" : "FALSE"; renderDeliveryTable(); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_toggle", row, type, value: (val?"TRUE":"FALSE")})}); } }
-  function openDeliveryModal(row){ currentDlRow = row; const old = dlRowMap.get(row); document.getElementById('m_dlDate').value = formatDate(old[0]); document.getElementById('m_dlTeam').value = old[1]; document.getElementById('m_dlManager').value = old[2]; document.getElementById('m_dlProject').value = old[3]; document.getElementById('m_dlContent').value = old[4]; document.getElementById('m_dlChk1').checked = normalizeBool(old[5]); document.getElementById('m_dlChk2').checked = normalizeBool(old[6]); document.getElementById('m_dlChk3').checked = normalizeBool(old[7]); document.getElementById('m_dlChk4').checked = normalizeBool(old[8]); openModal('deliveryModal'); }
-  async function saveDeliveryFromModal(){ const date=document.getElementById('m_dlDate').value, team=document.getElementById('m_dlTeam').value; const manager=document.getElementById('m_dlManager').value, project=document.getElementById('m_dlProject').value, content=document.getElementById('m_dlContent').value; const chk1=document.getElementById('m_dlChk1').checked?"TRUE":"FALSE", chk2=document.getElementById('m_dlChk2').checked?"TRUE":"FALSE"; const chk3=document.getElementById('m_dlChk3').checked?"TRUE":"FALSE", chk4=document.getElementById('m_dlChk4').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_update", row: currentDlRow, date, team, manager, project, content, chk1, chk2, chk3, chk4})}); closeModal('deliveryModal'); loadDelivery(); }
-  document.getElementById("dlSearch").addEventListener("input", ()=>{dlPage=1; renderDeliveryTable();});
-  document.getElementById("dlSortSel").addEventListener("change", ()=>{ dlPage=1; renderDeliveryTable(); });
+  async function toggleDeliveryStatus(row, type, val){ const old = dlRowMap.get(row); if(old){ const idxMap = {'chk1':6, 'chk2':7, 'chk3':8, 'chk4':9}; old[idxMap[type]] = val ? "TRUE" : "FALSE"; renderDeliveryTable(); await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_toggle", row, type, value: (val?"TRUE":"FALSE")})}); } }
+  function openDeliveryModal(row){ currentDlRow = row; const old = dlRowMap.get(row); document.getElementById('m_dlDate').value = formatDate(old[0]); document.getElementById('m_dlOrderNo').value = old[1]; document.getElementById('m_dlTeam').value = old[2]; document.getElementById('m_dlManager').value = old[3]; document.getElementById('m_dlProject').value = old[4]; document.getElementById('m_dlContent').value = old[5]; document.getElementById('m_dlChk1').checked = normalizeBool(old[6]); document.getElementById('m_dlChk2').checked = normalizeBool(old[7]); document.getElementById('m_dlChk3').checked = normalizeBool(old[8]); document.getElementById('m_dlChk4').checked = normalizeBool(old[9]); openModal('deliveryModal'); }
+  async function saveDeliveryFromModal(){ const date=document.getElementById('m_dlDate').value, orderNo=document.getElementById('m_dlOrderNo').value, team=document.getElementById('m_dlTeam').value, manager=document.getElementById('m_dlManager').value, project=document.getElementById('m_dlProject').value, content=document.getElementById('m_dlContent').value, chk1=document.getElementById('m_dlChk1').checked?"TRUE":"FALSE", chk2=document.getElementById('m_dlChk2').checked?"TRUE":"FALSE", chk3=document.getElementById('m_dlChk3').checked?"TRUE":"FALSE", chk4=document.getElementById('m_dlChk4').checked?"TRUE":"FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delivery_update", row: currentDlRow, date, orderNo, team, manager, project, content, chk1, chk2, chk3, chk4})}); closeModal('deliveryModal'); loadDelivery(); }
 
-  /* ================= 4. 발주정보 ================= */
+  /* ================= 5. 발주정보 ================= */
   let odPage=1, pageSizeOrder=10, odRowMap=new Map(), odSortAsc=false;
   async function fetchOrderData() { try { const res = await fetch(API_URL+"?action=order_get"); const rows = await res.json(); odRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>odRowMap.set(it.row, it.cells)); loadOrder(); } catch(e) { console.error(e); } }
   function loadOrder() { 
@@ -953,109 +1066,59 @@
       const totalPages = Math.ceil(filtered.length/pageSizeOrder)||1; if(odPage > totalPages) odPage = 1; const start = (odPage-1)*pageSizeOrder, end = start+pageSizeOrder; const container = document.getElementById("orderListContainer"); container.innerHTML = "";
       filtered.slice(start,end).forEach(it => { 
           const r = it.cells; let isPermit = normalizeBool(r[19]), isDone = normalizeBool(r[20]); let permitClass = isPermit ? "status-badge permit-active" : "status-badge"; let doneClass = isDone ? "status-badge done-active" : "status-badge";
-          const permitHtml = r[21] ? `<span class="od-link" onclick='transferToSchedule(${it.row})'>${r[21]}</span>` : '<span style="color:#777">없음</span>';
+          const permitHtml = r[21] ? `<span class="od-link" onclick='transferToScheduleFromOrder(${it.row})'>${r[21]}</span>` : '<span style="color:#777">없음</span>';
           const card = document.createElement("div"); card.className = "od-item-card";
-          card.innerHTML = `<div class="od-header"><span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div><div class="od-body"><div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div><div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div><div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div></div><div class="od-footer"><div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div><div class="od-actions"><span class="${permitClass} admin-only" onclick="toggleStatus(${it.row}, 'permit', ${!isPermit})">허가발행</span><span class="${doneClass} admin-only" onclick="toggleStatus(${it.row}, 'done', ${!isDone})">작업완료</span><button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button><button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button></div></div>`;
+          card.innerHTML = `<div class="od-header"><span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div><div class="od-body"><div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div><div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div><div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div></div><div class="od-footer"><div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div><div class="od-actions"><span class="${permitClass} admin-only" onclick="toggleOrderStatus(${it.row}, 'permit', ${!isPermit})">허가발행</span><span class="${doneClass} admin-only" onclick="toggleOrderStatus(${it.row}, 'done', ${!isDone})">작업완료</span><button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button><button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button></div></div>`;
           container.appendChild(card);
       }); renderPaginator("odPagination", totalPages, (p)=>{odPage=p; loadOrder();}, odPage); 
   }
-  function transferToSchedule(row) { 
-      const data = odRowMap.get(row); 
-      if(!data) return; 
-      
-      switchTab('schedule'); 
+  function transferToScheduleFromOrder(row) { 
+      const data = odRowMap.get(row); if(!data) return; switchTab('schedule'); 
       ['n_schTeam','n_schWork','n_schManager','n_schOrderNo','n_schMat','n_schPermit','n_schNote','n_schEqId'].forEach(id => document.getElementById(id).value = "");
-      document.getElementById('n_schDate').value = TODAY_DATE_STR; 
-      document.getElementById('n_schOrderNo').value = data[2]; 
-      document.getElementById('n_schMat').value = data[7];  
-      document.getElementById('n_schPermit').value = data[21]; 
-      openModal('addScheduleModal'); 
+      document.getElementById('n_schDate').value = TODAY_DATE_STR; document.getElementById('n_schOrderNo').value = data[2]; document.getElementById('n_schMat').value = data[7]; document.getElementById('n_schPermit').value = data[21]; openModal('addScheduleModal'); 
   }
-  async function toggleStatus(row, type, newValue) { const old = odRowMap.get(row); if(old) { const strVal = newValue ? "TRUE" : "FALSE"; if(type === 'permit') old[19] = strVal; else old[20] = strVal; loadOrder(); try { await fetch(API_URL, {method: "POST", body: JSON.stringify({action: "order_toggle", row: row, type: type, value: strVal})}); } catch (e) { console.error("저장 실패", e); } } }
+  async function toggleOrderStatus(row, type, newValue) { const old = odRowMap.get(row); if(old) { const strVal = newValue ? "TRUE" : "FALSE"; if(type === 'permit') old[19] = strVal; else old[20] = strVal; loadOrder(); await fetch(API_URL, {method: "POST", body: JSON.stringify({action: "order_toggle", row, type, value: strVal})}); } }
   function openOrderModal(row){ currentOdRow = row; const old = odRowMap.get(row) || Array(22).fill(""); document.getElementById('m_odBid').value = old[0]; document.getElementById('m_odReq').value = old[1]; document.getElementById('m_odPo').value = old[2]; document.getElementById('m_odRequester').value = old[3]; document.getElementById('m_odBuyer').value = old[4]; document.getElementById('m_odProject').value = old[5]; document.getElementById('m_odPermit').value = old[6]; document.getElementById('m_odMat').value = old[7]; document.getElementById('m_odPermitNo').value = old[21]; document.getElementById('m_odPermitCheck').checked = normalizeBool(old[19]); document.getElementById('m_odDoneCheck').checked = normalizeBool(old[20]); openModal('orderModal'); }
-  async function saveOrderFromModal(){ const bid=document.getElementById('m_odBid').value, req=document.getElementById('m_odReq').value, po=document.getElementById('m_odPo').value; const requester=document.getElementById('m_odRequester').value, buyer=document.getElementById('m_odBuyer').value; const project=document.getElementById('m_odProject').value, permit=document.getElementById('m_odPermit').value; const mat=document.getElementById('m_odMat').value, permitNo=document.getElementById('m_odPermitNo').value; const permitYN = document.getElementById('m_odPermitCheck').checked ? "TRUE" : "FALSE", doneYN = document.getElementById('m_odDoneCheck').checked ? "TRUE" : "FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_update", row: currentOdRow, bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN, doneYN})}); closeModal('orderModal'); fetchOrderData(); }
-  async function saveOrder(){ const bid=document.getElementById('odBid').value, req=document.getElementById('odReq').value, po=document.getElementById('odPo').value; const requester=document.getElementById('odRequester').value, buyer=document.getElementById('odBuyer').value; const project=document.getElementById('odProject').value, permit=document.getElementById('odPermit').value; const mat=document.getElementById('odMat').value, permitNo=document.getElementById('odPermitNo').value; const permitYN = "FALSE", doneYN = "FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_add", bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN, doneYN})}); [odBid,odReq,odPo,odRequester,odBuyer,odProject,odPermit,odMat,odPermitNo].forEach(el=>el.value=""); fetchOrderData(); }
+  async function saveOrderFromModal(){ const bid=document.getElementById('m_odBid').value, req=document.getElementById('m_odReq').value, po=document.getElementById('m_odPo').value, requester=document.getElementById('m_odRequester').value, buyer=document.getElementById('m_odBuyer').value, project=document.getElementById('m_odProject').value, permit=document.getElementById('m_odPermit').value, mat=document.getElementById('m_odMat').value, permitNo=document.getElementById('m_odPermitNo').value, permitYN = document.getElementById('m_odPermitCheck').checked ? "TRUE" : "FALSE", doneYN = document.getElementById('m_odDoneCheck').checked ? "TRUE" : "FALSE"; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_update", row: currentOdRow, bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN, doneYN})}); closeModal('orderModal'); fetchOrderData(); }
+  async function saveOrder(){ const bid=document.getElementById('odBid').value, req=document.getElementById('odReq').value, po=document.getElementById('odPo').value, requester=document.getElementById('odRequester').value, buyer=document.getElementById('odBuyer').value, project=document.getElementById('odProject').value, permit=document.getElementById('odPermit').value, mat=document.getElementById('odMat').value, permitNo=document.getElementById('odPermitNo').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_add", bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN: "FALSE", doneYN: "FALSE"})}); [odBid,odReq,odPo,odRequester,odBuyer,odProject,odPermit,odMat,odPermitNo].forEach(el=>el.value=""); fetchOrderData(); }
   async function deleteOrder(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_delete",row})}); fetchOrderData(); } }
   document.getElementById("odSearch").addEventListener("input",()=>{odPage=1;loadOrder();}); document.getElementById("odNewestBtn").addEventListener("click",()=>{ odSortAsc=false; odPage=1; loadOrder(); }); document.getElementById("odOldestBtn").addEventListener("click",()=>{ odSortAsc=true; odPage=1; loadOrder(); });
 
   /* ================= 전화번호부 & 버켓 & 설비 ================= */
   let pbPage=1, pageSizePhone=10, pbRowMap=new Map(), pbAllData=[];
   async function loadPhonebook(){ try{ const res=await fetch(API_URL+"?action=phone_get"); const rows=await res.json(); if(!Array.isArray(rows)) return; pbRowMap.clear(); pbAllData=rows.slice(1).map((r,i)=>({row:i+2,cells:r})); pbAllData.forEach(it=>pbRowMap.set(it.row,it.cells)); renderPhonebookTable(); }catch(e){console.error(e);} }
-  function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/pageSizePhone)||1; if(pbPage>totalPages) pbPage=1; const start=(pbPage-1)*pageSizePhone, end=start+pageSizePhone; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r=it.cells; const tr=document.createElement("tr"); 
-  tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
+  function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/pageSizePhone)||1; if(pbPage>totalPages) pbPage=1; const start=(pbPage-1)*pageSizePhone, end=start+pageSizePhone; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r=it.cells; const tr=document.createElement("tr"); tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
   function openPhoneModal(row){ currentPbRow=row; const old=pbRowMap.get(row)||["","","",""]; document.getElementById('m_pbDept').value=old[0]; document.getElementById('m_pbPos').value=old[1]; document.getElementById('m_pbName').value=old[2]; document.getElementById('m_pbPhone').value=old[3]; openModal('phoneModal'); }
-  async function savePhoneFromModal(){ const dept=document.getElementById('m_pbDept').value, pos=document.getElementById('m_pbPos').value; const name=document.getElementById('m_pbName').value, phone=document.getElementById('m_pbPhone').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_update",row:currentPbRow, dept,position:pos,name,phone})}); closeModal('phoneModal'); loadPhonebook(); }
+  async function savePhoneFromModal(){ const dept=document.getElementById('m_pbDept').value, pos=document.getElementById('m_pbPos').value, name=document.getElementById('m_pbName').value, phone=document.getElementById('m_pbPhone').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_update",row:currentPbRow, dept,position:pos,name,phone})}); closeModal('phoneModal'); loadPhonebook(); }
   async function savePhonebook(){ const dept=document.getElementById('pbDept').value, pos=document.getElementById('pbPosition').value; const name=document.getElementById('pbName').value, phone=document.getElementById('pbPhone').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_add",dept,position:pos,name,phone})}); ['pbDept','pbPosition','pbName','pbPhone'].forEach(id=>document.getElementById(id).value=""); loadPhonebook(); }
   async function deletePhone(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_delete",row})}); loadPhonebook(); } }
   document.getElementById("pbSearch").addEventListener("input",()=>{pbPage=1;renderPhonebookTable();});
 
   let bkPage=1, pageSizeBucket=10, bkRowMap=new Map(), bkSortAsc=false;
   function getElapsedTime(dateStr) { const target = new Date(dateStr); const now = new Date(); if(isNaN(target)) return "-"; const diffDays = Math.ceil(Math.abs(now - target) / (1000 * 60 * 60 * 24)); return diffDays < 30 ? `${diffDays}일 전` : `${Math.floor(diffDays/30)}개월 전`; }
-  async function loadBucket(){ const res = await fetch(API_URL+"?action=bucket_get"); const rows = await res.json(); bkRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>bkRowMap.set(it.row,it.cells)); const kw = (document.getElementById('bkSearch').value||"").toLowerCase(); let filtered = all.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); filtered.sort((a,b)=>{ const da=new Date(a.cells[1]), db=new Date(b.cells[1]); return !isNaN(da)&&!isNaN(db) ? (bkSortAsc?da-db:db-da) : 0; }); const totalPages = Math.ceil(filtered.length/pageSizeBucket)||1; if(bkPage>totalPages) bkPage=1; const start=(bkPage-1)*pageSizeBucket, end=start+pageSizeBucket; const tb = document.querySelector("#bkTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r = it.cells, tr = document.createElement("tr"); 
-  tr.innerHTML=`<td>${r[0]}</td><td>${formatDate(r[1])}</td><td style="color:var(--accent-color)">${getElapsedTime(r[1])}</td><td>${r[2]}</td><td><button onclick='openBucketModal(${it.row})' class="admin-only">✏️</button> <button onclick='deleteBucket(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("bkPagination",totalPages,(p)=>{bkPage=p;loadBucket();},bkPage); }
+  async function loadBucket(){ const res = await fetch(API_URL+"?action=bucket_get"); const rows = await res.json(); bkRowMap.clear(); const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); all.forEach(it=>bkRowMap.set(it.row,it.cells)); const kw = (document.getElementById('bkSearch').value||"").toLowerCase(); let filtered = all.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); filtered.sort((a,b)=>{ const da=new Date(a.cells[1]), db=new Date(b.cells[1]); return !isNaN(da)&&!isNaN(db) ? (bkSortAsc?da-db:db-da) : 0; }); const totalPages = Math.ceil(filtered.length/pageSizeBucket)||1; if(bkPage>totalPages) bkPage=1; const start=(bkPage-1)*pageSizeBucket, end=start+pageSizeBucket; const tb = document.querySelector("#bkTable tbody"); tb.innerHTML=""; filtered.slice(start,end).forEach(it=>{ const r = it.cells, tr = document.createElement("tr"); tr.innerHTML=`<td>${r[0]}</td><td>${formatDate(r[1])}</td><td style="color:var(--accent-color)">${getElapsedTime(r[1])}</td><td>${r[2]}</td><td><button onclick='openBucketModal(${it.row})' class="admin-only">✏️</button> <button onclick='deleteBucket(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("bkPagination",totalPages,(p)=>{bkPage=p;loadBucket();},bkPage); }
   function openBucketModal(row){ currentBkRow = row; const old = bkRowMap.get(row)||["","","",""]; document.getElementById('m_bkDept').value = old[0]; document.getElementById('m_bkDate').value = formatDate(old[1]); document.getElementById('m_bkNote').value = old[2]; openModal('bucketModal'); }
   async function saveBucketFromModal(){ const dept=document.getElementById('m_bkDept').value, date=document.getElementById('m_bkDate').value, note=document.getElementById('m_bkNote').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_update",row:currentBkRow, dept,date,note})}); closeModal('bucketModal'); loadBucket(); }
   async function saveBucket(){ const dept=document.getElementById('bkDept').value, date=document.getElementById('bkDate').value, note=document.getElementById('bkNote').value; await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_add",dept,date,note})}); document.getElementById('bkDept').value=""; document.getElementById('bkDate').value=""; document.getElementById('bkNote').value=""; loadBucket(); }
   async function deleteBucket(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_delete",row})}); loadBucket(); } }
   document.getElementById("bkSearch").addEventListener("input",()=>{bkPage=1;loadBucket();}); document.getElementById("bkAscBtn").addEventListener("click",()=>{ bkSortAsc=true; bkPage=1; loadBucket(); }); document.getElementById("bkDescBtn").addEventListener("click",()=>{ bkSortAsc=false; bkPage=1; loadBucket(); });
 
-  let esPage=1, pageSizeSpec=5, esRowMap=new Map(), currentSpecRow = null, esAllData = []; const defaultSpecs = ["크레인 종류", "양정", "정격 속도", "모터", "감속기", "레일", "와이어로프"];
+  let esPage=1, pageSizeSpec=5, esRowMap=new Map(), esAllData = []; const defaultSpecs = ["크레인 종류", "양정", "정격 속도", "모터", "감속기", "레일", "와이어로프"];
   async function loadEquipmentSpec(){ const res = await fetch(API_URL+"?action=spec_get"); const rows = await res.json(); esRowMap.clear(); esAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); esAllData.forEach(it=>esRowMap.set(it.row,it.cells)); initTeamFilter(); renderEquipmentTable(); }
   function initTeamFilter() { const teams = new Set(); esAllData.forEach(it => { if(it.cells[0]) teams.add(it.cells[0]); }); const teamSel = document.getElementById('filterTeam'); while(teamSel.options.length > 1) teamSel.remove(1); Array.from(teams).sort().forEach(t => { const opt = document.createElement('option'); opt.value = t; opt.textContent = t; teamSel.appendChild(opt); }); }
   function updateLocationOptions() { const selectedTeam = document.getElementById('filterTeam').value, locSel = document.getElementById('filterLoc'); let sourceData = esAllData; if (selectedTeam) sourceData = esAllData.filter(it => it.cells[0] === selectedTeam); const locs = new Set(); sourceData.forEach(it => { if(it.cells[2]) locs.add(it.cells[2]); }); locSel.innerHTML = '<option value="">📍 모든 위치 보기</option>'; Array.from(locs).sort().forEach(l => { const opt = document.createElement('option'); opt.value = l; opt.textContent = l; locSel.appendChild(opt); }); }
-  function renderEquipmentTable() { const teamFilter = document.getElementById('filterTeam').value, locFilter = document.getElementById('filterLoc').value, keyword = (document.getElementById('esSearch').value || "").toLowerCase(); let filtered = esAllData.filter(it => { const r = it.cells; if (teamFilter && r[0] !== teamFilter) return false; if (locFilter && r[2] !== locFilter) return false; if (keyword) { const hay = r.join(" ").toLowerCase(); if (!hay.includes(keyword)) return false; } return true; }); const totalPages = Math.ceil(filtered.length/pageSizeSpec)||1; if(esPage > totalPages) esPage=1; const start=(esPage-1)*pageSizeSpec, end=start+pageSizeSpec; const tb = document.querySelector("#esTable tbody"); tb.innerHTML=""; if(filtered.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; document.getElementById("esPagination").innerHTML=""; return; } filtered.slice(start,end).forEach(it=>{ const r=it.cells, tr=document.createElement("tr"); let specDisplay = "없음"; try { const parsed = JSON.parse(r[3]); if(Object.keys(parsed).length > 0) specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); } catch {} 
-  tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})' class="admin-only">📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); }
+  function renderEquipmentTable() { const teamFilter = document.getElementById('filterTeam').value, locFilter = document.getElementById('filterLoc').value, keyword = (document.getElementById('esSearch').value || "").toLowerCase(); let filtered = esAllData.filter(it => { const r = it.cells; if (teamFilter && r[0] !== teamFilter) return false; if (locFilter && r[2] !== locFilter) return false; if (keyword) { const hay = r.join(" ").toLowerCase(); if (!hay.includes(keyword)) return false; } return true; }); const totalPages = Math.ceil(filtered.length/pageSizeSpec)||1; if(esPage > totalPages) esPage=1; const start=(esPage-1)*pageSizeSpec, end=start+pageSizeSpec; const tb = document.querySelector("#esTable tbody"); tb.innerHTML=""; if(filtered.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; document.getElementById("esPagination").innerHTML=""; return; } filtered.slice(start,end).forEach(it=>{ const r=it.cells, tr=document.createElement("tr"); let specDisplay = "없음"; try { const parsed = JSON.parse(r[3]); if(Object.keys(parsed).length > 0) specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); } catch {} tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})' class="admin-only">📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); }
   function resetEquipmentFilter() { document.getElementById('filterTeam').value = ""; document.getElementById('filterLoc').value = ""; updateLocationOptions(); document.getElementById('esSearch').value = ""; esPage = 1; renderEquipmentTable(); }
   document.getElementById('filterTeam').addEventListener('change', () => { updateLocationOptions(); esPage=1; renderEquipmentTable(); }); document.getElementById('filterLoc').addEventListener('change', () => { esPage=1; renderEquipmentTable(); }); document.getElementById("esSearch").addEventListener("input", () => { esPage=1; renderEquipmentTable(); });
-  
-  function openSpecModal(mode, row = null) { 
-      const tbody = document.querySelector("#modalSpecTable tbody"); 
-      tbody.innerHTML = ""; 
-      const inTeam = document.getElementById("m_esTeam_modal");
-      const inEqId = document.getElementById("m_esEqId_modal");
-      const inLoc = document.getElementById("m_esLocation_modal");
-      if (mode === 'new') { 
-          const topTeam = document.getElementById('esTeam').value;
-          const topEqId = document.getElementById('esEqId').value;
-          const topLoc = document.getElementById('esLocation').value;
-          if(!topTeam || !topEqId) { alert("상단의 팀과 설비ID를 먼저 입력해주세요."); return; } 
-          currentSpecRow = null; 
-          inTeam.value = topTeam; inEqId.value = topEqId; inLoc.value = topLoc;
-          defaultSpecs.forEach(k => addModalRow(k, "")); 
-      } else { 
-          currentSpecRow = row; 
-          const data = esRowMap.get(row); 
-          inTeam.value = data[0]; inEqId.value = data[1]; inLoc.value = data[2];
-          try { const json = JSON.parse(data[3]); Object.entries(json).forEach(([k,v])=>addModalRow(k,v)); } catch { defaultSpecs.forEach(k => addModalRow(k, "")); } 
-      } 
-      openModal('specModal'); 
-  }
-  function addModalRow(key="", value="") { const tbody = document.querySelector("#modalSpecTable tbody"); const tr = document.createElement("tr"); 
-  tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; tbody.appendChild(tr); }
-  
-  async function saveSpecFromModal() { 
-      const rows = document.querySelectorAll("#modalSpecTable tbody tr"); 
-      const newSpec = {}; 
-      rows.forEach(tr => { const inputs = tr.querySelectorAll("input"); if(inputs[0].value) newSpec[inputs[0].value] = inputs[1].value; }); 
-      const specStr = JSON.stringify(newSpec); 
-      const newTeam = document.getElementById("m_esTeam_modal").value;
-      const newEqId = document.getElementById("m_esEqId_modal").value;
-      const newLoc = document.getElementById("m_esLocation_modal").value;
-      if (currentSpecRow === null) { 
-          await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_add", team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); 
-          document.getElementById('esTeam').value=""; document.getElementById('esEqId').value=""; document.getElementById('esLocation').value=""; 
-      } else { 
-          await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_update", row: currentSpecRow, team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); 
-      } 
-      closeModal('specModal'); alert("저장됨"); loadEquipmentSpec(); 
-  }
-  
+  function openSpecModal(mode, row = null) { const tbody = document.querySelector("#modalSpecTable tbody"); tbody.innerHTML = ""; const inTeam = document.getElementById("m_esTeam_modal"), inEqId = document.getElementById("m_esEqId_modal"), inLoc = document.getElementById("m_esLocation_modal"); if (mode === 'new') { const topTeam = document.getElementById('esTeam').value, topEqId = document.getElementById('esEqId').value, topLoc = document.getElementById('esLocation').value; if(!topTeam || !topEqId) { alert("상단의 팀과 설비ID를 먼저 입력해주세요."); return; } currentSpecRow = null; inTeam.value = topTeam; inEqId.value = topEqId; inLoc.value = topLoc; defaultSpecs.forEach(k => addModalRow(k, "")); } else { currentSpecRow = row; const data = esRowMap.get(row); inTeam.value = data[0]; inEqId.value = data[1]; inLoc.value = data[2]; try { const json = JSON.parse(data[3]); Object.entries(json).forEach(([k,v])=>addModalRow(k,v)); } catch { defaultSpecs.forEach(k => addModalRow(k, "")); } } openModal('specModal'); }
+  function addModalRow(key="", value="") { const tbody = document.querySelector("#modalSpecTable tbody"); const tr = document.createElement("tr"); tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; tbody.appendChild(tr); }
+  async function saveSpecFromModal() { const rows = document.querySelectorAll("#modalSpecTable tbody tr"); const newSpec = {}; rows.forEach(tr => { const inputs = tr.querySelectorAll("input"); if(inputs[0].value) newSpec[inputs[0].value] = inputs[1].value; }); const specStr = JSON.stringify(newSpec), newTeam = document.getElementById("m_esTeam_modal").value, newEqId = document.getElementById("m_esEqId_modal").value, newLoc = document.getElementById("m_esLocation_modal").value; if (currentSpecRow === null) { await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_add", team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); document.getElementById('esTeam').value=""; document.getElementById('esEqId').value=""; document.getElementById('esLocation').value=""; } else { await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_update", row: currentSpecRow, team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); } closeModal('specModal'); alert("저장됨"); loadEquipmentSpec(); }
   async function deleteEquipmentSpec(row){ if(confirm("삭제?")) { await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_delete",row})}); loadEquipmentSpec(); } }
 
   /* 초기화 */
-  toggleScheduleView('calendar'); loadSchedule(true); loadPhonebook(); loadBucket(); fetchOrderData(); loadEquipmentSpec(); loadPrework(); loadDelivery(); // [신규] 납품관리 로드 추가
+  toggleScheduleView('calendar'); loadSchedule(true); loadPhonebook(); loadBucket(); fetchOrderData(); loadEquipmentSpec(); loadPrework(); loadDelivery(); 
+  loadChecklist(); 
 </script>
 </body>
 </html>
-
 
