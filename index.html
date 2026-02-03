@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(주)영선기계 통합 관리 시스템 V6.9.2 (Bucket Pro)</title>
+  <title>(주)영선기계 통합 관리 시스템 V6.9.3 (Fix & UI)</title>
   
   <meta name="theme-color" content="#1e1e1e">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2920/2920323.png">
@@ -303,7 +303,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>(주)영선기계</h2>
-      <span class="sub-text">통합 관리 시스템 v6.9.2</span>
+      <span class="sub-text">통합 관리 시스템 v6.9.3</span>
     </div>
     <nav class="nav-menu">
       <div class="nav-group-label">메인 업무</div>
@@ -566,11 +566,9 @@
 
       <div id="bucket" class="tab-content">
         <div class="card">
-          <div id="bkFilterContainer" class="bk-filter-container">
-              </div>
+          <div id="bkFilterContainer" class="bk-filter-container"></div>
           
-          <div id="bkDashboard" class="bk-dashboard">
-              </div>
+          <div id="bkDashboard" class="bk-dashboard"></div>
         </div>
       </div>
 
@@ -701,13 +699,14 @@
 <div id="phoneModal" class="modal"><div class="modal-content" style="max-width:500px;"><div class="modal-header"><h3>📞 연락처 수정</h3><span class="close-modal" onclick="closeModal('phoneModal')">&times;</span></div><div class="modal-body"><div class="form-grid" style="grid-template-columns: 1fr;"><div class="form-group"><label>부서</label><input type="text" id="m_pbDept"></div><div class="form-group"><label>직책</label><input type="text" id="m_pbPos"></div><div class="form-group"><label>이름</label><input type="text" id="m_pbName"></div><div class="form-group"><label>전화번호</label><input type="text" id="m_pbPhone"></div></div></div><div class="modal-footer"><button onclick="closeModal('phoneModal')">취소</button><button onclick="savePhoneFromModal()" class="btn-primary admin-only">수정 저장</button></div></div></div>
 
 <div id="addBucketEntryModal" class="modal">
-  <div class="modal-content" style="width: 500px; max-width: 90%; height: auto;">
+  <div class="modal-content" style="width: 500px; max-width: 90%; height: auto; max-height: 90vh;">
     <div class="modal-header">
         <h3 id="addBucketTitle">🪣 교체 기록 등록</h3>
         <span class="close-modal" onclick="closeModal('addBucketEntryModal')">&times;</span>
     </div>
-    <div class="modal-body" style="overflow: visible;">
-        <input type="hidden" id="n_bkDept"> <div class="form-group" style="margin-bottom:15px;">
+    <div class="modal-body" style="overflow-y: auto;">
+        <input type="hidden" id="n_bkDept"> 
+        <div class="form-group" style="margin-bottom:15px;">
             <label>교체 날짜</label>
             <input type="date" id="n_bkDate" style="width:100%;">
         </div>
@@ -780,7 +779,7 @@
   let currentSchRow=null, currentPbRow=null, currentBkRow=null, currentOdRow=null, currentPwRow=null, currentDlRow=null, currentClRow=null; 
   function normalizeBool(val) { if (val === true || val === false) return val; if (!val) return false; const str = String(val).trim().toUpperCase(); return str === 'TRUE' || str === '허가' || str === '완료'; }
 
-  /* ================= 1. 일정관리 (Smart Sync 적용) ================= */
+  /* ================= 1. 일정관리 (Smart Sync Fix) ================= */
   const schedulePageSize=10; 
   const FIELDS=["날짜","생산팀","작업내용","담당자","발주번호","필수자재","허가번호","비고","설비ID"];
   let schedulePage=1, records=[], searchQuery="", sortKey="날짜", sortAsc=true, dateFilter={start:null, end:null}; 
@@ -844,14 +843,13 @@
       }
   }
 
-  // 선작업 등록 여부 확인용 헬퍼 함수
   function isPreworkRegistered(schRow) {
       if (!pwRowMap || pwRowMap.size === 0) return false;
       const schDate = formatDate(schRow["날짜"]);
-      const schTeam = schRow["생산팀"];
-      const schWork = schRow["작업내용"];
+      const schTeam = (schRow["생산팀"]||"").trim();
+      const schWork = (schRow["작업내용"]||"").trim();
       for (let [row, cells] of pwRowMap) {
-          const pwDate = formatDate(cells[0]), pwTeam = cells[1], pwWork = cells[3];
+          const pwDate = formatDate(cells[0]), pwTeam = (cells[1]||"").trim(), pwWork = (cells[3]||"").trim();
           if (schDate === pwDate && schTeam === pwTeam && schWork === pwWork) return true;
       }
       return false;
@@ -878,7 +876,7 @@
           const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
           
           html += `<div class="sch-actions">
-                    <button onclick='transferToPrework(${JSON.stringify(r)})' class="${btnClass} admin-only">📝 선작업</button>
+                    <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only">📝 선작업</button>
                     <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button>
                     <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
                    </div>`;
@@ -932,7 +930,7 @@
       const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
 
       tr.innerHTML += `<td>
-          <button onclick='transferToPrework(${JSON.stringify(r)})' class="${btnClass} admin-only" style="padding:4px 8px;">📝 선작업</button>
+          <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only" style="padding:4px 8px;">📝 선작업</button>
           <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> 
           <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
         </td>`;
@@ -941,8 +939,13 @@
     renderPaginator("pagination", totalPages, (p)=>{schedulePage=p;renderSchedule();}, schedulePage);
   }
 
-  /* 팝업 없이 즉시 등록 & 버튼 상태 갱신 */
-  async function transferToPrework(data) {
+  /* [수정됨] 선작업 자동 등록 - 안전한 ID 참조 및 즉시 UI 반영 */
+  async function transferToPrework(rowId) {
+      // 1. 해당 일정 데이터 찾기
+      const data = records.find(r => r.row === rowId);
+      if(!data) { alert("데이터를 찾을 수 없습니다."); return; }
+
+      // 2. 백엔드 전송
       try {
           const payload = {
               action: "prework_add",
@@ -956,13 +959,23 @@
           const result = await res.json();
           
           if(result.status === "success") {
-              await loadPrework(); 
+              // 3. [즉시 반영] 로컬 pwRowMap에 강제 추가하여 버튼 색상 변경 (서버 응답 대기 없이)
+              // (실제 데이터는 백그라운드 loadPrework로 동기화됨)
+              const tempRowId = "temp_" + Date.now();
+              pwRowMap.set(tempRowId, [
+                  data["날짜"], data["생산팀"], data["담당자"], data["작업내용"], "FALSE", "FALSE", "FALSE", "FALSE"
+              ]);
+              
+              // 4. 화면 갱신
               if(currentView === 'calendar') {
                   renderCalendar();
                   updateDetailPanel(selectedDate);
               } else {
                   renderSchedule();
               }
+              
+              // 5. 실제 데이터 동기화 (백그라운드)
+              loadPrework();
           } else {
               alert("오류: " + result.message);
           }
@@ -1273,4 +1286,3 @@
 </script>
 </body>
 </html>
-
