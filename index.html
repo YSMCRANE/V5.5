@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(주)영선기계 일정관리 프로그램 V6.9.3 (Fix & UI)</title>
+  <title>(주)영선기계 일정관리 프로그램 V7.4.0</title>
   
   <meta name="theme-color" content="#1e1e1e">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2920/2920323.png">
@@ -47,356 +47,175 @@
       display: flex;
       flex-direction: column; align-items: center; justify-content: center;
     }
-    .sidebar-header h2 { font-size: 1.2rem; margin: 0; color: #fff;
-      text-align: center; }
-    .sidebar-header .sub-text { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;
-    }
+    .sidebar-header h2 { font-size: 1.2rem; margin: 0; color: #fff; text-align: center; }
+    .sidebar-header .sub-text { font-size: 0.8rem; color: var(--text-muted); margin-top: 5px; }
 
-    .nav-group-label { padding: 15px 20px 5px 20px; font-size: 0.75rem; color: #666; font-weight: bold; text-transform: uppercase;
-    }
-    .nav-menu { flex: 1; padding: 10px 0; overflow-y: auto;
-    }
-    .nav-item {
-      display: flex; align-items: center; padding: 12px 20px; color: var(--text-muted);
-      text-decoration: none; cursor: pointer; transition: 0.2s; border-left: 3px solid transparent; font-weight: 500;
-    }
-    .nav-item:hover { background-color: rgba(255,255,255,0.05);
-      color: #fff; }
-    .nav-item.active { background-color: rgba(74, 144, 226, 0.15); color: var(--primary-color); border-left-color: var(--primary-color);
-    }
+    .nav-group-label { padding: 15px 20px 5px 20px; font-size: 0.75rem; color: #666; font-weight: bold; text-transform: uppercase; }
+    .nav-menu { flex: 1; padding: 10px 0; overflow-y: auto; }
+    .nav-item { display: flex; align-items: center; padding: 12px 20px; color: var(--text-muted); text-decoration: none; cursor: pointer; transition: 0.2s; border-left: 3px solid transparent; font-weight: 500; }
+    .nav-item:hover { background-color: rgba(255,255,255,0.05); color: #fff; }
+    .nav-item.active { background-color: rgba(74, 144, 226, 0.15); color: var(--primary-color); border-left-color: var(--primary-color); }
     .nav-icon { margin-right: 10px; width: 20px; text-align: center; }
-    .sidebar-footer { padding: 15px;
-      border-top: 1px solid var(--border-color); font-size: 0.8rem; text-align: center; color: #666;
-    }
+    .sidebar-footer { padding: 15px; border-top: 1px solid var(--border-color); font-size: 0.8rem; text-align: center; color: #666; }
 
     /* 메인 영역 */
-    .main-content { flex: 1; display: flex; flex-direction: column;
-      height: 100%; overflow: hidden; position: relative; }
-    .top-bar {
-      height: 60px;
-      background-color: var(--sidebar-bg); border-bottom: 1px solid var(--border-color);
-      display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0;
-    }
-    .hamburger-btn { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer;
-    }
+    .main-content { flex: 1; display: flex; flex-direction: column; height: 100%; overflow: hidden; position: relative; }
+    .top-bar { height: 60px; background-color: var(--sidebar-bg); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+    .hamburger-btn { display: none; background: none; border: none; color: #fff; font-size: 24px; cursor: pointer; }
     .content-area { flex: 1; padding: 20px; overflow-y: auto; }
-
-    .tab-content { display: none;
-      animation: fadeIn 0.3s; }
-    .tab-content.active { display: block;
-    }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0);
-    } }
+    .tab-content { display: none; animation: fadeIn 0.3s; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
     /* UI 컴포넌트 */
-    .card {
-      background: var(--card-bg);
-      border-radius: 12px; padding: 20px;
-      margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid #333;
-    }
-    h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px;
-    }
+    .card { background: var(--card-bg); border-radius: 12px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); border: 1px solid #333; }
+    h3 { margin-top: 0; color: #fff; border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 15px; }
     
-    input[type="text"], input[type="date"], select, textarea {
-      background: #333;
-      border: 1px solid #555; color: #fff;
-      padding: 8px 12px; margin: 4px; border-radius: 4px; font-size: 14px;
-    }
-    textarea { resize: vertical; line-height: 1.5; font-family: inherit;
-    }
-    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-color); border-color: transparent;
-    }
+    input[type="text"], input[type="date"], select, textarea { background: #333; border: 1px solid #555; color: #fff; padding: 8px 12px; margin: 4px; border-radius: 4px; font-size: 14px; }
+    textarea { resize: vertical; line-height: 1.5; font-family: inherit; }
+    input:focus, select:focus, textarea:focus { outline: 2px solid var(--primary-color); border-color: transparent; }
 
-    button {
-      background: #444; color: #fff; border: 1px solid #555;
-      padding: 8px 16px; cursor: pointer; border-radius: 4px; transition: background 0.2s;
-    }
-    button:hover { background: #555;
-    }
+    button { background: #444; color: #fff; border: 1px solid #555; padding: 8px 16px; cursor: pointer; border-radius: 4px; transition: background 0.2s; }
+    button:hover { background: #555; }
     .btn-primary { background: var(--primary-color); border-color: var(--primary-color); }
-    .btn-primary:hover { background: var(--primary-hover);
-    }
+    .btn-primary:hover { background: var(--primary-hover); }
     .btn-danger { background: var(--danger-color); border-color: var(--danger-color); color: #000; }
-    .btn-accent { background: var(--accent-color);
-      border-color: var(--accent-color); color: #000; font-weight:bold; }
+    .btn-accent { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight:bold; }
     
-    /* 선작업 버튼 스타일 */
-    .btn-prework { background: #444;
-      color: #fff; border: 1px solid #555; } 
-    .btn-prework.registered { background: var(--accent-color); color: #000; font-weight: bold;
-      border-color: var(--accent-color); } 
+    .btn-prework { background: #444; color: #fff; border: 1px solid #555; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 4px; cursor: pointer; } 
+    .btn-prework.registered { background: var(--accent-color); color: #000; font-weight: bold; border-color: var(--accent-color); } 
     
-    .table-container { overflow-x: auto; margin-top: 15px;
-    }
-    table { width: 100%; border-collapse: collapse; min-width: 800px;
-    }
-    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle;
-    }
-    th { background: #2a2a2a; color: var(--text-muted); font-weight: 600; white-space: nowrap;
-    }
+    /* 일정관리 작업완료 버튼 상태 스타일 */
+    .btn-workdone { background: #444; color: #fff; border: 1px solid #555; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 4px; cursor: pointer; transition: background 0.2s; }
+    .btn-workdone.done { background: var(--success-color); color: #000; font-weight: bold; border-color: var(--success-color); }
+    
+    .table-container { overflow-x: auto; margin-top: 15px; }
+    table { width: 100%; border-collapse: collapse; min-width: 800px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+    th { background: #2a2a2a; color: var(--text-muted); font-weight: 600; white-space: nowrap; }
     tr:hover { background: #2f2f2f; }
 
-    /* [NEW] 버켓주기 대시보드 스타일 */
-    .bk-filter-container { display: flex;
-      gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
-    .bk-filter-btn { 
-        white-space: nowrap;
-        padding: 8px 16px; border-radius: 20px; 
-        background: #333; border: 1px solid #555; color: #aaa; cursor: pointer;
-    }
-    .bk-filter-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); font-weight: bold;
-    }
+    /* 버켓주기 대시보드 */
+    .bk-filter-container { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 15px; }
+    .bk-filter-btn { white-space: nowrap; padding: 8px 16px; border-radius: 20px; background: #333; border: 1px solid #555; color: #aaa; cursor: pointer; }
+    .bk-filter-btn.active { background: var(--primary-color); color: #fff; border-color: var(--primary-color); font-weight: bold; }
     
-    .bk-dashboard { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;
-    }
-    .bk-card { 
-        background: #2f2f2f; border: 1px solid #444;
-        border-radius: 12px; padding: 20px; 
-        display: flex; flex-direction: column; transition: transform 0.2s; position: relative;
-    }
+    .bk-dashboard { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+    .bk-card { background: #2f2f2f; border: 1px solid #444; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; transition: transform 0.2s; position: relative; }
     .bk-card:hover { transform: translateY(-3px); border-color: var(--primary-color); }
-    .bk-header { display: flex; justify-content: space-between;
-      align-items: center; margin-bottom: 15px; padding-bottom:10px; border-bottom:1px solid #444; }
-    .bk-dept { font-size: 1.1em; font-weight: bold; color: #fff;
-    }
-    .bk-latest-date { font-size: 0.9em; color: #aaa;
-    }
-    .bk-elapsed-box { 
-        background: #222; padding: 15px; border-radius: 8px;
-        text-align: center; margin-bottom: 15px; 
-        border: 1px solid #333;
-    }
-    .bk-elapsed-label { font-size: 0.8em; color: #888; margin-bottom: 5px;
-    }
+    .bk-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding-bottom:10px; border-bottom:1px solid #444; }
+    .bk-dept { font-size: 1.1em; font-weight: bold; color: #fff; }
+    .bk-latest-date { font-size: 0.9em; color: #aaa; }
+    .bk-elapsed-box { background: #222; padding: 15px; border-radius: 8px; text-align: center; margin-bottom: 15px; border: 1px solid #333; }
+    .bk-elapsed-label { font-size: 0.8em; color: #888; margin-bottom: 5px; }
     .bk-elapsed-val { font-size: 1.8em; font-weight: bold; color: var(--success-color); }
-    .bk-elapsed-val.warn { color: var(--warning-color);
-    }
+    .bk-elapsed-val.warn { color: var(--warning-color); }
     .bk-elapsed-val.danger { color: var(--danger-color); }
     
-    .bk-history-toggle { 
-        text-align: center;
-        color: var(--primary-color); cursor: pointer; font-size: 0.9em; 
-        padding-top: 10px; border-top: 1px dashed #444; user-select: none;
-    }
-    .bk-history-list { display: none; margin-top: 10px; background: #252525; padding: 10px; border-radius: 6px;
-    }
-    .bk-history-item { 
-        display: flex; justify-content: space-between; font-size: 0.85em;
-        padding: 6px 0; border-bottom: 1px solid #333; color: #ccc; align-items:center;
-    }
-    .bk-history-item:last-child { border-bottom: none;
-    }
+    .bk-history-toggle { text-align: center; color: var(--primary-color); cursor: pointer; font-size: 0.9em; padding-top: 10px; border-top: 1px dashed #444; user-select: none; }
+    .bk-history-list { display: none; margin-top: 10px; background: #252525; padding: 10px; border-radius: 6px; }
+    .bk-history-item { display: flex; justify-content: space-between; font-size: 0.85em; padding: 6px 0; border-bottom: 1px solid #333; color: #ccc; align-items:center; }
+    .bk-history-item:last-child { border-bottom: none; }
 
-    .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; color: #aaa;
-      text-align: center; min-width: 50px; cursor: pointer; margin: 2px; background-color: #333; border: 1px solid #555; transition: all 0.1s; user-select: none;
-    }
-    .status-badge.active-1 { background-color: var(--success-color) !important; color: #000 !important;
-    } 
-    .status-badge.active-2 { background-color: var(--primary-color) !important; color: #fff !important;
-    } 
-    .status-badge.active-3 { background-color: var(--warning-color) !important; color: #000 !important;
-    } 
-    .status-badge.active-4 { background-color: #9C27B0 !important; color: #fff !important;
-    } 
-    .status-badge.permit-active { background-color: var(--primary-color) !important; color: #fff !important;
-    } 
-    .status-badge.done-active { background-color: var(--success-color) !important; color: #000 !important;
-    } 
-    .status-badge.order-active { background-color: var(--warning-color) !important; color: #000 !important;
-    } 
-    .status-badge.stock-active { background-color: var(--success-color) !important; color: #000 !important;
-    } 
+    /* 배지 공통 */
+    .status-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.75em; font-weight: bold; color: #aaa; text-align: center; min-width: 50px; cursor: pointer; margin: 2px; background-color: #333; border: 1px solid #555; transition: all 0.1s; user-select: none; }
+    .status-badge.active-1 { background-color: var(--success-color) !important; color: #000 !important; } 
+    .status-badge.active-2 { background-color: var(--primary-color) !important; color: #fff !important; } 
+    .status-badge.active-3 { background-color: var(--warning-color) !important; color: #000 !important; } 
+    .status-badge.active-4 { background-color: #9C27B0 !important; color: #fff !important; } 
+    .status-badge.permit-active { background-color: var(--primary-color) !important; color: #fff !important; } 
+    .status-badge.done-active { background-color: var(--success-color) !important; color: #000 !important; } 
+    .status-badge.order-active { background-color: var(--warning-color) !important; color: #000 !important; } 
+    .status-badge.stock-active { background-color: var(--success-color) !important; color: #000 !important; } 
 
-    .flex-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px;
-    }
-    .paginator { margin-top: 15px; display: flex; justify-content: center; gap: 4px;
-    }
+    .flex-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
+    .paginator { margin-top: 15px; display: flex; justify-content: center; gap: 4px; }
     .paginator button.active { background: var(--primary-color); border-color: var(--primary-color); }
-    .link-text { color: var(--accent-color);
-      text-decoration: underline; cursor: pointer; }
-    .text-red { color: #ff6b6b; font-weight: bold;
-    }
+    .link-text { color: var(--accent-color); text-decoration: underline; cursor: pointer; }
+    .text-red { color: #ff6b6b; font-weight: bold; }
 
     /* 모달 */
-    .modal {
-      display: none;
-      position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%;
-      background-color: rgba(0,0,0,0.7); backdrop-filter: blur(3px);
-      align-items: center; justify-content: center;
-    }
+    .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.7); backdrop-filter: blur(3px); align-items: center; justify-content: center; }
     .modal.show { display: flex; }
-    .modal-content {
-      background-color: var(--card-bg);
-      padding: 25px; border-radius: 12px;
-      width: 90%; max-width: 800px; max-height: 90vh;
-      border: 1px solid #444; display: flex; flex-direction: column;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-      border-bottom: 1px solid #333; padding-bottom: 10px; }
-    .modal-body { overflow-y: auto; flex-grow: 1; padding-right: 5px;
-    }
-    .modal-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; display: flex; justify-content: flex-end; gap: 10px;
-    }
+    .modal-content { background-color: var(--card-bg); padding: 25px; border-radius: 12px; width: 90%; max-width: 800px; max-height: 90vh; border: 1px solid #444; display: flex; flex-direction: column; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .modal-body { overflow-y: auto; flex-grow: 1; padding-right: 5px; }
+    .modal-footer { margin-top: 15px; padding-top: 10px; border-top: 1px solid #333; display: flex; justify-content: flex-end; gap: 10px; }
     .close-modal { font-size: 24px; cursor: pointer; color: #aaa; }
-    .form-grid { display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
-    .form-group { display: flex; flex-direction: column;
-    }
-    .checkbox-group { display: flex; gap: 15px; background: #333; padding: 10px; border-radius: 4px;
-    }
-    .checkbox-group label { display: flex; align-items: center; cursor: pointer; color: #fff; margin:0;
-    }
-    .checkbox-group input { width: 18px; height: 18px; margin-right: 8px; accent-color: var(--primary-color);
-    }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+    .form-group { display: flex; flex-direction: column; }
+    .checkbox-group { display: flex; gap: 15px; background: #333; padding: 10px; border-radius: 4px; flex-wrap: wrap; }
+    .checkbox-group label { display: flex; align-items: center; cursor: pointer; color: #fff; margin:0; }
+    .checkbox-group input { width: 18px; height: 18px; margin-right: 8px; accent-color: var(--primary-color); }
 
     /* 달력 & 발주 & 점검일지 카드 스타일 */
-    .split-view-container { display: flex;
-      flex-wrap: wrap; gap: 20px; }
-    .calendar-panel { flex: 1; min-width: 350px; background: #252525; padding: 15px; border-radius: 12px;
-      border: 1px solid var(--border-color); }
-    .detail-panel { flex: 1; min-width: 350px; background: var(--card-bg); padding: 0; border-radius: 12px;
-    }
-    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
-    }
+    .split-view-container { display: flex; flex-wrap: wrap; gap: 20px; }
+    .calendar-panel { flex: 1; min-width: 350px; background: #252525; padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); }
+    .detail-panel { flex: 1; min-width: 350px; background: var(--card-bg); padding: 0; border-radius: 12px; }
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
     .month-display { font-size: 1.2em; font-weight: bold; color: #fff; }
-    .calendar-grid { display: grid;
-      grid-template-columns: repeat(7, 1fr); gap: 2px; }
-    .day-cell {
-      background: #333;
-      aspect-ratio: 1.2 / 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: flex-start; padding-top: 5px; cursor: pointer; border-radius: 4px;
-    }
+    .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; }
+    .day-cell { background: #333; aspect-ratio: 1.2 / 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 5px; cursor: pointer; border-radius: 4px; }
     .day-cell:hover { background: #444; border: 1px solid var(--primary-color); }
-    .day-cell.other-month { opacity: 0.3;
-      pointer-events: none; }
-    .day-cell.selected { background: #2d4561; border: 2px solid var(--primary-color);
-    }
-    .day-cell.today .day-number { color: var(--primary-color); font-weight: bold; text-decoration: underline;
-    }
-    .event-dots { display: flex; gap: 2px; justify-content: center; flex-wrap: wrap;
-    }
-    .dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--accent-color);
-    }
+    .day-cell.other-month { opacity: 0.3; pointer-events: none; }
+    .day-cell.selected { background: #2d4561; border: 2px solid var(--primary-color); }
+    .day-cell.today .day-number { color: var(--primary-color); font-weight: bold; text-decoration: underline; }
+    .event-dots { display: flex; gap: 2px; justify-content: center; flex-wrap: wrap; }
+    .dot { width: 6px; height: 6px; border-radius: 50%; background-color: var(--accent-color); }
     .dot.many { background-color: #ff9f43; } 
     
-    .sch-item-card { background: #333;
-      border: 1px solid #444; border-radius: 8px; padding: 15px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; position:relative;
-    }
+    .sch-item-card { background: #333; border: 1px solid #444; border-radius: 8px; padding: 15px; margin-bottom: 12px; display: flex; flex-direction: column; gap: 6px; position:relative; }
     .sch-team { font-size: 0.9em; color: var(--primary-color); font-weight: bold; }
-    .sch-work { font-size: 1.1em;
-      font-weight: bold; color: #fff; line-height: 1.3; }
-    .sch-meta { font-size: 0.85em; color: #ccc; display: flex; align-items: center;
-      flex-wrap: wrap; gap: 8px; }
-    .sch-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 4px;
-    }
-    .sch-note { font-size: 0.85em; color: #aaa; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #555;
-    }
+    .sch-work { font-size: 1.1em; font-weight: bold; color: #fff; line-height: 1.3; }
+    .sch-meta { font-size: 0.85em; color: #ccc; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .sch-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 4px; }
+    .sch-note { font-size: 0.85em; color: #aaa; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #555; }
 
-    /* 발주정보 카드 */
-    .od-item-card { background: #252525; border: 1px solid #444;
-      border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; }
-    .od-header { display: flex;
-      align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #333; padding-bottom: 10px; }
-    .od-tag { background: #333;
-      color: #bbb; border: 1px solid #555; padding: 3px 8px; border-radius: 6px; font-size: 0.85em;
-    }
-    .od-title { font-size: 1.2em; font-weight: bold; color: #fff; flex-grow: 1;
-    }
-    .od-body { display: flex; flex-direction: column; gap: 8px; font-size: 0.95em;
-    }
+    /* 발주정보 카드 (기존 UI 유지) */
+    .od-item-card { background: #252525; border: 1px solid #444; border-radius: 12px; padding: 20px; margin-bottom: 15px; display: flex; flex-direction: column; gap: 12px; }
+    .od-header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .od-tag { background: #333; color: #bbb; border: 1px solid #555; padding: 3px 8px; border-radius: 6px; font-size: 0.85em; }
+    .od-title { font-size: 1.2em; font-weight: bold; color: #fff; flex-grow: 1; }
+    .od-body { display: flex; flex-direction: column; gap: 8px; font-size: 0.95em; }
     .od-block { display: flex; align-items: flex-start; gap: 8px; }
-    .od-label { min-width: 70px;
-      font-weight: bold; text-align: right; margin-top: 2px; }
-    .od-value { color: #e0e0e0; line-height: 1.4; word-break: break-all;
-    }
-    .od-link { color: var(--success-color); font-weight: bold; text-decoration: underline; cursor: pointer;
-    }
-    .od-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 10px; border-top: 1px dashed #444;
-    }
-    .od-actions { display: flex; gap: 8px; align-items: center;
-    }
+    .od-label { min-width: 70px; font-weight: bold; text-align: right; margin-top: 2px; }
+    .od-value { color: #e0e0e0; line-height: 1.4; word-break: break-all; }
+    .od-link { color: var(--success-color); font-weight: bold; text-decoration: underline; cursor: pointer; }
+    .od-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 5px; padding-top: 10px; border-top: 1px dashed #444; }
+    .od-actions { display: flex; gap: 8px; align-items: center; }
 
     /* 점검일지 카드 스타일 */
-    .cl-item-card { 
-        background: #252525;
-        border: 1px solid #444; border-radius: 12px; padding: 20px; 
-        margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px;
-    }
-    .cl-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px;
-    }
-    .cl-header-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
-    }
+    .cl-item-card { background: #252525; border: 1px solid #444; border-radius: 12px; padding: 20px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+    .cl-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 10px; }
+    .cl-header-left { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
     .cl-team { color: var(--primary-color); font-weight: bold; font-size: 1.1em; }
-    .cl-date { color: #aaa;
-      font-size: 0.9em; }
-    .cl-content-box { 
-        background: #2f2f2f; padding: 15px;
-        border-radius: 4px; color: #fff; 
-        white-space: pre-wrap; line-height: 1.6; font-size: 1.05em; 
-        border: 1px solid #444; border-left: 5px solid var(--accent-color);
-        box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
-    }
-    .cl-footer { 
-        display: flex;
-        flex-direction: column; gap: 8px; margin-top: 5px; 
-        padding-top: 10px; border-top: 1px dashed #444; font-size: 0.9em;
-    }
+    .cl-date { color: #aaa; font-size: 0.9em; }
+    .cl-content-box { background: #2f2f2f; padding: 15px; border-radius: 4px; color: #fff; white-space: pre-wrap; line-height: 1.6; font-size: 1.05em; border: 1px solid #444; border-left: 5px solid var(--accent-color); box-shadow: inset 0 0 10px rgba(0,0,0,0.3); }
+    .cl-footer { display: flex; flex-direction: column; gap: 8px; margin-top: 5px; padding-top: 10px; border-top: 1px dashed #444; font-size: 0.9em; }
     .cl-mat-row { display: flex; align-items: flex-start; gap: 8px; }
-    .cl-mat-label { font-weight: bold;
-      min-width: 80px; text-align: right; }
+    .cl-mat-label { font-weight: bold; min-width: 80px; text-align: right; }
 
     /* 모바일 반응형 */
-    .mobile-overlay {
-      display: none;
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5); z-index: 900; backdrop-filter: blur(2px);
-    }
+    .mobile-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 900; backdrop-filter: blur(2px); }
     @media (max-width: 768px) {
-      .sidebar { position: fixed; top: 0;
-        left: -100%; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
-      .sidebar.active { left: 0;
-      }
+      .sidebar { position: fixed; top: 0; left: -100%; height: 100%; box-shadow: 5px 0 15px rgba(0,0,0,0.5); }
+      .sidebar.active { left: 0; }
       .mobile-overlay.active { display: block; }
-      .hamburger-btn { display: block;
-      }
-      .top-bar { padding: 0 15px;
-      }
-      .content-area { padding: 15px;
-      }
+      .hamburger-btn { display: block; }
+      .top-bar { padding: 0 15px; }
+      .content-area { padding: 15px; }
     }
 
-    #loginOverlay {
-      position: fixed; top: 0;
-      left: 0; width: 100%; height: 100%;
-      background-color: #121212; z-index: 9999; 
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-    }
-    .login-box {
-      background: var(--card-bg); padding: 40px; border-radius: 12px;
-      border: 1px solid var(--primary-color); text-align: center;
-      box-shadow: 0 0 20px rgba(74, 144, 226, 0.3); width: 300px;
-    }
-    .login-box h2 { color: #fff; margin-bottom: 20px;
-    }
-    .login-input { 
-      width: 100%; padding: 12px; margin-bottom: 15px; 
-      background: #333;
-      border: 1px solid #555; color: #fff; font-size: 16px; border-radius: 4px;
-      box-sizing: border-box;
-    }
-    .login-btn {
-      width: 100%; padding: 12px; font-size: 16px; font-weight: bold;
-      background: var(--primary-color); color: #fff; border: none; border-radius: 4px; cursor: pointer;
-    }
-    .login-btn:hover { background: var(--primary-hover);
-    }
+    #loginOverlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #121212; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .login-box { background: var(--card-bg); padding: 40px; border-radius: 12px; border: 1px solid var(--primary-color); text-align: center; box-shadow: 0 0 20px rgba(74, 144, 226, 0.3); width: 300px; }
+    .login-box h2 { color: #fff; margin-bottom: 20px; }
+    .login-input { width: 100%; padding: 12px; margin-bottom: 15px; background: #333; border: 1px solid #555; color: #fff; font-size: 16px; border-radius: 4px; box-sizing: border-box; }
+    .login-btn { width: 100%; padding: 12px; font-size: 16px; font-weight: bold; background: var(--primary-color); color: #fff; border: none; border-radius: 4px; cursor: pointer; }
+    .login-btn:hover { background: var(--primary-hover); }
 
     .admin-only { display: none !important; }
-    body.is-admin .admin-only { display: inline-block !important;
-    }
-    body.is-admin div.admin-only { display: block !important;
-    }
+    body.is-admin .admin-only { display: inline-block !important; }
+    body.is-admin div.admin-only { display: block !important; }
   </style>
 </head>
 <body>
@@ -418,7 +237,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>(주)영선기계</h2>
-      <span class="sub-text">일정관리 프로그램 v6.9.3</span>
+      <span class="sub-text">일정관리 프로그램 v7.4.0</span>
     </div>
     <nav class="nav-menu">
       <div class="nav-group-label">메인 업무</div>
@@ -628,8 +447,17 @@
 
       <div id="order" class="tab-content">
         <div class="card admin-only">
-          <h3>발주 정보 등록</h3>
+          <h3>📦 발주 정보 등록</h3>
+          <div class="flex-row" style="margin-bottom:10px; background:#333; padding:10px; border-radius:4px; display:inline-flex;">
+            <label style="color:#fff; margin-right:15px; cursor:pointer;">
+              <input type="radio" name="odType" value="정상발주" checked style="accent-color:var(--primary-color);"> 정상발주
+            </label>
+            <label style="color:var(--warning-color); cursor:pointer; font-weight:bold;">
+              <input type="radio" name="odType" value="선작업발주" style="accent-color:var(--warning-color);"> 선작업발주
+            </label>
+          </div>
           <div class="flex-row">
+            <input type="date" id="odDate" placeholder="발주날짜" required>
             <input type="text" id="odBid" placeholder="입찰번호">
             <input type="text" id="odReq" placeholder="의뢰번호">
             <input type="text" id="odPo" placeholder="구매PO번호">
@@ -645,11 +473,10 @@
         <div class="card">
           <div class="bk-filter-container" style="margin-bottom: 15px;">
             <button class="bk-filter-btn active" id="odFilterAll" onclick="setOrderFilter('all')">전체 (0)</button>
-            <button class="bk-filter-btn" id="odFilterPermit" onclick="setOrderFilter('permit')">허가발행 (0)</button>
-            <button class="bk-filter-btn" id="odFilterDone" onclick="setOrderFilter('done')">작업완료 (0)</button>
             <button class="bk-filter-btn" id="odFilterOngoing" onclick="setOrderFilter('ongoing')">진행중 (0)</button>
+            <button class="bk-filter-btn" id="odFilterWork" onclick="setOrderFilter('work')">작업완료 (0)</button>
+            <button class="bk-filter-btn" id="odFilterSettle" onclick="setOrderFilter('settle')">정산완료 (0)</button>
           </div>
-
           <div class="flex-row">
             <input type="text" id="odSearch" placeholder="🔍 PO번호/공사명 검색">
             <button id="odNewestBtn">최신순</button>
@@ -840,24 +667,83 @@
 
 <div id="orderModal" class="modal">
   <div class="modal-content">
-    <div class="modal-header"><h3>📦 발주 정보 수정</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div>
+    <div class="modal-header"><h3>📦 발주 정보 수정 및 추가기입</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div>
     <div class="modal-body">
       <div class="form-grid">
+        <div class="form-group">
+          <label>발주구분</label>
+          <select id="m_odType">
+            <option value="정상발주">정상발주</option>
+            <option value="선작업발주">선작업발주</option>
+          </select>
+        </div>
+        <div class="form-group"><label>발주날짜</label><input type="date" id="m_odDate"></div>
         <div class="form-group"><label>입찰번호</label><input type="text" id="m_odBid"></div>
         <div class="form-group"><label>의뢰번호</label><input type="text" id="m_odReq"></div>
         <div class="form-group"><label>구매PO번호</label><input type="text" id="m_odPo"></div>
         <div class="form-group"><label>의뢰자</label><input type="text" id="m_odRequester"></div>
-        <div class="form-group"><label>구매담당자</label><input type="text" id="m_odBuyer"></div>
         <div class="form-group"><label>공사명</label><input type="text" id="m_odProject"></div>
         <div class="form-group"><label>작업내용</label><input type="text" id="m_odPermit"></div>
+        <div class="form-group"><label>구매담당자</label><input type="text" id="m_odBuyer"></div>
         <div class="form-group"><label>필수자재</label><input type="text" id="m_odMat"></div>
         <div class="form-group"><label>허가번호</label><input type="text" id="m_odPermitNo"></div>
-        <div class="form-group">
-          <label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크</label>
-          <div class="checkbox-group">
-            <label><input type="checkbox" id="m_odPermitCheck"> 허가발행</label>
-            <label><input type="checkbox" id="m_odDoneCheck"> 작업완료</label>
+        
+        <div style="grid-column: 1 / -1; margin-top: 15px; background: rgba(3, 218, 198, 0.1); padding: 15px; border-radius: 8px; border: 1px solid var(--accent-color);">
+          <h4 style="color:var(--accent-color); border-bottom:1px dashed #555; padding-bottom:8px; margin-top:0; margin-bottom:15px;">📌 현장 / 추후 기입 항목</h4>
+          <div class="form-grid">
+            <div class="form-group" style="grid-column: span 2;">
+              <label>산재가입날짜 (시작 ~ 종료)</label>
+              <div style="display:flex; align-items:center; gap:5px;">
+                <input type="date" id="m_odInsDateStart" style="flex:1;"> 
+                <span style="color:#fff;">~</span> 
+                <input type="date" id="m_odInsDateEnd" style="flex:1;">
+              </div>
+            </div>
+            
+            <div class="form-group"><label>조업담당자</label><input type="text" id="m_odOpManager"></div>
+            <div class="form-group">
+              <label>서류종류</label>
+              <select id="m_odDocType">
+                <option value="">선택안함</option>
+                <option value="일반작업">일반작업</option>
+                <option value="화기(그)">화기(그)</option>
+                <option value="화기(전체)">화기(전체)</option>
+                <option value="버켓">버켓</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>비계여부</label>
+              <select id="m_odScaffold">
+                <option value="">선택안함</option>
+                <option value="O">O</option>
+                <option value="X">X</option>
+              </select>
+            </div>
           </div>
+          
+          <div class="form-group" style="margin-top:15px;">
+            <label style="color:var(--primary-color); font-weight:bold;">장비여부 (다중선택 가능)</label>
+            <div class="checkbox-group" id="m_odEquipGroup" style="background:#222; border:1px solid #444;">
+              <label><input type="checkbox" value="스카이"> 스카이</label>
+              <label><input type="checkbox" value="지게차"> 지게차</label>
+              <label><input type="checkbox" value="렌탈"> 렌탈</label>
+              <label><input type="checkbox" value="하이드로"> 하이드로</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:15px;">
+        <label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크 (8단계)</label>
+        <div class="checkbox-group" style="background:#222; border:1px solid #444; flex-wrap:wrap;">
+            <label><input type="checkbox" id="m_odChkInfo"> 정보요청</label>
+            <label><input type="checkbox" id="m_odChkDoc"> 서류작성</label>
+            <label><input type="checkbox" id="m_odChkIns"> 산재가입</label>
+            <label><input type="checkbox" id="m_odChkMeet"> 미팅완료</label>
+            <label><input type="checkbox" id="m_odChkPermit"> 허가발행</label>
+            <label><input type="checkbox" id="m_odChkWork"> 작업완료</label>
+            <label><input type="checkbox" id="m_odChkInspect"> 검수작성</label>
+            <label><input type="checkbox" id="m_odChkSettle"> 정산완료</label>
         </div>
       </div>
     </div>
@@ -925,10 +811,9 @@
 </div>
 
 <script>
-  // [중요] 반드시 본인의 최신 Web App URL로 교체하세요!
-  const API_URL = "https://script.google.com/macros/s/AKfycbxi4s4kr7DJlE9d6agVWuPzn5mQ4WpACrYNCOhncpwtnE7QuW8n0Y3j4K_IJfaYnGOL_w/exec";
+  // ★ 주의: 본인의 Web App URL로 반드시 교체해 주세요!
+  const API_URL = "https://script.google.com/macros/s/AKfycbzLLNUD78Mfxzx-pVKWkShdp1s2QZaTbI6ZHt-sTwQMNuENueuFpL92K7XQM2Tp69PAjg/exec";
   
-  /* --- [보안] 로그인 설정 --- */
   const PW_ADMIN = "1984"; 
   const PW_VIEWER = "0000"; 
 
@@ -952,7 +837,6 @@
   const getTodayStr = () => { const d = new Date(); const pad = n => n<10 ? '0'+n : n; return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; };
   const TODAY_DATE_STR = getTodayStr(); document.getElementById('currentDateDisplay').textContent = TODAY_DATE_STR;
   
-  /* --- UI 제어 --- */
   function toggleSidebar() {
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('mobileOverlay');
@@ -1108,6 +992,15 @@
       return false;
   }
 
+  function isOrderCompleted(poNumber) {
+      if (!poNumber) return false;
+      for (let [row, cells] of odRowMap.entries()) {
+          // cells[2] 가 구매PO번호, cells[20] 가 작업완료
+          if (cells[2] === poNumber) return normalizeBool(cells[20]);
+      }
+      return false;
+  }
+
   function updateDetailPanel(dateStr) {
       document.getElementById('detailTitle').textContent = `${dateStr} 일정 목록`;
       const container = document.getElementById('detailListContainer');
@@ -1133,7 +1026,11 @@
           const isRegistered = isPreworkRegistered(r);
           const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
           
+          const isDone = isOrderCompleted(r['발주번호']);
+          const doneBtnClass = isDone ? "btn-workdone done" : "btn-workdone";
+          
           html += `<div class="sch-actions">
+                    <button onclick="completeOrderFromScheduleByRow(${r.row})" class="${doneBtnClass} admin-only">✅ 작업완료</button>
                     <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only">📝 선작업</button>
                     <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button>
                     <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
@@ -1189,8 +1086,13 @@
       });
       const isRegistered = isPreworkRegistered(r);
       const btnClass = isRegistered ? "btn-prework registered" : "btn-prework";
+      
+      const isDone = isOrderCompleted(r["발주번호"]);
+      const doneBtnClass = isDone ? "btn-workdone done" : "btn-workdone";
+
       tr.innerHTML += `<td>
-          <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only" style="padding:4px 8px;">📝 선작업</button>
+          <button onclick="completeOrderFromScheduleByRow(${r.row})" class="${doneBtnClass} admin-only">✅ 작업완료</button>
+          <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only">📝 선작업</button>
           <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> 
           <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
         </td>`;
@@ -1199,13 +1101,48 @@
     renderPaginator("pagination", totalPages, (p)=>{schedulePage=p;renderSchedule();}, schedulePage);
   }
 
+  async function completeOrderFromScheduleByRow(schRow) {
+      const rec = records.find(r => r.row === schRow);
+      if(!rec) return;
+      const poNumber = rec["발주번호"];
+      if (!poNumber) { alert("발주번호(PO)가 없어 발주 정보를 찾을 수 없습니다."); return; }
+      
+      let targetRow = null;
+      for (let [row, cells] of odRowMap.entries()) {
+          if (cells[2] === poNumber) {
+              targetRow = row;
+              break;
+          }
+      }
+      
+      if (!targetRow) {
+          alert(`발주번호 [${poNumber}] 에 해당하는 발주 내역이 발주정보 탭에 없습니다.\n(발주정보에 먼저 등록해주세요)`);
+          return;
+      }
+      
+      const old = odRowMap.get(targetRow);
+      if (normalizeBool(old[20])) { 
+          alert("이미 작업완료 처리된 발주입니다.");
+          return;
+      }
+      
+      if(confirm(`발주번호 [${poNumber}] 의 작업을 완료 처리하시겠습니까?\n(발주정보의 '작업완료'가 자동 체크됩니다)`)) {
+          old[20] = "TRUE"; 
+          await fetch(API_URL, {
+              method: "POST", 
+              body: JSON.stringify({action: "order_toggle", row: targetRow, type: 'chkWork', value: "TRUE"})
+          });
+          alert("작업완료 처리되었습니다.");
+          fetchOrderData(); 
+          if(currentView === 'calendar') { updateDetailPanel(selectedDate); } else { renderSchedule(); }
+      }
+  }
+
   async function transferToPrework(rowId) {
       const data = records.find(r => r.row === rowId);
-      if(!data) { alert("데이터를 찾을 수 없습니다."); return; }
+      if(!data) return;
       try {
-          const payload = {
-              action: "prework_add", date: formatDate(data["날짜"]), team: data["생산팀"], manager: data["담당자"], work: data["작업내용"]
-          };
+          const payload = { action: "prework_add", date: formatDate(data["날짜"]), team: data["생산팀"], manager: data["담당자"], work: data["작업내용"] };
           const res = await fetch(API_URL, { method: "POST", body: JSON.stringify(payload) });
           const result = await res.json();
           if(result.status === "success") {
@@ -1277,7 +1214,7 @@
 
   document.getElementById("searchBox").addEventListener("input",e=>{searchQuery=e.target.value; schedulePage=1; renderSchedule();});
   document.getElementById("filterBtn").addEventListener("click",()=>{dateFilter.start=document.getElementById("startDate").value; dateFilter.end=document.getElementById("endDate").value; schedulePage=1; renderSchedule();});
-  document.getElementById("clearFilterBtn").addEventListener("click",()=>{dateFilter.start=null; dateFilter.end=null; document.getElementById("startDate").value=""; document.getElementById("endDate").value=""; schedulePage=1; renderSchedule();});
+  document.getElementById("clearFilterBtn").addEventListener("click",()=>{dateFilter={start:null,end:null}; document.getElementById("startDate").value=""; document.getElementById("endDate").value=""; schedulePage=1; renderSchedule();});
   
   document.getElementById("summaryBtn").addEventListener("click", () => {
     const container = document.getElementById("chartContainer"); 
@@ -1448,7 +1385,7 @@
       const team=document.getElementById('pwTeam').value; 
       const manager=document.getElementById('pwManager').value;
       const work=document.getElementById('pwWork').value;
-      if(!date || !work) { alert("필수"); return; } 
+      if(!date || !work) { alert("필수항목을 입력하세요"); return; } 
       
       await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"prework_add", date, team, manager, work})}); 
       ['pwTeam','pwManager','pwWork'].forEach(id => document.getElementById(id).value=""); 
@@ -1609,64 +1546,67 @@
       loadDelivery(); 
   }
 
-  /* ================= 5. 발주정보 (업데이트된 기능) ================= */
-  let odPage=1, pageSizeOrder=10, odRowMap=new Map(), odSortAsc=false;
-  let odFilterStatus = 'all'; // [NEW] 기본 필터값
+
+  /* ================= 5. 발주정보 (완전판 - 8단계 배지 & 일정등록 연동) ================= */
+  let odPage=1, pageSizeOrder=10, odRowMap=new Map(), odSortAsc=false, odFilterStatus='all';
+  
+  const PROCESS_STEPS = [
+    { key: 'chkInfo', label: '정보요청', idx: 15 },
+    { key: 'chkDoc', label: '서류작성', idx: 16 },
+    { key: 'chkIns', label: '산재가입', idx: 17 },
+    { key: 'chkMeet', label: '미팅완료', idx: 18 },
+    { key: 'chkPermit', label: '허가발행', idx: 19 },
+    { key: 'chkWork', label: '작업완료', idx: 20 },
+    { key: 'chkInspect', label: '검수작성', idx: 22 },
+    { key: 'chkSettle', label: '정산완료', idx: 23 }
+  ];
 
   async function fetchOrderData() { 
       try { 
           const res = await fetch(API_URL+"?action=order_get"); 
           const rows = await res.json(); 
           odRowMap.clear();
-          const all = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); 
-          all.forEach(it=>odRowMap.set(it.row, it.cells)); 
+          // 배열 길이가 모자란 경우를 대비해 24칸을 채워 넣음
+          rows.slice(1).forEach((r,i) => {
+              while(r.length < 24) r.push("");
+              odRowMap.set(i+2, r);
+          });
           loadOrder(); 
-      } catch(e) { 
-          console.error(e); 
-      } 
+      } catch(e) { console.error(e); } 
   }
   
-  // [NEW] 필터 상태 변경 함수
   function setOrderFilter(status) {
       odFilterStatus = status;
-      ['all', 'permit', 'done', 'ongoing'].forEach(s => {
+      ['all', 'ongoing', 'work', 'settle'].forEach(s => {
           const btnId = 'odFilter' + s.charAt(0).toUpperCase() + s.slice(1);
           const btn = document.getElementById(btnId);
-          if (btn) {
-              if (s === status) btn.classList.add('active');
-              else btn.classList.remove('active');
-          }
+          if (btn) { if (s === status) btn.classList.add('active'); else btn.classList.remove('active'); }
       });
-      odPage = 1;
-      loadOrder();
+      odPage = 1; loadOrder();
   }
 
   function loadOrder() { 
       const kw = (document.getElementById('odSearch').value||"").toLowerCase();
       const all = Array.from(odRowMap.entries()).map(([k,v]) => ({row:k, cells:v})); 
       
-      // [NEW] 상태별 개수 파악
       const countAll = all.length;
-      const countPermit = all.filter(it => normalizeBool(it.cells[19])).length;
-      const countDone = all.filter(it => normalizeBool(it.cells[20])).length;
-      const countOngoing = countAll - countDone; // 작업완료가 아닌 건들
+      const countWork = all.filter(it => normalizeBool(it.cells[20])).length; // 작업완료 기준
+      const countSettle = all.filter(it => normalizeBool(it.cells[23])).length; // 정산완료 기준
+      
+      // 진행중 기준: 작업완료(index 20)가 FALSE인 것
+      const countOngoing = all.filter(it => !normalizeBool(it.cells[20])).length; 
 
       document.getElementById('odFilterAll').innerText = `전체 (${countAll})`;
-      document.getElementById('odFilterPermit').innerText = `허가발행 (${countPermit})`;
-      document.getElementById('odFilterDone').innerText = `작업완료 (${countDone})`;
       document.getElementById('odFilterOngoing').innerText = `진행중 (${countOngoing})`;
+      document.getElementById('odFilterWork').innerText = `작업완료 (${countWork})`;
+      document.getElementById('odFilterSettle').innerText = `정산완료 (${countSettle})`;
 
-      // 검색어 기반 기본 필터링
       let filtered = all.filter(it => it.cells.join(" ").toLowerCase().includes(kw));
-
-      // [NEW] 버튼 상태 기반 추가 필터링
-      if (odFilterStatus === 'permit') {
-          filtered = filtered.filter(it => normalizeBool(it.cells[19])); 
-      } else if (odFilterStatus === 'done') {
-          filtered = filtered.filter(it => normalizeBool(it.cells[20])); 
-      } else if (odFilterStatus === 'ongoing') {
-          filtered = filtered.filter(it => !normalizeBool(it.cells[20])); 
-      }
+      
+      // 필터 로직: 진행중은 '작업완료'가 안된 것만 노출
+      if (odFilterStatus === 'ongoing') { filtered = filtered.filter(it => !normalizeBool(it.cells[20])); } 
+      else if (odFilterStatus === 'work') { filtered = filtered.filter(it => normalizeBool(it.cells[20])); } 
+      else if (odFilterStatus === 'settle') { filtered = filtered.filter(it => normalizeBool(it.cells[23])); }
 
       filtered.sort((a,b) => odSortAsc ? a.row-b.row : b.row-a.row); 
       const totalPages = Math.ceil(filtered.length/pageSizeOrder)||1; 
@@ -1677,55 +1617,127 @@
       
       filtered.slice(start,end).forEach(it => { 
           const r = it.cells; 
-          let isPermit = normalizeBool(r[19]), isDone = normalizeBool(r[20]); 
-          let permitClass = isPermit ? "status-badge permit-active" : "status-badge"; 
-          let doneClass = isDone ? "status-badge done-active" : "status-badge";
-          const permitHtml = r[21] ? `<span class="od-link" onclick='transferToScheduleFromOrder(${it.row})'>${r[21]}</span>` : '<span style="color:#777">없음</span>';
+          const permitHtml = r[21] ? `<span class="od-link" onclick="transferToScheduleFromOrder(${it.row})">${r[21]}</span>` : '<span style="color:#777">없음</span>';
+          
+          const isPrework = r[8] === "선작업발주";
+          const typeColor = isPrework ? "var(--warning-color)" : "var(--primary-color)";
+          const typeTextColor = isPrework ? "#000" : "#fff";
+          const orderTypeBadge = r[8] ? `<span style="background:${typeColor}; color:${typeTextColor}; padding:2px 6px; border-radius:4px; font-size:0.85em; font-weight:bold; margin-right:5px;">${r[8]}</span>` : '';
+          const dateBadge = r[9] ? `<span class="od-tag">📅 ${formatDate(r[9])}</span>` : '';
+
+          // 추후 기입 데이터 배열화
+          const extraInfoArr = [];
+          if(r[10]) extraInfoArr.push(`<span style="color:#aaa">산재:</span> ${r[10]}`);
+          if(r[11]) extraInfoArr.push(`<span style="color:#aaa">조업:</span> ${r[11]}`);
+          if(r[12]) extraInfoArr.push(`<span style="color:#aaa">서류:</span> ${r[12]}`);
+          if(r[13]) extraInfoArr.push(`<span style="color:#aaa">장비:</span> ${r[13]}`);
+          if(r[14]) extraInfoArr.push(`<span style="color:#aaa">비계:</span> ${r[14]}`);
+          
+          let extraInfoHtml = '';
+          if(extraInfoArr.length > 0) {
+              extraInfoHtml = `<div class="od-block" style="background:#2a2a2a; padding:10px; border-radius:6px; margin-top:8px; border-left:3px solid var(--accent-color); flex-direction:column; gap:4px;">
+                  <div style="display:flex; justify-content:space-between; align-items:center; width:100%;">
+                     <span style="color:var(--accent-color); font-weight:bold; font-size:0.85em;">📌 현장/추후 기입 완료</span>
+                     <span style="color:var(--primary-color); font-size:0.8em; cursor:pointer;" onclick="openOrderModal(${it.row})" class="admin-only">✏️수정</span>
+                  </div>
+                  <span style="font-size:0.9em; color:#ddd; line-height:1.5;">${extraInfoArr.join(' &nbsp;|&nbsp; ')}</span>
+              </div>`;
+          } else {
+              extraInfoHtml = `<div class="od-block admin-only" style="margin-top:8px; background:#222; padding:8px; border-radius:6px; justify-content:center; border: 1px dashed #555; cursor:pointer; transition: background 0.2s;" onclick="openOrderModal(${it.row})" onmouseover="this.style.background='#333'" onmouseout="this.style.background='#222'">
+                  <span style="color:var(--accent-color); font-size:0.9em; font-weight:bold;">➕ 추후 기입 항목 입력하기</span>
+              </div>`;
+          }
+
+          // 8단계 뱃지 생성
+          let badgesHtml = '';
+          PROCESS_STEPS.forEach(step => {
+              const isDone = normalizeBool(r[step.idx]);
+              // 완료된 뱃지 스타일 분리 (정산완료는 success, 나머지는 primary 등)
+              const activeClass = isDone ? (step.idx >= 22 ? 'done-active' : 'permit-active') : '';
+              badgesHtml += `<span class="status-badge admin-only ${activeClass}" onclick="toggleOrderStatus(${it.row}, '${step.key}', ${!isDone})">${step.label}</span>`;
+          });
+
           const card = document.createElement("div"); 
           card.className = "od-item-card";
-          card.innerHTML = `<div class="od-header"><span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div><div class="od-body"><div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div><div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div><div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div></div><div class="od-footer"><div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div><div class="od-actions"><span class="${permitClass} admin-only" onclick="toggleOrderStatus(${it.row}, 'permit', ${!isPermit})">허가발행</span><span class="${doneClass} admin-only" onclick="toggleOrderStatus(${it.row}, 'done', ${!isDone})">작업완료</span><button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button><button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button></div></div>`;
+          card.innerHTML = `
+              <div class="od-header">${orderTypeBadge}${dateBadge}<span class="od-tag">입찰: ${r[0]}</span><span class="od-tag">의뢰: ${r[1]}</span><span class="od-tag">PO: ${r[2]}</span><span class="od-title">${r[5]}</span></div>
+              <div class="od-body">
+                  <div class="od-block"><span class="od-label" style="color:#4A90E2">🛠️ 작업:</span><span class="od-value">${r[6]}</span></div>
+                  <div class="od-block"><span class="od-label" style="color:#ff9f43">🧱 자재:</span><span class="od-value">${r[7] || '-'}</span></div>
+                  <div class="od-block"><span class="od-label" style="color:#00e676">🛡️ 허가:</span><span class="od-value">${permitHtml}</span></div>
+              </div>
+              ${extraInfoHtml}
+              
+              <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:5px; padding-top:10px; border-top:1px dashed #444;">
+                  ${badgesHtml}
+              </div>
+
+              <div class="od-footer">
+                  <div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div>
+                  <div class="od-actions">
+                      <button onclick="transferToScheduleFromOrder(${it.row})" class="admin-only" style="background:#00b894; color:#000; border:none; font-weight:bold; padding:6px 12px; border-radius:4px;">📅 일정등록</button>
+                      <button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button>
+                      <button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button>
+                  </div>
+              </div>`;
           container.appendChild(card);
       }); 
       renderPaginator("odPagination", totalPages, (p)=>{odPage=p; loadOrder();}, odPage); 
   }
   
+  // 일정등록 버튼 연동 로직
   function transferToScheduleFromOrder(row) { 
       const data = odRowMap.get(row);
       if(!data) return; 
       switchTab('schedule'); 
       ['n_schTeam','n_schWork','n_schManager','n_schOrderNo','n_schMat','n_schPermit','n_schNote','n_schEqId'].forEach(id => document.getElementById(id).value = "");
       document.getElementById('n_schDate').value = TODAY_DATE_STR; 
-      document.getElementById('n_schOrderNo').value = data[2]; 
-      document.getElementById('n_schMat').value = data[7]; 
-      document.getElementById('n_schPermit').value = data[21];
+      
+      // 자동 기입
+      document.getElementById('n_schWork').value = data[5] || ""; // 공사명
+      document.getElementById('n_schOrderNo').value = data[2] || ""; // 구매PO번호
+      document.getElementById('n_schPermit').value = data[21] || ""; // 허가번호
+      
       openModal('addScheduleModal'); 
   }
   
   async function toggleOrderStatus(row, type, newValue) { 
       const old = odRowMap.get(row); 
       if(old) { 
-          const strVal = newValue ? "TRUE" : "FALSE"; 
-          if(type === 'permit') old[19] = strVal; 
-          else old[20] = strVal; 
-          loadOrder();
-          await fetch(API_URL, {method: "POST", body: JSON.stringify({action: "order_toggle", row, type, value: strVal})}); 
+          const step = PROCESS_STEPS.find(s => s.key === type);
+          if(step) {
+              old[step.idx] = newValue ? "TRUE" : "FALSE"; 
+              loadOrder();
+              await fetch(API_URL, {method: "POST", body: JSON.stringify({action: "order_toggle", row, type, value: (newValue ? "TRUE" : "FALSE")})}); 
+          }
       } 
   }
   
   function openOrderModal(row){ 
       currentOdRow = row;
-      const old = odRowMap.get(row) || Array(22).fill(""); 
-      document.getElementById('m_odBid').value = old[0]; 
-      document.getElementById('m_odReq').value = old[1]; 
-      document.getElementById('m_odPo').value = old[2]; 
-      document.getElementById('m_odRequester').value = old[3];
-      document.getElementById('m_odBuyer').value = old[4]; 
-      document.getElementById('m_odProject').value = old[5]; 
-      document.getElementById('m_odPermit').value = old[6]; 
-      document.getElementById('m_odMat').value = old[7]; 
-      document.getElementById('m_odPermitNo').value = old[21]; 
-      document.getElementById('m_odPermitCheck').checked = normalizeBool(old[19]);
-      document.getElementById('m_odDoneCheck').checked = normalizeBool(old[20]); 
+      const old = odRowMap.get(row) || new Array(24).fill(""); 
+      document.getElementById('m_odBid').value = old[0]; document.getElementById('m_odReq').value = old[1]; 
+      document.getElementById('m_odPo').value = old[2]; document.getElementById('m_odRequester').value = old[3];
+      document.getElementById('m_odBuyer').value = old[4]; document.getElementById('m_odProject').value = old[5]; 
+      document.getElementById('m_odPermit').value = old[6]; document.getElementById('m_odMat').value = old[7]; 
+      document.getElementById('m_odType').value = old[8] || "정상발주"; document.getElementById('m_odDate').value = old[9] ? formatDate(old[9]) : "";
+      
+      const insParts = (old[10] || "").split("~");
+      document.getElementById('m_odInsDateStart').value = insParts[0] ? insParts[0].trim() : "";
+      document.getElementById('m_odInsDateEnd').value = insParts[1] ? insParts[1].trim() : "";
+      
+      document.getElementById('m_odOpManager').value = old[11] || ""; document.getElementById('m_odDocType').value = old[12] || "";
+      document.getElementById('m_odScaffold').value = old[14] || ""; document.getElementById('m_odPermitNo').value = old[21]; 
+
+      const equipArr = (old[13] || "").split(",").map(e => e.trim());
+      document.querySelectorAll('#m_odEquipGroup input[type="checkbox"]').forEach(cb => { cb.checked = equipArr.includes(cb.value); });
+      
+      // 8단계 진행 상태 바인딩
+      PROCESS_STEPS.forEach(step => {
+         const cb = document.getElementById('m_od' + step.key.charAt(0).toUpperCase() + step.key.slice(1));
+         if(cb) cb.checked = normalizeBool(old[step.idx]);
+      });
+
       openModal('orderModal'); 
   }
   
@@ -1739,15 +1751,47 @@
       const permit=document.getElementById('m_odPermit').value;
       const mat=document.getElementById('m_odMat').value;
       const permitNo=document.getElementById('m_odPermitNo').value;
-      const permitYN = document.getElementById('m_odPermitCheck').checked ? "TRUE" : "FALSE";
-      const doneYN = document.getElementById('m_odDoneCheck').checked ? "TRUE" : "FALSE";
       
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_update", row: currentOdRow, bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN, doneYN})}); 
+      const orderType = document.getElementById('m_odType').value;
+      const orderDate = document.getElementById('m_odDate').value;
+      
+      const insStart = document.getElementById('m_odInsDateStart').value;
+      const insEnd = document.getElementById('m_odInsDateEnd').value;
+      const insDate = (insStart || insEnd) ? `${insStart} ~ ${insEnd}` : "";
+      
+      const opManager = document.getElementById('m_odOpManager').value;
+      const docType = document.getElementById('m_odDocType').value;
+      const scaffold = document.getElementById('m_odScaffold').value;
+      
+      const equips = [];
+      document.querySelectorAll('#m_odEquipGroup input[type="checkbox"]:checked').forEach(cb => {
+          equips.push(cb.value);
+      });
+      const equipStr = equips.join(", ");
+
+      // 8단계 체크 가져오기
+      const statuses = {};
+      PROCESS_STEPS.forEach(step => {
+         const cb = document.getElementById('m_od' + step.key.charAt(0).toUpperCase() + step.key.slice(1));
+         statuses[step.key] = (cb && cb.checked) ? "TRUE" : "FALSE";
+      });
+
+      await fetch(API_URL,{method:"POST",body:JSON.stringify({
+          action:"order_update", row: currentOdRow, 
+          bid, req, po, requester, buyer, project, permit, mat, permitNo, 
+          permitYN: statuses.chkPermit, doneYN: statuses.chkWork, // 호환성 유지용 (GAS단에서 무시됨)
+          orderType, orderDate, insDate, opManager, docType, equip: equipStr, scaffold,
+          chkInfo: statuses.chkInfo, chkDoc: statuses.chkDoc, chkIns: statuses.chkIns, chkMeet: statuses.chkMeet,
+          chkPermit: statuses.chkPermit, chkWork: statuses.chkWork, chkInspect: statuses.chkInspect, chkSettle: statuses.chkSettle
+      })}); 
       closeModal('orderModal'); 
       fetchOrderData(); 
   }
   
   async function saveOrder(){ 
+      const typeNode = document.querySelector('input[name="odType"]:checked');
+      const orderType = typeNode ? typeNode.value : "정상발주";
+      const orderDate = document.getElementById('odDate').value;
       const bid=document.getElementById('odBid').value;
       const req=document.getElementById('odReq').value;
       const po=document.getElementById('odPo').value;
@@ -1758,398 +1802,62 @@
       const mat=document.getElementById('odMat').value;
       const permitNo=document.getElementById('odPermitNo').value;
       
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_add", bid, req, po, requester, buyer, project, permit, mat, permitNo, permitYN: "FALSE", doneYN: "FALSE"})}); 
-      ['odBid','odReq','odPo','odRequester','odBuyer','odProject','odPermit','odMat','odPermitNo'].forEach(id => document.getElementById(id).value=""); 
+      if(!orderDate || !project) { alert("발주날짜와 공사명은 필수입니다."); return; }
+
+      await fetch(API_URL,{method:"POST",body:JSON.stringify({
+          action:"order_add", 
+          bid, req, po, requester, buyer, project, permit, mat, permitNo, 
+          permitYN: "FALSE", doneYN: "FALSE",
+          orderType, orderDate, insDate: "", opManager: "", docType: "", equip: "", scaffold: "",
+          chkInfo: "FALSE", chkDoc: "FALSE", chkIns: "FALSE", chkMeet: "FALSE", 
+          chkPermit: "FALSE", chkWork: "FALSE", chkInspect: "FALSE", chkSettle: "FALSE"
+      })}); 
+      
+      ['odDate','odBid','odReq','odPo','odRequester','odBuyer','odProject','odPermit','odMat','odPermitNo'].forEach(id => document.getElementById(id).value=""); 
+      document.querySelector('input[name="odType"][value="정상발주"]').checked = true;
       fetchOrderData(); 
   }
   
-  async function deleteOrder(row){ 
-      if(confirm("삭제?")){ 
-          await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_delete",row})}); 
-          fetchOrderData(); 
-      } 
-  }
-  
+  async function deleteOrder(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"order_delete",row})}); fetchOrderData(); } }
   document.getElementById("odSearch").addEventListener("input",()=>{odPage=1;loadOrder();}); 
   document.getElementById("odNewestBtn").addEventListener("click",()=>{ odSortAsc=false; odPage=1; loadOrder(); });
   document.getElementById("odOldestBtn").addEventListener("click",()=>{ odSortAsc=true; odPage=1; loadOrder(); });
 
-  /* ================= 6, 7, 8. 전화번호부 & 버켓 & 설비 ================= */
-  let pbPage=1, pageSizePhone=10, pbRowMap=new Map(), pbAllData=[];
-  async function loadPhonebook(){ 
-      try{ 
-          const res=await fetch(API_URL+"?action=phone_get"); 
-          const rows=await res.json(); 
-          if(!Array.isArray(rows)) return; 
-          pbRowMap.clear(); 
-          pbAllData=rows.slice(1).map((r,i)=>({row:i+2,cells:r})); 
-          pbAllData.forEach(it=>pbRowMap.set(it.row,it.cells)); 
-          renderPhonebookTable(); 
-      }catch(e){console.error(e);} 
-  }
-  
-  function renderPhonebookTable(){ 
-      const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); 
-      const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); 
-      const totalPages=Math.ceil(filtered.length/pageSizePhone)||1; 
-      if(pbPage>totalPages) pbPage=1; 
-      const start=(pbPage-1)*pageSizePhone, end=start+pageSizePhone; 
-      const tb=document.querySelector("#pbTable tbody");
-      tb.innerHTML=""; 
-      filtered.slice(start,end).forEach(it=>{ 
-          const r=it.cells; const tr=document.createElement("tr"); 
-          tr.innerHTML=`<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; 
-          tb.appendChild(tr); 
-      }); 
-      renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); 
-  }
-  
-  function openPhoneModal(row){ 
-      currentPbRow=row; 
-      const old=pbRowMap.get(row)||["","","",""]; 
-      document.getElementById('m_pbDept').value=old[0]; 
-      document.getElementById('m_pbPos').value=old[1]; 
-      document.getElementById('m_pbName').value=old[2]; 
-      document.getElementById('m_pbPhone').value=old[3]; 
-      openModal('phoneModal'); 
-  }
-  
-  async function savePhoneFromModal(){ 
-      const dept=document.getElementById('m_pbDept').value;
-      const pos=document.getElementById('m_pbPos').value;
-      const name=document.getElementById('m_pbName').value;
-      const phone=document.getElementById('m_pbPhone').value; 
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_update",row:currentPbRow, dept,position:pos,name,phone})}); 
-      closeModal('phoneModal'); 
-      loadPhonebook(); 
-  }
-  
-  async function savePhonebook(){ 
-      const dept=document.getElementById('pbDept').value;
-      const pos=document.getElementById('pbPosition').value; 
-      const name=document.getElementById('pbName').value;
-      const phone=document.getElementById('pbPhone').value; 
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_add",dept,position:pos,name,phone})}); 
-      ['pbDept','pbPosition','pbName','pbPhone'].forEach(id => document.getElementById(id).value=""); 
-      loadPhonebook(); 
-  }
-  
-  async function deletePhone(row){ 
-      if(confirm("삭제?")){ 
-          await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_delete",row})}); 
-          loadPhonebook(); 
-      } 
-  }
-  
+  /* ================= 6, 7, 8. 기타 ================= */
+  let pbPage=1, pbRowMap=new Map(), pbAllData=[];
+  async function loadPhonebook(){ const res=await fetch(API_URL+"?action=phone_get"); const rows=await res.json(); if(!Array.isArray(rows)) return; pbRowMap.clear(); pbAllData=rows.slice(1).map((r,i)=>({row:i+2,cells:r})); pbAllData.forEach(it=>pbRowMap.set(it.row,it.cells)); renderPhonebookTable(); }
+  function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/10)||1; if(pbPage>totalPages) pbPage=1; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice((pbPage-1)*10, pbPage*10).forEach(it=>{ const r=it.cells; tb.innerHTML+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td></tr>`; }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
+  function openPhoneModal(row){ currentPbRow=row; const old=pbRowMap.get(row)||["","","",""]; document.getElementById('m_pbDept').value=old[0]; document.getElementById('m_pbPos').value=old[1]; document.getElementById('m_pbName').value=old[2]; document.getElementById('m_pbPhone').value=old[3]; openModal('phoneModal'); }
+  async function savePhoneFromModal(){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_update",row:currentPbRow, dept:document.getElementById('m_pbDept').value,position:document.getElementById('m_pbPos').value,name:document.getElementById('m_pbName').value,phone:document.getElementById('m_pbPhone').value})}); closeModal('phoneModal'); loadPhonebook(); }
+  async function savePhonebook(){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_add",dept:document.getElementById('pbDept').value,position:document.getElementById('pbPosition').value,name:document.getElementById('pbName').value,phone:document.getElementById('pbPhone').value})}); ['pbDept','pbPosition','pbName','pbPhone'].forEach(id => document.getElementById(id).value=""); loadPhonebook(); }
+  async function deletePhone(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"phone_delete",row})}); loadPhonebook(); } }
   document.getElementById("pbSearch").addEventListener("input",()=>{pbPage=1;renderPhonebookTable();});
 
-  /* 버켓주기 (Structured Dashboard) */
-  let bkRowMap = new Map();
-  let bkAllData = [];
-  let bkSelectedTeam = "제련1팀";
-  const TEAM_STRUCTURE = {
-      "제련1팀": ["저광사 서쪽", "저광사 동쪽", "SF1 PIT", "SF1 COLD PIT"],
-      "제련2팀": ["저광사 남쪽", "저광사 북쪽", "SF2 PIT", "SF2 COLD PIT"],
-      "제련3팀": ["TSL1 PIT", "TSL2 PIT"],
-      "OF2팀": ["OF2 PIT", "OF4 PIT"],
-      "동순환자원팀": ["동순환자원 PIT"]
-  };
-  
-  async function loadBucket(){ 
-      const res = await fetch(API_URL+"?action=bucket_get"); 
-      const rows = await res.json();
-      if(!rows || rows.length === 0) return;
-      bkRowMap.clear(); 
-      bkAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); 
-      bkAllData.forEach(it=>bkRowMap.set(it.row,it.cells)); 
-      
-      renderBucketFilters();
-      renderBucketCards();
-  }
-
-  function renderBucketFilters() {
-      const container = document.getElementById("bkFilterContainer");
-      container.innerHTML = "";
-      Object.keys(TEAM_STRUCTURE).forEach(team => {
-          const isActive = bkSelectedTeam === team ? 'active' : '';
-          container.innerHTML += `<button class="bk-filter-btn ${isActive}" onclick="setBucketFilter('${team}')">${team}</button>`;
-      });
-  }
-
-  function setBucketFilter(team) {
-      bkSelectedTeam = team;
-      renderBucketFilters(); 
-      renderBucketCards();
-  }
-
-  function renderBucketCards() {
-      const container = document.getElementById("bkDashboard");
-      container.innerHTML = "";
-      const targetLocations = TEAM_STRUCTURE[bkSelectedTeam] || [];
-
-      targetLocations.forEach(locName => {
-          const matched = bkAllData.filter(it => (it.cells[0]||"").includes(locName));
-          matched.sort((a,b) => new Date(b.cells[1]) - new Date(a.cells[1]));
-          
-          const latest = matched.length > 0 ? matched[0] : null;
-          const latestDateStr = latest ? latest.cells[1] : "";
-          const elapsed = latest ? getElapsedDays(latestDateStr) : 0;
-          
-          let elapsedClass = "bk-elapsed-val"; 
-          if(elapsed > 180) elapsedClass += " danger"; 
-          else if(elapsed > 90) elapsedClass += " warn";
-
-          const card = document.createElement("div");
-          card.className = "bk-card";
-          
-          let historyHtml = "";
-          if(matched.length > 0) {
-              historyHtml = matched.map(h => `
-                  <div class="bk-history-item">
-                      <span>${formatDate(h.cells[1])}</span>
-                      <span style="color:#aaa;">${h.cells[2] || '-'}</span>
-                      <button onclick='deleteBucket(${h.row})' class="btn-danger admin-only" style="padding:0 4px; font-size:0.7em;">x</button>
-                  </div>
-              `).join('');
-          } else {
-              historyHtml = "<div style='text-align:center; padding:10px; color:#666;'>기록 없음</div>";
-          }
-
-          card.innerHTML = `
-              <div class="bk-header">
-                  <div class="bk-dept">${locName}</div>
-                  <div style="display:flex; gap:5px;">
-                      <button onclick="openAddBucketModal('${locName}')" class="btn-primary admin-only" style="padding:2px 8px; font-size:0.8em;">+ 등록</button>
-                  </div>
-              </div>
-              <div class="bk-latest-date">최근 교체: ${latest ? formatDate(latestDateStr) : "-"}</div>
-              <div class="bk-elapsed-box">
-                  <div class="bk-elapsed-label">교체 후 경과 시간</div>
-                  <div class="${elapsedClass}">${latest ? elapsed + "일" : "-"}</div>
-              </div>
-              <div class="bk-history-toggle" onclick="toggleHistory(this)">
-                  ▼ 지난 기록 보기 (${matched.length}건)
-              </div>
-              <div class="bk-history-list">
-                  ${historyHtml}
-              </div>
-          `;
-          container.appendChild(card);
-      });
-  }
-
-  function getElapsedDays(dateStr) {
-      const target = new Date(dateStr);
-      const now = new Date();
-      if(isNaN(target)) return 0;
-      return Math.floor((now - target) / (1000 * 60 * 60 * 24));
-  }
-
-  function toggleHistory(el) {
-      const list = el.nextElementSibling;
-      if(list.style.display === "block") {
-          list.style.display = "none";
-          el.innerText = el.innerText.replace("▲", "▼");
-      } else {
-          list.style.display = "block";
-          el.innerText = el.innerText.replace("▼", "▲");
-      }
-  }
-
-  function openAddBucketModal(deptName) {
-      document.getElementById('n_bkDept').value = deptName;
-      document.getElementById('addBucketTitle').innerText = `🪣 ${deptName} 교체 등록`;
-      document.getElementById('n_bkDate').value = getTodayStr(); 
-      document.getElementById('n_bkNote').value = "";
-      openModal('addBucketEntryModal');
-  }
-
-  async function submitBucketEntry() {
-      const dept = document.getElementById('n_bkDept').value;
-      const date = document.getElementById('n_bkDate').value;
-      const note = document.getElementById('n_bkNote').value;
-      
-      if(!dept || !date) { alert("날짜를 선택해주세요."); return; }
-
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_add", dept, date, note})});
-      closeModal('addBucketEntryModal');
-      loadBucket();
-  }
-
+  let bkRowMap = new Map(), bkAllData = [], bkSelectedTeam = "제련1팀";
+  const TEAM_STRUCTURE = { "제련1팀": ["저광사 서쪽", "저광사 동쪽", "SF1 PIT", "SF1 COLD PIT"], "제련2팀": ["저광사 남쪽", "저광사 북쪽", "SF2 PIT", "SF2 COLD PIT"], "제련3팀": ["TSL1 PIT", "TSL2 PIT"], "OF2팀": ["OF2 PIT", "OF4 PIT"], "동순환자원팀": ["동순환자원 PIT"] };
+  async function loadBucket(){ const res = await fetch(API_URL+"?action=bucket_get"); const rows = await res.json(); if(!rows || rows.length === 0) return; bkRowMap.clear(); bkAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); bkAllData.forEach(it=>bkRowMap.set(it.row,it.cells)); renderBucketFilters(); renderBucketCards(); }
+  function renderBucketFilters() { const container = document.getElementById("bkFilterContainer"); container.innerHTML = ""; Object.keys(TEAM_STRUCTURE).forEach(team => { const isActive = bkSelectedTeam === team ? 'active' : ''; container.innerHTML += `<button class="bk-filter-btn ${isActive}" onclick="setBucketFilter('${team}')">${team}</button>`; }); }
+  function setBucketFilter(team) { bkSelectedTeam = team; renderBucketFilters(); renderBucketCards(); }
+  function renderBucketCards() { const container = document.getElementById("bkDashboard"); container.innerHTML = ""; const targetLocations = TEAM_STRUCTURE[bkSelectedTeam] || []; targetLocations.forEach(locName => { const matched = bkAllData.filter(it => (it.cells[0]||"").includes(locName)); matched.sort((a,b) => new Date(b.cells[1]) - new Date(a.cells[1])); const latest = matched.length > 0 ? matched[0] : null; const latestDateStr = latest ? latest.cells[1] : ""; const target = new Date(latestDateStr); const elapsed = latest && !isNaN(target) ? Math.floor((new Date() - target)/(1000*60*60*24)) : 0; let elapsedClass = "bk-elapsed-val" + (elapsed > 180 ? " danger" : (elapsed > 90 ? " warn" : "")); let historyHtml = matched.length > 0 ? matched.map(h => `<div class="bk-history-item"><span>${formatDate(h.cells[1])}</span><span style="color:#aaa;">${h.cells[2] || '-'}</span><button onclick='deleteBucket(${h.row})' class="btn-danger admin-only" style="padding:0 4px; font-size:0.7em;">x</button></div>`).join('') : "<div style='text-align:center; padding:10px; color:#666;'>기록 없음</div>"; container.innerHTML += `<div class="bk-card"><div class="bk-header"><div class="bk-dept">${locName}</div><div style="display:flex; gap:5px;"><button onclick="openAddBucketModal('${locName}')" class="btn-primary admin-only" style="padding:2px 8px; font-size:0.8em;">+ 등록</button></div></div><div class="bk-latest-date">최근 교체: ${latest ? formatDate(latestDateStr) : "-"}</div><div class="bk-elapsed-box"><div class="bk-elapsed-label">교체 후 경과 시간</div><div class="${elapsedClass}">${latest ? elapsed + "일" : "-"}</div></div><div class="bk-history-toggle" onclick="const list = this.nextElementSibling; if(list.style.display==='block'){list.style.display='none';this.innerText=this.innerText.replace('▲','▼');}else{list.style.display='block';this.innerText=this.innerText.replace('▼','▲');}">▼ 지난 기록 보기 (${matched.length}건)</div><div class="bk-history-list">${historyHtml}</div></div>`; }); }
+  function openAddBucketModal(deptName) { document.getElementById('n_bkDept').value = deptName; document.getElementById('addBucketTitle').innerText = `🪣 ${deptName} 교체 등록`; document.getElementById('n_bkDate').value = getTodayStr(); document.getElementById('n_bkNote').value = ""; openModal('addBucketEntryModal'); }
+  async function submitBucketEntry() { const dept = document.getElementById('n_bkDept').value; const date = document.getElementById('n_bkDate').value; const note = document.getElementById('n_bkNote').value; if(!dept || !date) { alert("날짜 필수"); return; } await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_add", dept, date, note})}); closeModal('addBucketEntryModal'); loadBucket(); }
   async function deleteBucket(row){ if(confirm("삭제?")){ await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"bucket_delete",row})}); loadBucket(); } }
-  
-  let esPage=1, pageSizeSpec=5, esRowMap=new Map(), esAllData = [];
-  let currentSpecRow = null; // [FIX] 빠져있던 전역변수 추가
 
+  let esPage=1, esRowMap=new Map(), esAllData = [], currentSpecRow = null; 
   const defaultSpecs = ["크레인 종류", "양정", "정격 속도", "모터", "감속기", "레일", "와이어로프"];
-  
-  async function loadEquipmentSpec(){ 
-      const res = await fetch(API_URL+"?action=spec_get");
-      const rows = await res.json(); 
-      esRowMap.clear(); 
-      esAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); 
-      esAllData.forEach(it=>esRowMap.set(it.row,it.cells)); 
-      initTeamFilter(); 
-      renderEquipmentTable(); 
-  }
-  
-  function initTeamFilter() { 
-      const teams = new Set(); 
-      esAllData.forEach(it => { if(it.cells[0]) teams.add(it.cells[0]); }); 
-      const teamSel = document.getElementById('filterTeam');
-      while(teamSel.options.length > 1) teamSel.remove(1); 
-      Array.from(teams).sort().forEach(t => { 
-          const opt = document.createElement('option'); 
-          opt.value = t; opt.textContent = t; teamSel.appendChild(opt); 
-      }); 
-  }
-  
-  function updateLocationOptions() { 
-      const selectedTeam = document.getElementById('filterTeam').value;
-      const locSel = document.getElementById('filterLoc'); 
-      let sourceData = esAllData;
-      if (selectedTeam) sourceData = esAllData.filter(it => it.cells[0] === selectedTeam); 
-      const locs = new Set(); 
-      sourceData.forEach(it => { if(it.cells[2]) locs.add(it.cells[2]); });
-      locSel.innerHTML = '<option value="">📍 모든 위치 보기</option>'; 
-      Array.from(locs).sort().forEach(l => { 
-          const opt = document.createElement('option'); 
-          opt.value = l; opt.textContent = l; locSel.appendChild(opt); 
-      }); 
-  }
-  
-  function renderEquipmentTable() { 
-      const teamFilter = document.getElementById('filterTeam').value;
-      const locFilter = document.getElementById('filterLoc').value;
-      const keyword = (document.getElementById('esSearch').value || "").toLowerCase();
-      let filtered = esAllData.filter(it => { 
-          const r = it.cells; 
-          if (teamFilter && r[0] !== teamFilter) return false; 
-          if (locFilter && r[2] !== locFilter) return false; 
-          if (keyword) { 
-              const hay = r.join(" ").toLowerCase(); 
-              if (!hay.includes(keyword)) return false; 
-          } 
-          return true; 
-      });
-      const totalPages = Math.ceil(filtered.length/pageSizeSpec)||1; 
-      if(esPage > totalPages) esPage=1; 
-      const start=(esPage-1)*pageSizeSpec, end=start+pageSizeSpec; 
-      const tb = document.querySelector("#esTable tbody"); tb.innerHTML="";
-      
-      if(filtered.length === 0) { 
-          tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; 
-          document.getElementById("esPagination").innerHTML=""; return; 
-      } 
-      filtered.slice(start,end).forEach(it=>{ 
-          const r=it.cells;
-          const tr=document.createElement("tr"); 
-          let specDisplay = "없음"; 
-          try { 
-              const parsed = JSON.parse(r[3]); 
-              if(Object.keys(parsed).length > 0) {
-                  specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); 
-              }
-          } catch {} 
-          tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})' class="admin-only">📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; 
-          tb.appendChild(tr); 
-      });
-      renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); 
-  }
-  
-  function resetEquipmentFilter() { 
-      document.getElementById('filterTeam').value = ""; 
-      document.getElementById('filterLoc').value = ""; 
-      updateLocationOptions(); 
-      document.getElementById('esSearch').value = ""; 
-      esPage = 1; 
-      renderEquipmentTable(); 
-  }
-  
-  document.getElementById('filterTeam').addEventListener('change', () => { updateLocationOptions(); esPage=1; renderEquipmentTable(); }); 
-  document.getElementById('filterLoc').addEventListener('change', () => { esPage=1; renderEquipmentTable(); });
-  document.getElementById("esSearch").addEventListener("input", () => { esPage=1; renderEquipmentTable(); });
-  
-  function openSpecModal(mode, row = null) { 
-      const tbody = document.querySelector("#modalSpecTable tbody");
-      tbody.innerHTML = ""; 
-      const inTeam = document.getElementById("m_esTeam_modal");
-      const inEqId = document.getElementById("m_esEqId_modal");
-      const inLoc = document.getElementById("m_esLocation_modal");
-      
-      if (mode === 'new') { 
-          const topTeam = document.getElementById('esTeam').value;
-          const topEqId = document.getElementById('esEqId').value;
-          const topLoc = document.getElementById('esLocation').value;
-          if(!topTeam || !topEqId) { alert("상단의 팀과 설비ID를 먼저 입력해주세요."); return; } 
-          currentSpecRow = null; 
-          inTeam.value = topTeam; 
-          inEqId.value = topEqId;
-          inLoc.value = topLoc; 
-          defaultSpecs.forEach(k => addModalRow(k, "")); 
-      } else { 
-          currentSpecRow = row; 
-          const data = esRowMap.get(row); 
-          inTeam.value = data[0];
-          inEqId.value = data[1]; 
-          inLoc.value = data[2]; 
-          try { 
-              const json = JSON.parse(data[3]); 
-              Object.entries(json).forEach(([k,v])=>addModalRow(k,v)); 
-          } catch { 
-              defaultSpecs.forEach(k => addModalRow(k, "")); 
-          } 
-      } 
-      openModal('specModal'); 
-  }
-  
-  function addModalRow(key="", value="") { 
-      const tbody = document.querySelector("#modalSpecTable tbody"); 
-      const tr = document.createElement("tr");
-      tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; 
-      tbody.appendChild(tr); 
-  }
-  
-  async function saveSpecFromModal() { 
-      const rows = document.querySelectorAll("#modalSpecTable tbody tr"); 
-      const newSpec = {};
-      rows.forEach(tr => { 
-          const inputs = tr.querySelectorAll("input"); 
-          if(inputs[0].value) newSpec[inputs[0].value] = inputs[1].value; 
-      });
-      const specStr = JSON.stringify(newSpec);
-      const newTeam = document.getElementById("m_esTeam_modal").value;
-      const newEqId = document.getElementById("m_esEqId_modal").value;
-      const newLoc = document.getElementById("m_esLocation_modal").value;
-      
-      if (currentSpecRow === null) { 
-          await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_add", team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); 
-          document.getElementById('esTeam').value=""; 
-          document.getElementById('esEqId').value=""; 
-          document.getElementById('esLocation').value="";
-      } else { 
-          await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_update", row: currentSpecRow, team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); 
-      } 
-      closeModal('specModal'); alert("저장됨"); loadEquipmentSpec(); 
-  }
-  
-  async function deleteEquipmentSpec(row){ 
-      if(confirm("삭제?")) { 
-          await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_delete",row})}); 
-          loadEquipmentSpec(); 
-      } 
-  }
+  async function loadEquipmentSpec(){ const res = await fetch(API_URL+"?action=spec_get"); const rows = await res.json(); esRowMap.clear(); esAllData = rows.slice(1).map((r,i)=>({row:i+2, cells:r})); esAllData.forEach(it=>esRowMap.set(it.row,it.cells)); initTeamFilter(); renderEquipmentTable(); }
+  function initTeamFilter() { const teams = new Set(); esAllData.forEach(it => { if(it.cells[0]) teams.add(it.cells[0]); }); const teamSel = document.getElementById('filterTeam'); while(teamSel.options.length > 1) teamSel.remove(1); Array.from(teams).sort().forEach(t => { const opt = document.createElement('option'); opt.value = t; opt.textContent = t; teamSel.appendChild(opt); }); }
+  function updateLocationOptions() { const selectedTeam = document.getElementById('filterTeam').value; const locSel = document.getElementById('filterLoc'); let sourceData = esAllData; if (selectedTeam) sourceData = esAllData.filter(it => it.cells[0] === selectedTeam); const locs = new Set(); sourceData.forEach(it => { if(it.cells[2]) locs.add(it.cells[2]); }); locSel.innerHTML = '<option value="">📍 모든 위치 보기</option>'; Array.from(locs).sort().forEach(l => { const opt = document.createElement('option'); opt.value = l; opt.textContent = l; locSel.appendChild(opt); }); }
+  function renderEquipmentTable() { const teamFilter = document.getElementById('filterTeam').value; const locFilter = document.getElementById('filterLoc').value; const keyword = (document.getElementById('esSearch').value || "").toLowerCase(); let filtered = esAllData.filter(it => { const r = it.cells; if (teamFilter && r[0] !== teamFilter) return false; if (locFilter && r[2] !== locFilter) return false; if (keyword) { if (!r.join(" ").toLowerCase().includes(keyword)) return false; } return true; }); const totalPages = Math.ceil(filtered.length/5)||1; if(esPage > totalPages) esPage=1; const tb = document.querySelector("#esTable tbody"); tb.innerHTML=""; if(filtered.length === 0) { tb.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px;">조건에 맞는 설비가 없습니다.</td></tr>`; document.getElementById("esPagination").innerHTML=""; return; } filtered.slice((esPage-1)*5, esPage*5).forEach(it=>{ const r=it.cells; const tr=document.createElement("tr"); let specDisplay = "없음"; try { const parsed = JSON.parse(r[3]); if(Object.keys(parsed).length > 0) { specDisplay = Object.entries(parsed).map(([k,v]) => `<div style="padding:4px 0; border-bottom:1px solid #333; display:flex; align-items:center;"><span style="color:#81D4FA; font-weight:600; min-width:80px; margin-right:8px;">${k}</span><span style="color:#ffffff;">${v}</span></div>`).join(""); } } catch {} tr.innerHTML=`<td>${r[0]}</td><td style="font-weight:bold; color:var(--primary-color);">${r[1]}</td><td>${r[2]||'-'}</td><td style="font-size:0.9em; line-height:1.4;">${specDisplay}</td><td><button onclick='openSpecModal("edit", ${it.row})' class="admin-only">📝 상세/수정</button> <button onclick='deleteEquipmentSpec(${it.row})' class="btn-danger admin-only">🗑️</button></td>`; tb.appendChild(tr); }); renderPaginator("esPagination",totalPages,(p)=>{esPage=p;renderEquipmentTable();},esPage); }
+  function resetEquipmentFilter() { document.getElementById('filterTeam').value = ""; document.getElementById('filterLoc').value = ""; updateLocationOptions(); document.getElementById('esSearch').value = ""; esPage = 1; renderEquipmentTable(); }
+  document.getElementById('filterTeam').addEventListener('change', () => { updateLocationOptions(); esPage=1; renderEquipmentTable(); }); document.getElementById('filterLoc').addEventListener('change', () => { esPage=1; renderEquipmentTable(); }); document.getElementById("esSearch").addEventListener("input", () => { esPage=1; renderEquipmentTable(); });
+  function openSpecModal(mode, row = null) { const tbody = document.querySelector("#modalSpecTable tbody"); tbody.innerHTML = ""; const inTeam = document.getElementById("m_esTeam_modal"); const inEqId = document.getElementById("m_esEqId_modal"); const inLoc = document.getElementById("m_esLocation_modal"); if (mode === 'new') { const topTeam = document.getElementById('esTeam').value; const topEqId = document.getElementById('esEqId').value; const topLoc = document.getElementById('esLocation').value; if(!topTeam || !topEqId) { alert("상단의 팀과 설비ID를 먼저 입력해주세요."); return; } currentSpecRow = null; inTeam.value = topTeam; inEqId.value = topEqId; inLoc.value = topLoc; defaultSpecs.forEach(k => addModalRow(k, "")); } else { currentSpecRow = row; const data = esRowMap.get(row); inTeam.value = data[0]; inEqId.value = data[1]; inLoc.value = data[2]; try { const json = JSON.parse(data[3]); Object.entries(json).forEach(([k,v])=>addModalRow(k,v)); } catch { defaultSpecs.forEach(k => addModalRow(k, "")); } } openModal('specModal'); }
+  function addModalRow(key="", value="") { const tbody = document.querySelector("#modalSpecTable tbody"); const tr = document.createElement("tr"); tr.innerHTML = `<td><input type="text" value="${key}" style="width:95%"></td><td><input type="text" value="${value}" style="width:95%"></td><td style="text-align:center;"><button onclick="this.closest('tr').remove()" class="btn-danger">x</button></td>`; tbody.appendChild(tr); }
+  async function saveSpecFromModal() { const rows = document.querySelectorAll("#modalSpecTable tbody tr"); const newSpec = {}; rows.forEach(tr => { const inputs = tr.querySelectorAll("input"); if(inputs[0].value) newSpec[inputs[0].value] = inputs[1].value; }); const specStr = JSON.stringify(newSpec); const newTeam = document.getElementById("m_esTeam_modal").value; const newEqId = document.getElementById("m_esEqId_modal").value; const newLoc = document.getElementById("m_esLocation_modal").value; if (currentSpecRow === null) { await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_add", team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); document.getElementById('esTeam').value=""; document.getElementById('esEqId').value=""; document.getElementById('esLocation').value=""; } else { await fetch(API_URL, {method:"POST",body:JSON.stringify({action:"spec_update", row: currentSpecRow, team: newTeam, eqId: newEqId, location: newLoc, spec: specStr})}); } closeModal('specModal'); loadEquipmentSpec(); }
+  async function deleteEquipmentSpec(row){ if(confirm("삭제?")) { await fetch(API_URL,{method:"POST",body:JSON.stringify({action:"spec_delete",row})}); loadEquipmentSpec(); } }
 
-  /* --- 시스템 초기 실행 --- */
-  toggleScheduleView('calendar'); 
-  loadSchedule(true); 
-  loadPhonebook();
-  loadBucket(); 
-  fetchOrderData(); 
-  loadEquipmentSpec(); 
-  loadPrework(); 
-  loadDelivery(); 
-  loadChecklist(); 
+  /* --- 초기 실행 --- */
+  toggleScheduleView('calendar'); loadSchedule(true); loadPhonebook(); loadBucket(); fetchOrderData(); loadEquipmentSpec(); loadPrework(); loadDelivery(); loadChecklist(); 
 </script>
 </body>
 </html>
