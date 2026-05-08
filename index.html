@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>(주)영선기계 일정관리 프로그램 V7.4.0</title>
+  <title>(주)영선기계 일정관리 프로그램 V7.6.1</title>
   
   <meta name="theme-color" content="#1e1e1e">
   <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2920/2920323.png">
@@ -82,11 +82,12 @@
     .btn-danger { background: var(--danger-color); border-color: var(--danger-color); color: #000; }
     .btn-accent { background: var(--accent-color); border-color: var(--accent-color); color: #000; font-weight:bold; }
     
-    .btn-prework { background: #444; color: #fff; border: 1px solid #555; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 4px; cursor: pointer; } 
+    /* 버튼 크기 축소 */
+    .btn-prework { background: #444; color: #fff; border: 1px solid #555; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; cursor: pointer; } 
     .btn-prework.registered { background: var(--accent-color); color: #000; font-weight: bold; border-color: var(--accent-color); } 
     
-    /* 일정관리 작업완료 버튼 상태 스타일 */
-    .btn-workdone { background: #444; color: #fff; border: 1px solid #555; padding: 4px 8px; border-radius: 4px; font-size: 0.9em; margin-right: 4px; cursor: pointer; transition: background 0.2s; }
+    /* 일정관리 작업완료 버튼 크기 축소 */
+    .btn-workdone { background: #444; color: #fff; border: 1px solid #555; padding: 2px 6px; border-radius: 4px; font-size: 0.75em; cursor: pointer; transition: background 0.2s; }
     .btn-workdone.done { background: var(--success-color); color: #000; font-weight: bold; border-color: var(--success-color); }
     
     .table-container { overflow-x: auto; margin-top: 15px; }
@@ -123,10 +124,9 @@
     .status-badge.active-2 { background-color: var(--primary-color) !important; color: #fff !important; } 
     .status-badge.active-3 { background-color: var(--warning-color) !important; color: #000 !important; } 
     .status-badge.active-4 { background-color: #9C27B0 !important; color: #fff !important; } 
-    .status-badge.permit-active { background-color: var(--primary-color) !important; color: #fff !important; } 
-    .status-badge.done-active { background-color: var(--success-color) !important; color: #000 !important; } 
-    .status-badge.order-active { background-color: var(--warning-color) !important; color: #000 !important; } 
-    .status-badge.stock-active { background-color: var(--success-color) !important; color: #000 !important; } 
+    .status-badge.permit-active { background-color: var(--primary-color) !important; color: #fff !important; border-color:var(--primary-hover) !important;} 
+    .status-badge.done-active { background-color: var(--success-color) !important; color: #000 !important; border-color:#00c853 !important;} 
+    .status-badge:hover { background-color: #444; }
 
     .flex-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 10px; }
     .paginator { margin-top: 15px; display: flex; justify-content: center; gap: 4px; }
@@ -148,7 +148,7 @@
     .checkbox-group label { display: flex; align-items: center; cursor: pointer; color: #fff; margin:0; }
     .checkbox-group input { width: 18px; height: 18px; margin-right: 8px; accent-color: var(--primary-color); }
 
-    /* 달력 & 발주 & 점검일지 카드 스타일 */
+    /* 달력 & 일정 카드 스타일 */
     .split-view-container { display: flex; flex-wrap: wrap; gap: 20px; }
     .calendar-panel { flex: 1; min-width: 350px; background: #252525; padding: 15px; border-radius: 12px; border: 1px solid var(--border-color); }
     .detail-panel { flex: 1; min-width: 350px; background: var(--card-bg); padding: 0; border-radius: 12px; }
@@ -168,7 +168,10 @@
     .sch-team { font-size: 0.9em; color: var(--primary-color); font-weight: bold; }
     .sch-work { font-size: 1.1em; font-weight: bold; color: #fff; line-height: 1.3; }
     .sch-meta { font-size: 0.85em; color: #ccc; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-    .sch-actions { position: absolute; top: 15px; right: 15px; display: flex; gap: 4px; }
+    
+    /* [NEW] 일정관리 버튼 영역을 글자 겹침 방지 위해 아래로 분리 */
+    .sch-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 4px; margin-top: 8px; padding-top: 8px; border-top: 1px dashed #555; }
+    
     .sch-note { font-size: 0.85em; color: #aaa; margin-top: 5px; padding-top: 5px; border-top: 1px dashed #555; }
 
     /* 발주정보 카드 (기존 UI 유지) */
@@ -237,7 +240,7 @@
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
       <h2>(주)영선기계</h2>
-      <span class="sub-text">일정관리 프로그램 v7.4.0</span>
+      <span class="sub-text">일정관리 프로그램 v7.6.1</span>
     </div>
     <nav class="nav-menu">
       <div class="nav-group-label">메인 업무</div>
@@ -473,9 +476,9 @@
         <div class="card">
           <div class="bk-filter-container" style="margin-bottom: 15px;">
             <button class="bk-filter-btn active" id="odFilterAll" onclick="setOrderFilter('all')">전체 (0)</button>
+            <button class="bk-filter-btn" id="odFilterPermit" onclick="setOrderFilter('permit')">허가발행 (0)</button>
+            <button class="bk-filter-btn" id="odFilterDone" onclick="setOrderFilter('done')">작업완료 (0)</button>
             <button class="bk-filter-btn" id="odFilterOngoing" onclick="setOrderFilter('ongoing')">진행중 (0)</button>
-            <button class="bk-filter-btn" id="odFilterWork" onclick="setOrderFilter('work')">작업완료 (0)</button>
-            <button class="bk-filter-btn" id="odFilterSettle" onclick="setOrderFilter('settle')">정산완료 (0)</button>
           </div>
           <div class="flex-row">
             <input type="text" id="odSearch" placeholder="🔍 PO번호/공사명 검색">
@@ -667,7 +670,7 @@
 
 <div id="orderModal" class="modal">
   <div class="modal-content">
-    <div class="modal-header"><h3>📦 발주 정보 수정 및 추가기입</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div>
+    <div class="modal-header"><h3>📦 발주 정보 수정 및 등록</h3><span class="close-modal" onclick="closeModal('orderModal')">&times;</span></div>
     <div class="modal-body">
       <div class="form-grid">
         <div class="form-group">
@@ -734,7 +737,7 @@
       </div>
 
       <div class="form-group" style="margin-top:15px;">
-        <label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크 (8단계)</label>
+        <label style="color:var(--primary-color); font-weight:bold;">진행 상태 체크 (8단계 강제수정)</label>
         <div class="checkbox-group" style="background:#222; border:1px solid #444; flex-wrap:wrap;">
             <label><input type="checkbox" id="m_odChkInfo"> 정보요청</label>
             <label><input type="checkbox" id="m_odChkDoc"> 서류작성</label>
@@ -1030,10 +1033,11 @@
           const doneBtnClass = isDone ? "btn-workdone done" : "btn-workdone";
           
           html += `<div class="sch-actions">
+                    <button onclick="openNewOrderModalFromSchedule(${r.row})" class="admin-only" style="background:#666; color:#fff; border:none; font-weight:bold; border-radius:4px; padding:2px 6px; font-size:0.75em; cursor:pointer;">📦 발주등록</button>
                     <button onclick="completeOrderFromScheduleByRow(${r.row})" class="${doneBtnClass} admin-only">✅ 작업완료</button>
                     <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only">📝 선작업</button>
-                    <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button>
-                    <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
+                    <button onclick="openScheduleModal(${r.row})" class="admin-only" style="padding:2px 6px; font-size:0.75em;">✏️</button>
+                    <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only" style="padding:2px 6px; font-size:0.75em;">🗑️</button>
                    </div>`;
           div.innerHTML = html; container.appendChild(div);
       });
@@ -1090,15 +1094,56 @@
       const isDone = isOrderCompleted(r["발주번호"]);
       const doneBtnClass = isDone ? "btn-workdone done" : "btn-workdone";
 
-      tr.innerHTML += `<td>
+      tr.innerHTML += `<td><div style="display:flex; flex-wrap:wrap; gap:4px;">
+          <button onclick="openNewOrderModalFromSchedule(${r.row})" class="admin-only" style="padding:2px 6px; font-size:0.75em; background:#666; color:#fff; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">📦 발주등록</button>
           <button onclick="completeOrderFromScheduleByRow(${r.row})" class="${doneBtnClass} admin-only">✅ 작업완료</button>
           <button onclick='transferToPrework(${r.row})' class="${btnClass} admin-only">📝 선작업</button>
-          <button onclick="openScheduleModal(${r.row})" class="admin-only">✏️</button> 
-          <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only">🗑️</button>
-        </td>`;
+          <button onclick="openScheduleModal(${r.row})" class="admin-only" style="padding:2px 6px; font-size:0.75em;">✏️</button> 
+          <button onclick="deleteRecord(${r.row})" class="btn-danger admin-only" style="padding:2px 6px; font-size:0.75em;">🗑️</button>
+        </div></td>`;
       tb.appendChild(tr);
     });
     renderPaginator("pagination", totalPages, (p)=>{schedulePage=p;renderSchedule();}, schedulePage);
+  }
+
+  // 일정에서 발주 모달을 신규로 여는 연동 기능
+  function openNewOrderModalFromSchedule(schRow) {
+      const data = records.find(r => r.row === schRow);
+      if (!data) return;
+      
+      switchTab('order');
+      
+      currentOdRow = null; 
+      
+      document.getElementById('m_odBid').value = ""; 
+      document.getElementById('m_odReq').value = ""; 
+      document.getElementById('m_odPo').value = data["발주번호"] || ""; 
+      document.getElementById('m_odRequester').value = data["담당자"] || "";
+      document.getElementById('m_odBuyer').value = ""; 
+      document.getElementById('m_odProject').value = data["작업내용"] || ""; 
+      document.getElementById('m_odPermit').value = ""; 
+      document.getElementById('m_odMat').value = data["필수자재"] || ""; 
+      
+      document.getElementById('m_odType').value = "정상발주"; 
+      document.getElementById('m_odDate').value = formatDate(data["날짜"]);
+      
+      document.getElementById('m_odInsDateStart').value = "";
+      document.getElementById('m_odInsDateEnd').value = "";
+      document.getElementById('m_odOpManager').value = ""; 
+      document.getElementById('m_odDocType').value = "";
+      document.getElementById('m_odScaffold').value = "";
+
+      document.querySelectorAll('#m_odEquipGroup input[type="checkbox"]').forEach(cb => cb.checked = false);
+      document.getElementById('m_odPermitNo').value = data["허가번호"] || ""; 
+      
+      PROCESS_STEPS.forEach(step => {
+         const cb = document.getElementById('m_od' + step.key.charAt(0).toUpperCase() + step.key.slice(1));
+         if(cb) cb.checked = false;
+      });
+
+      document.querySelector('#orderModal .modal-header h3').innerText = "📦 발주 정보 등록";
+
+      openModal('orderModal'); 
   }
 
   async function completeOrderFromScheduleByRow(schRow) {
@@ -1547,7 +1592,7 @@
   }
 
 
-  /* ================= 5. 발주정보 (완전판 - 8단계 배지 & 일정등록 연동) ================= */
+  /* ================= 5. 발주정보 (완전판 - 8단계 배지 & 일정등록 연동 복구) ================= */
   let odPage=1, pageSizeOrder=10, odRowMap=new Map(), odSortAsc=false, odFilterStatus='all';
   
   const PROCESS_STEPS = [
@@ -1577,7 +1622,7 @@
   
   function setOrderFilter(status) {
       odFilterStatus = status;
-      ['all', 'ongoing', 'work', 'settle'].forEach(s => {
+      ['all', 'permit', 'done', 'ongoing'].forEach(s => {
           const btnId = 'odFilter' + s.charAt(0).toUpperCase() + s.slice(1);
           const btn = document.getElementById(btnId);
           if (btn) { if (s === status) btn.classList.add('active'); else btn.classList.remove('active'); }
@@ -1590,23 +1635,21 @@
       const all = Array.from(odRowMap.entries()).map(([k,v]) => ({row:k, cells:v})); 
       
       const countAll = all.length;
-      const countWork = all.filter(it => normalizeBool(it.cells[20])).length; // 작업완료 기준
-      const countSettle = all.filter(it => normalizeBool(it.cells[23])).length; // 정산완료 기준
-      
-      // 진행중 기준: 작업완료(index 20)가 FALSE인 것
-      const countOngoing = all.filter(it => !normalizeBool(it.cells[20])).length; 
+      const countPermit = all.filter(it => normalizeBool(it.cells[19])).length; // 허가발행 기준
+      const countDone = all.filter(it => normalizeBool(it.cells[20])).length; // 작업완료 기준
+      const countOngoing = all.filter(it => !normalizeBool(it.cells[20])).length; // 진행중 (작업미완료)
 
-      document.getElementById('odFilterAll').innerText = `전체 (${countAll})`;
-      document.getElementById('odFilterOngoing').innerText = `진행중 (${countOngoing})`;
-      document.getElementById('odFilterWork').innerText = `작업완료 (${countWork})`;
-      document.getElementById('odFilterSettle').innerText = `정산완료 (${countSettle})`;
+      if(document.getElementById('odFilterAll')) document.getElementById('odFilterAll').innerText = `전체 (${countAll})`;
+      if(document.getElementById('odFilterPermit')) document.getElementById('odFilterPermit').innerText = `허가발행 (${countPermit})`;
+      if(document.getElementById('odFilterDone')) document.getElementById('odFilterDone').innerText = `작업완료 (${countDone})`;
+      if(document.getElementById('odFilterOngoing')) document.getElementById('odFilterOngoing').innerText = `진행중 (${countOngoing})`;
 
       let filtered = all.filter(it => it.cells.join(" ").toLowerCase().includes(kw));
       
-      // 필터 로직: 진행중은 '작업완료'가 안된 것만 노출
+      // 필터 로직
       if (odFilterStatus === 'ongoing') { filtered = filtered.filter(it => !normalizeBool(it.cells[20])); } 
-      else if (odFilterStatus === 'work') { filtered = filtered.filter(it => normalizeBool(it.cells[20])); } 
-      else if (odFilterStatus === 'settle') { filtered = filtered.filter(it => normalizeBool(it.cells[23])); }
+      else if (odFilterStatus === 'permit') { filtered = filtered.filter(it => normalizeBool(it.cells[19])); } 
+      else if (odFilterStatus === 'done') { filtered = filtered.filter(it => normalizeBool(it.cells[20])); }
 
       filtered.sort((a,b) => odSortAsc ? a.row-b.row : b.row-a.row); 
       const totalPages = Math.ceil(filtered.length/pageSizeOrder)||1; 
@@ -1675,9 +1718,9 @@
               <div class="od-footer">
                   <div class="od-people">👤 의뢰: ${r[3]} / 구매: ${r[4]}</div>
                   <div class="od-actions">
-                      <button onclick="transferToScheduleFromOrder(${it.row})" class="admin-only" style="background:#00b894; color:#000; border:none; font-weight:bold; padding:6px 12px; border-radius:4px;">📅 일정등록</button>
-                      <button onclick='openOrderModal(${it.row})' class="admin-only">✏️</button>
-                      <button onclick='deleteOrder(${it.row})' class="btn-danger admin-only">🗑️</button>
+                      <button onclick="transferToScheduleFromOrder(${it.row})" class="admin-only" style="background:#00b894; color:#000; border:none; font-weight:bold; padding:4px 8px; border-radius:4px; font-size:0.85em; cursor:pointer;">📅 일정등록</button>
+                      <button onclick='openOrderModal(${it.row})' class="admin-only" style="padding:4px 8px; font-size:0.85em;">✏️</button>
+                      <button onclick='deleteOrder(${it.row})' class="btn-danger admin-only" style="padding:4px 8px; font-size:0.85em;">🗑️</button>
                   </div>
               </div>`;
           container.appendChild(card);
@@ -1715,6 +1758,7 @@
   
   function openOrderModal(row){ 
       currentOdRow = row;
+      document.querySelector('#orderModal .modal-header h3').innerText = "📦 발주 정보 상세 수정";
       const old = odRowMap.get(row) || new Array(24).fill(""); 
       document.getElementById('m_odBid').value = old[0]; document.getElementById('m_odReq').value = old[1]; 
       document.getElementById('m_odPo').value = old[2]; document.getElementById('m_odRequester').value = old[3];
@@ -1776,14 +1820,23 @@
          statuses[step.key] = (cb && cb.checked) ? "TRUE" : "FALSE";
       });
 
-      await fetch(API_URL,{method:"POST",body:JSON.stringify({
-          action:"order_update", row: currentOdRow, 
+      const payload = {
           bid, req, po, requester, buyer, project, permit, mat, permitNo, 
-          permitYN: statuses.chkPermit, doneYN: statuses.chkWork, // 호환성 유지용 (GAS단에서 무시됨)
+          permitYN: statuses.chkPermit, doneYN: statuses.chkWork,
           orderType, orderDate, insDate, opManager, docType, equip: equipStr, scaffold,
           chkInfo: statuses.chkInfo, chkDoc: statuses.chkDoc, chkIns: statuses.chkIns, chkMeet: statuses.chkMeet,
           chkPermit: statuses.chkPermit, chkWork: statuses.chkWork, chkInspect: statuses.chkInspect, chkSettle: statuses.chkSettle
-      })}); 
+      };
+
+      if (currentOdRow === null) {
+          payload.action = "order_add";
+          await fetch(API_URL, {method:"POST", body:JSON.stringify(payload)}); 
+      } else {
+          payload.action = "order_update";
+          payload.row = currentOdRow;
+          await fetch(API_URL, {method:"POST", body:JSON.stringify(payload)}); 
+      }
+
       closeModal('orderModal'); 
       fetchOrderData(); 
   }
@@ -1824,7 +1877,7 @@
   document.getElementById("odOldestBtn").addEventListener("click",()=>{ odSortAsc=true; odPage=1; loadOrder(); });
 
   /* ================= 6, 7, 8. 기타 ================= */
-  let pbPage=1, pbRowMap=new Map(), pbAllData=[];
+  let pbPage=1, pageSizePhone=10, pbRowMap=new Map(), pbAllData=[];
   async function loadPhonebook(){ const res=await fetch(API_URL+"?action=phone_get"); const rows=await res.json(); if(!Array.isArray(rows)) return; pbRowMap.clear(); pbAllData=rows.slice(1).map((r,i)=>({row:i+2,cells:r})); pbAllData.forEach(it=>pbRowMap.set(it.row,it.cells)); renderPhonebookTable(); }
   function renderPhonebookTable(){ const kw=(document.getElementById('pbSearch').value||"").toLowerCase(); const filtered=pbAllData.filter(it=>it.cells.join(" ").toLowerCase().includes(kw)); const totalPages=Math.ceil(filtered.length/10)||1; if(pbPage>totalPages) pbPage=1; const tb=document.querySelector("#pbTable tbody"); tb.innerHTML=""; filtered.slice((pbPage-1)*10, pbPage*10).forEach(it=>{ const r=it.cells; tb.innerHTML+=`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td><td><button onclick='openPhoneModal(${it.row})' class="admin-only">✏️</button> <button onclick='deletePhone(${it.row})' class="btn-danger admin-only">🗑️</button></td></tr>`; }); renderPaginator("pbPagination",totalPages,(p)=>{pbPage=p;renderPhonebookTable();},pbPage); }
   function openPhoneModal(row){ currentPbRow=row; const old=pbRowMap.get(row)||["","","",""]; document.getElementById('m_pbDept').value=old[0]; document.getElementById('m_pbPos').value=old[1]; document.getElementById('m_pbName').value=old[2]; document.getElementById('m_pbPhone').value=old[3]; openModal('phoneModal'); }
